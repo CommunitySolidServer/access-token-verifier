@@ -18,6 +18,7 @@
     "build": "npm run clean && tsc",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm install && npm run build",
+    "start": "node dist/index.js",
     "test": "jest \"test/.*\\.test\\.ts\""
   },
   "publishConfig": {
@@ -41,7 +42,12 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
-    "jose": "^3.0.2",
+    "cross-fetch": "^3.0.6",
+    "jose": "^3.1.0",
+    "n3": "^1.6.4",
+    "rdf-dereference": "^1.6.0",
+    "rdf-parse": "^1.6.1",
+    "rdf-store-stream": "^1.1.0",
     "ts-guards": "^0.5.1",
     "uuid": "^8.3.1"
   }
