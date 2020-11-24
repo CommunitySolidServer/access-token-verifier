@@ -22,7 +22,7 @@ export async function verify(jwt: string): Promise<DPoP> {
   const { payload, protectedHeader } = await jwtVerify(jwt, EmbeddedJWK, {
     typ: 'dpop+jwt',
     algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-    maxTokenAge: `6000s`,
+    maxTokenAge: `60s`,
     clockTolerance: `5s`
   })
 
