@@ -2,9 +2,9 @@ import { DigitalSignatureAsymetricCryptographicAlgorithm } from "./DPoPJWK";
 import { WebIDBearer } from "./WebIDBearer";
 
 /**
- * DPoP Bound Access Token
- * (DPoP header.jwk.kid to match Access Token payload.cnf.jkt)
- * In the context of Solid requires a webid and client_webid claim in the payload
+ * Solid DPoP Bound Access Token
+ * 
+ * See also: https://solid.github.io/authentication-panel/solid-oidc/#tokens-access
  */
 export interface AccessToken {
   header: AccessTokenHeader;
@@ -19,12 +19,21 @@ export interface AccessTokenHeader {
 
 export interface AccessTokenPayload extends WebIDBearer {
   aud: "solid";
-  azp: string;
-  client_webid: string;
+  client_id: string;
   cnf: { jkt: string };
   exp: number;
   iat: number;
   iss: string;
-  jti: string;
-  sub: string;
+  jti?: string;
+  sub?: string;
+}
+
+// TODO: Remove
+export interface LegacyAccessTokenPayload {
+  cnf: { jkt: string };
+  exp: number;
+  iat: number;
+  iss: string;
+  sub?: string;
+  webid?: string;
 }

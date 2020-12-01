@@ -1,10 +1,13 @@
 import createRemoteJWKSet from "jose/jwks/remote";
 import jwtVerify from "jose/jwt/verify";
+import { InvalidSolidDPoPAcccessToken } from '../error/InvalidSolidDPoPAcccessToken'
+
 import {
   isAccessTokenHeader,
-  isAccessTokenBody,
+  isAccessTokenPayload,
+  isLegacyAccessTokenPayload,
 } from "../guard/AccessTokenGuard";
-import { AccessToken } from "../type/AccessToken";
+import type { AccessToken, AccessTokenPayload } from "../type/AccessToken";
 import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type/DPoPJWK";
 import { jwksUri } from "./Issuer";
 import { issuer, webID } from "./JWT";
@@ -38,12 +41,22 @@ export async function verify(jwt: string): Promise<AccessToken> {
     clockTolerance: "5s",
   });
 
-  isAccessTokenBody(payload);
-  isAccessTokenHeader(protectedHeader);
+  // TODO: Remove legacy non-compliant token support
+  try {
+    isAccessTokenHeader(protectedHeader);
+    try {
+      isAccessTokenPayload(payload);
+    }
+    catch (e: unknown) {
+      isLegacyAccessTokenPayload(payload);
+    }
+  } catch (e: unknown) {
+    throw new InvalidSolidDPoPAcccessToken();
+  }
 
   return {
     header: protectedHeader,
-    payload,
+    payload: (payload as AccessTokenPayload),
     signature: jwt.split(".")[2],
   };
 }
