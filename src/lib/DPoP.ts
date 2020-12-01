@@ -1,9 +1,8 @@
-import EmbeddedJWK from 'jose/jwk/embedded'
-import jwtVerify from 'jose/jwt/verify'
-
-import type { DPoP } from './type'
-import { digitalSignatureAsymetricCryptographicAlgorithm } from './type'
-import { isDPoPBody, isDPoPHeader } from './type-guard'
+import EmbeddedJWK from "jose/jwk/embedded";
+import jwtVerify from "jose/jwt/verify";
+import { isDPoPTokenHeader, isDPoPTokenBody } from "../guard/DPoPTokenGuard";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type/DPoPJWK";
+import { DPoPToken } from "../type/DPoPToken";
 
 /**
  * Verify DPoP
@@ -18,16 +17,20 @@ import { isDPoPBody, isDPoPHeader } from './type-guard'
  * - DPoP tokens can rely on iat+maxTokenAge to be invalidated since they are specific to a request
  *   (so the exp claim which is not required in DPoP tokens' bodys is also redundant)
  */
-export async function verify(jwt: string): Promise<DPoP> {
+export async function verify(jwt: string): Promise<DPoPToken> {
   const { payload, protectedHeader } = await jwtVerify(jwt, EmbeddedJWK, {
-    typ: 'dpop+jwt',
+    typ: "dpop+jwt",
     algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
     maxTokenAge: `60s`,
-    clockTolerance: `5s`
-  })
+    clockTolerance: `5s`,
+  });
 
-  isDPoPBody(payload);
-  isDPoPHeader(protectedHeader);
+  isDPoPTokenBody(payload);
+  isDPoPTokenHeader(protectedHeader);
 
-  return { header: protectedHeader, payload: payload, signature: jwt.split('.')[2] };
+  return {
+    header: protectedHeader,
+    payload,
+    signature: jwt.split(".")[2],
+  };
 }
