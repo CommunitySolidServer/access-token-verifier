@@ -6,8 +6,8 @@ import type {
   ECPublicJWK,
   RSAJWK,
   RSAPublicJWK,
-} from "../type/DPoPJWK";
-import { curve, rsaAlgorithm } from "../type/DPoPJWK";
+} from "../type";
+import { curve, rsaAlgorithm } from "../type";
 
 /**
  * JWK Validation

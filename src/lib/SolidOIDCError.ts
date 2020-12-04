@@ -1,17 +1,20 @@
+import type { SolidOIDCErrorCode } from "../type/SolidOIDCError";
 /**
  * Generic Error class for everything DPoP
  */
-export class DPoPError extends Error {
+export class SolidOIDCError extends Error {
   // HTTP unauthorized client error status
-  public statusCode: number = 401;
+  public code;
+
+  public statusCode = 401;
 
   /**
    * Creates a new HTTP error. Subclasses should call this with their fixed status code.
    * @param name - Error name. Useful for logging and stack tracing.
    * @param message - Message to be thrown.
    */
-  public constructor(name: string, message?: string) {
+  public constructor(code: SolidOIDCErrorCode, message?: string) {
     super(message);
-    this.name = name;
+    this.code = code;
   }
 }

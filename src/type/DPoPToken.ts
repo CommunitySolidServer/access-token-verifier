@@ -1,8 +1,8 @@
-import {
+import type {
   DigitalSignatureAsymetricCryptographicAlgorithm,
   DPoPPublicJWK,
 } from "./DPoPJWK";
-import { RequestMethod } from "./RequestMethod";
+import type { RequestMethod } from "./RequestMethod";
 
 /**
  * DPoP as defined in https://tools.ietf.org/html/draft-fett-oauth-dpop-04

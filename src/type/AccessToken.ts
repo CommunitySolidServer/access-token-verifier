@@ -1,9 +1,8 @@
-import { DigitalSignatureAsymetricCryptographicAlgorithm } from "./DPoPJWK";
-import { WebIDBearer } from "./WebIDBearer";
+import type { DigitalSignatureAsymetricCryptographicAlgorithm } from "./DPoPJWK";
 
 /**
  * Solid DPoP Bound Access Token
- * 
+ *
  * See also: https://solid.github.io/authentication-panel/solid-oidc/#tokens-access
  */
 export interface AccessToken {
@@ -17,23 +16,16 @@ export interface AccessTokenHeader {
   alg: DigitalSignatureAsymetricCryptographicAlgorithm;
 }
 
-export interface AccessTokenPayload extends WebIDBearer {
+export interface AccessTokenPayload {
   aud: "solid";
-  client_id: string;
-  cnf: { jkt: string };
+  client_id?: string;
+  cnf?: { jkt: string };
   exp: number;
   iat: number;
   iss: string;
-  jti?: string;
-  sub?: string;
+  webid: string;
 }
 
-// TODO: Remove
-export interface LegacyAccessTokenPayload {
+export interface DPoPBoundAccessTokenPayload extends AccessTokenPayload {
   cnf: { jkt: string };
-  exp: number;
-  iat: number;
-  iss: string;
-  sub?: string;
-  webid?: string;
 }

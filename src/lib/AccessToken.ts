@@ -1,20 +1,19 @@
 import createRemoteJWKSet from "jose/jwks/remote";
 import jwtVerify from "jose/jwt/verify";
-import { InvalidSolidDPoPAcccessToken } from '../error/InvalidSolidDPoPAcccessToken'
-
 import {
   isAccessTokenHeader,
   isAccessTokenPayload,
-  isLegacyAccessTokenPayload,
 } from "../guard/AccessTokenGuard";
-import type { AccessToken, AccessTokenPayload } from "../type/AccessToken";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type/DPoPJWK";
+import type { AccessToken } from "../type";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
 import { jwksUri } from "./Issuer";
-import { issuer, webID } from "./JWT";
-import { oidcIssuer } from "./WebID";
 
-function value(jwt: string): string {
-  return jwt.replace(/^DPoP /, "");
+/**
+ * Remove the Bearer and DPoP prefixes from the authorization header
+ * @param token
+ */
+function tokenValue(token: string): string {
+  return token.replace(/^(DPoP|Bearer) /, "");
 }
 
 /**
@@ -28,35 +27,26 @@ function value(jwt: string): string {
  *    - expiration 'exp' is not in the past
  *    - 'iat' is not in the future
  */
-export async function verify(jwt: string): Promise<AccessToken> {
-  const issuerJwksUri = await jwksUri(
-    await oidcIssuer(webID(jwt), issuer(jwt))
-  );
+export async function verify(
+  authorizationHeader: string
+): Promise<AccessToken> {
+  const accessToken = tokenValue(authorizationHeader);
+  const issuerJwksUri = await jwksUri(accessToken);
   const JWKS = createRemoteJWKSet(new URL(issuerJwksUri));
 
-  const { payload, protectedHeader } = await jwtVerify(value(jwt), JWKS, {
+  const { payload, protectedHeader } = await jwtVerify(accessToken, JWKS, {
     audience: "solid",
     algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
     maxTokenAge: "86400s",
     clockTolerance: "5s",
   });
 
-  // TODO: Remove legacy non-compliant token support
-  try {
-    isAccessTokenHeader(protectedHeader);
-    try {
-      isAccessTokenPayload(payload);
-    }
-    catch (e: unknown) {
-      isLegacyAccessTokenPayload(payload);
-    }
-  } catch (e: unknown) {
-    throw new InvalidSolidDPoPAcccessToken();
-  }
+  isAccessTokenHeader(protectedHeader);
+  isAccessTokenPayload(payload);
 
   return {
     header: protectedHeader,
-    payload: (payload as AccessTokenPayload),
-    signature: jwt.split(".")[2],
+    payload,
+    signature: accessToken.split(".")[2],
   };
 }

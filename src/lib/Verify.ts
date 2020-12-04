@@ -1,8 +1,6 @@
-import { asserts } from "ts-guards";
-import { RequestMethod } from "../type/RequestMethod";
-import { WebIDBearer } from "../type/WebIDBearer";
-import { verify as verifyAuthorization } from "./AccessToken";
-import { verify as verifyDPoP } from "./DPoP";
+import type { AccessTokenPayload, RequestMethod } from "../type";
+import { verify as verifyAuthorizationToken } from "./AccessToken";
+import { verify as verifyDPoPToken } from "./DPoP";
 
 /**
  * Verifies the validity of a DPoP bound access token
@@ -13,27 +11,18 @@ import { verify as verifyDPoP } from "./DPoP";
  * @param url
  * @param jtis
  */
-
 export async function verify(
   authorizationHeader: string,
   dpopHeader: string,
   method: RequestMethod,
   url: string,
   jtis: Array<string> = []
-): Promise<WebIDBearer> {
-  const authorization = await verifyAuthorization(authorizationHeader);
-  const dpop = await verifyDPoP(dpopHeader);
+): Promise<AccessTokenPayload> {
+  const accessToken = await verifyAuthorizationToken(authorizationHeader);
 
-  // Check DPoP claims
-  asserts.isLiteral(dpop.payload.htm, method);
-  asserts.isLiteral(dpop.payload.htu, url);
-  asserts.isLiteral(
-    jtis.filter((jti) => jti === dpop.payload.jti).length === 0,
-    true
-  );
+  if (authorizationHeader.startsWith("DPoP ")) {
+    await verifyDPoPToken(dpopHeader, accessToken, method, url, jtis);
+  }
 
-  // Check DPoP bound
-  asserts.isLiteral(dpop.header.jwk.kid, authorization.payload.cnf.jkt);
-
-  return { webid: authorization.payload.webid };
+  return accessToken.payload;
 }

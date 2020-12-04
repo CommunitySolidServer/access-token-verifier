@@ -1,5 +1,6 @@
 import { DataFactory } from "rdf-data-factory";
 import rdfDereferencer from "rdf-dereference";
+import { SolidOIDCError } from "./SolidOIDCError";
 import type { Quad } from "n3";
 
 const N3 = require("n3");
@@ -12,7 +13,10 @@ export async function oidcIssuer(
   if (issuers.includes(issuer)) {
     return issuer;
   }
-  throw new Error("Invalid OIDC Issuer Claim");
+  throw new SolidOIDCError(
+    "SolidOIDCInvalidIssuerClaim",
+    `Incorrect issuer for WebID ${webid}`
+  );
 }
 
 export async function oidcIssuers(webid: string): Promise<Array<string>> {

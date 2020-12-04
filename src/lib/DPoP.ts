@@ -1,8 +1,32 @@
 import EmbeddedJWK from "jose/jwk/embedded";
 import jwtVerify from "jose/jwt/verify";
+import { asserts } from "ts-guards";
+import { isDPoPBoundAccessTokenPayload } from "../guard/AccessTokenGuard";
 import { isDPoPTokenHeader, isDPoPTokenBody } from "../guard/DPoPTokenGuard";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type/DPoPJWK";
-import { DPoPToken } from "../type/DPoPToken";
+import type { AccessToken, DPoPToken, RequestMethod } from "../type";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
+
+function isValidProof(
+  accessToken: AccessToken,
+  dpop: DPoPToken,
+  method: RequestMethod,
+  url: string,
+  jtis: Array<string>
+) {
+  asserts.isObjectPropertyOf(accessToken.payload, "cnf");
+  isDPoPBoundAccessTokenPayload(accessToken.payload);
+
+  // Check DPoP is bound to the access token
+  asserts.isLiteral(dpop.header.jwk.kid, accessToken.payload.cnf.jkt);
+
+  // Check DPoP Token claims method, url and unique token id
+  asserts.isLiteral(dpop.payload.htm, method);
+  asserts.isLiteral(dpop.payload.htu, url);
+  asserts.isLiteral(
+    jtis.filter((jti) => jti === dpop.payload.jti).length === 0,
+    true
+  );
+}
 
 /**
  * Verify DPoP
@@ -17,20 +41,34 @@ import { DPoPToken } from "../type/DPoPToken";
  * - DPoP tokens can rely on iat+maxTokenAge to be invalidated since they are specific to a request
  *   (so the exp claim which is not required in DPoP tokens' bodys is also redundant)
  */
-export async function verify(jwt: string): Promise<DPoPToken> {
-  const { payload, protectedHeader } = await jwtVerify(jwt, EmbeddedJWK, {
-    typ: "dpop+jwt",
-    algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-    maxTokenAge: `60s`,
-    clockTolerance: `5s`,
-  });
+export async function verify(
+  dpopHeader: string,
+  accessToken: AccessToken,
+  method: RequestMethod,
+  url: string,
+  jtis: Array<string>
+): Promise<DPoPToken> {
+  const { payload, protectedHeader } = await jwtVerify(
+    dpopHeader,
+    EmbeddedJWK,
+    {
+      typ: "dpop+jwt",
+      algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
+      maxTokenAge: `60s`,
+      clockTolerance: `5s`,
+    }
+  );
 
   isDPoPTokenBody(payload);
   isDPoPTokenHeader(protectedHeader);
 
-  return {
+  const dpop = {
     header: protectedHeader,
     payload,
-    signature: jwt.split(".")[2],
+    signature: dpopHeader.split(".")[2],
   };
+
+  isValidProof(accessToken, dpop, method, url, jtis);
+
+  return dpop;
 }

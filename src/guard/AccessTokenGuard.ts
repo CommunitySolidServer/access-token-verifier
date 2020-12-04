@@ -1,11 +1,12 @@
 import { asserts } from "ts-guards";
-import {
+import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
+import type {
   AccessToken,
   AccessTokenHeader,
   AccessTokenPayload,
-  LegacyAccessTokenPayload,
-} from "../type/AccessToken";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type/DPoPJWK";
+  DPoPBoundAccessTokenPayload,
+} from "../type";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
 
 /**
  * Check valid Access Token
@@ -26,61 +27,29 @@ export function isAccessTokenHeader(
   asserts.isString(x.kid);
 }
 
-export function isAccessTokenPayload(x: unknown): asserts x is AccessTokenPayload {
-  asserts.areObjectPropertiesOf(x, [
-    "aud",
-    "client_id",
-    "cnf",
-    "exp",
-    "iat",
-    "iss",
-    "webid",
-  ]);
+export function isAccessTokenPayload(
+  x: unknown
+): asserts x is AccessTokenPayload {
+  asserts.areObjectPropertiesOf(x, ["aud", "exp", "iat", "iss", "webid"]);
   asserts.isLiteral(x.aud, "solid" as const);
-  asserts.isString(x.client_id);
-  asserts.isObjectPropertyOf(x.cnf, "jkt");
-  asserts.isString(x.cnf.jkt);
   asserts.isNumber(x.exp);
   asserts.isNumber(x.iat);
   asserts.isString(x.iss);
   asserts.isString(x.webid);
+  if (isObjectPropertyOf(x, "cnf")) {
+    asserts.isObjectPropertyOf(x.cnf, "jkt");
+    asserts.isString(x.cnf.jkt);
+  }
+  if (isObjectPropertyOf(x, "client_id")) {
+    asserts.isString(x.client_id);
+  }
 }
 
-// TODO: Remove support for legacy tokens
-export function isLegacyAccessTokenPayload(x: unknown): asserts x is LegacyAccessTokenPayload {
-  try {
-    asserts.areObjectPropertiesOf(x, [
-      "aud",
-      "cnf",
-      "exp",
-      "iat",
-      "iss",
-      "webid",
-    ]);
-    asserts.isLiteral(x.aud, "solid" as const);
-    asserts.isObjectPropertyOf(x.cnf, "jkt");
-    asserts.isString(x.cnf.jkt);
-    asserts.isNumber(x.exp);
-    asserts.isNumber(x.iat);
-    asserts.isString(x.iss);
-    asserts.isString(x.webid);
-
-  } catch {
-    asserts.areObjectPropertiesOf(x, [
-      "aud",
-      "cnf",
-      "exp",
-      "iat",
-      "iss",
-      "sub",
-    ]);
-    asserts.isLiteral(x.aud, "solid" as const);
-    asserts.isObjectPropertyOf(x.cnf, "jkt");
-    asserts.isString(x.cnf.jkt);
-    asserts.isNumber(x.exp);
-    asserts.isNumber(x.iat);
-    asserts.isString(x.iss);
-    asserts.isString(x.sub);
-  }
+export function isDPoPBoundAccessTokenPayload(
+  x: AccessTokenPayload
+): asserts x is DPoPBoundAccessTokenPayload {
+  asserts.isObjectPropertyOf(x, "cnf");
+  asserts.isObjectPropertyOf(x.cnf, "jkt");
+  asserts.isString(x.cnf.jkt);
 }
 /* eslint-enable no-use-before-define */
