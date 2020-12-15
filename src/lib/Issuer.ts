@@ -1,10 +1,9 @@
 import { fetch as crossFetch } from "cross-fetch";
+import createRemoteJWKSet from "jose/jwks/remote";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
-import { isAccessTokenPayload } from "../guard/AccessTokenGuard";
-import { decode } from "./JWT";
+import type { GetKeySetFunction } from "../type";
 import { SolidOIDCError } from "./SolidOIDCError";
-import { oidcIssuer } from "./WebID";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const requestInit = {
@@ -14,12 +13,11 @@ const requestInit = {
 /* eslint-enable @typescript-eslint/naming-convention */
 
 function configUrl(iss: string): string {
-  const configPath = "/.well-known/openid-configuration";
-  return iss.replace(/\/$/, "").concat(configPath);
+  return iss.replace(/\/$/, "").concat("/.well-known/openid-configuration");
 }
 
-async function config(iss: string): Promise<JSON> {
-  const response = await crossFetch(configUrl(iss), requestInit);
+async function config(iss: URL): Promise<JSON> {
+  const response = await crossFetch(configUrl(iss.toString()), requestInit);
 
   if (response.ok) {
     return (await response.json()) as JSON;
@@ -27,18 +25,14 @@ async function config(iss: string): Promise<JSON> {
 
   throw new SolidOIDCError(
     "SolidOIDCHTTPError",
-    `Failed fetching OIDC issuer configuration at URL ${iss}, got HTTP status code ${response.status}`
+    `Failed fetching OIDC issuer configuration at URL ${iss.toString()}, got HTTP status code ${
+      response.status
+    }`
   );
 }
 
-export async function jwksUri(accessToken: string): Promise<string> {
-  const tokenPayload = decode(accessToken.split(".")[1]);
-
-  isAccessTokenPayload(tokenPayload);
-
-  const issuer = await oidcIssuer(tokenPayload.webid, tokenPayload.iss);
-
-  const issuerConfig = await config(issuer);
+async function jwksUri(iss: URL): Promise<string> {
+  const issuerConfig = await config(iss);
 
   if (
     isObjectPropertyOf(issuerConfig, "jwks_uri") &&
@@ -49,20 +43,10 @@ export async function jwksUri(accessToken: string): Promise<string> {
 
   throw new SolidOIDCError(
     "SolidOIDCIssuerConfigError",
-    `Failed extracting jwks_uri from OIDC issuer configuration at URL ${issuer}`
+    `Failed extracting jwks_uri from OIDC issuer configuration at URL ${iss.toString()}`
   );
 }
 
-export async function jwks(iss: string): Promise<JSON> {
-  const JWKS_URI = await jwksUri(iss);
-  const response = await crossFetch(JWKS_URI, requestInit);
-
-  if (response.ok) {
-    return (await response.json()) as JSON;
-  }
-
-  throw new SolidOIDCError(
-    "SolidOIDCHTTPError",
-    `Failed fetching JWK Set issuer configuration at URL ${JWKS_URI}, got HTTP status code ${response.status}`
-  );
-}
+export const keySet: GetKeySetFunction = async function (iss: URL) {
+  return createRemoteJWKSet(new URL(await jwksUri(iss)));
+};

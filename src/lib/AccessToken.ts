@@ -1,19 +1,65 @@
-import createRemoteJWKSet from "jose/jwks/remote";
+import { get as http } from "http";
+import type { ClientRequest } from "http";
+import { get as https } from "https";
 import jwtVerify from "jose/jwt/verify";
+import type { JWSHeaderParameters } from "jose/jwt/verify";
 import {
   isAccessTokenHeader,
   isAccessTokenPayload,
 } from "../guard/AccessTokenGuard";
-import type { AccessToken } from "../type";
+import type {
+  AccessToken,
+  AccessTokenPayload,
+  GetIssuersFunction,
+  GetKeySetFunction,
+} from "../type";
 import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
-import { jwksUri } from "./Issuer";
+import { decode } from "./JWT";
+import { SolidOIDCError } from "./SolidOIDCError";
 
 /**
  * Remove the Bearer and DPoP prefixes from the authorization header
  * @param token
  */
-function tokenValue(token: string): string {
+function value(token: string): string {
   return token.replace(/^(DPoP|Bearer) /, "");
+}
+
+/**
+ * URL Claims
+ * TODO: Allowing HTTP seems wrong, see to only allowing HTTPs
+ * @param token
+ */
+function urlClaim(claim: string): URL {
+  const protocols: {
+    [protocol: string]: (...args: Parameters<typeof https>) => ClientRequest;
+  } = {
+    "https:": https,
+    "http:": http,
+  };
+
+  const url = new URL(claim);
+
+  if (protocols[url.protocol] === undefined) {
+    throw new TypeError("Unsupported URL claim protocol.");
+  }
+
+  return url;
+}
+
+/**
+ * Checks the access token structure and its WebID and Issuer claims
+ * @param token
+ */
+function verifiableClaims(token: string): { iss: URL; webid: URL } {
+  const tokenPayload = decode(token.split(".")[1]);
+
+  isAccessTokenPayload(tokenPayload);
+
+  return {
+    iss: urlClaim(tokenPayload.iss),
+    webid: urlClaim(tokenPayload.webid),
+  };
 }
 
 /**
@@ -28,25 +74,41 @@ function tokenValue(token: string): string {
  *    - 'iat' is not in the future
  */
 export async function verify(
-  authorizationHeader: string
+  authorizationHeader: string,
+  issuers: GetIssuersFunction,
+  keySet: GetKeySetFunction
 ): Promise<AccessToken> {
-  const accessToken = tokenValue(authorizationHeader);
-  const issuerJwksUri = await jwksUri(accessToken);
-  const JWKS = createRemoteJWKSet(new URL(issuerJwksUri));
+  // Get JWT value for either DPoP or Bearer tokens
+  const token = value(authorizationHeader);
 
-  const { payload, protectedHeader } = await jwtVerify(accessToken, JWKS, {
-    audience: "solid",
-    algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-    maxTokenAge: "86400s",
-    clockTolerance: "5s",
-  });
+  // Extract webid and issuer claims as URLs from valid Access token payload
+  const { iss, webid } = verifiableClaims(token);
+
+  // Check issuer claim against WebID issuers
+  if (!(await issuers(webid)).includes(iss.toString())) {
+    throw new SolidOIDCError(
+      "SolidOIDCInvalidIssuerClaim",
+      `Incorrect issuer ${iss.toString()} for WebID ${webid.toString()}`
+    );
+  }
+
+  // Check token against issuer's key set
+  const { payload, protectedHeader } = (await jwtVerify(
+    token,
+    await keySet(iss),
+    {
+      audience: "solid",
+      algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
+      maxTokenAge: "86400s",
+      clockTolerance: "5s",
+    }
+  )) as { payload: AccessTokenPayload; protectedHeader: JWSHeaderParameters };
 
   isAccessTokenHeader(protectedHeader);
-  isAccessTokenPayload(payload);
 
   return {
     header: protectedHeader,
     payload,
-    signature: accessToken.split(".")[2],
+    signature: token.split(".")[2],
   };
 }

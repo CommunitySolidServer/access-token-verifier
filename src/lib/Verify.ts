@@ -1,10 +1,18 @@
-import type { AccessTokenPayload, RequestMethod } from "../type";
+import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
+import type {
+  AccessTokenPayload,
+  GetIssuersFunction,
+  GetKeySetFunction,
+  RequestMethod,
+} from "../type";
 import { verify as verifyAuthorizationToken } from "./AccessToken";
 import { verify as verifyDPoPToken } from "./DPoP";
+import { keySet as getKeySet } from "./Issuer";
+import { issuers as getIssuers } from "./WebID";
 
 /**
- * Verifies the validity of a DPoP bound access token
- * Validation based on the webid in the access token payload
+ * Verify the validity of Solid OIDC Access Tokens
+ * Validation based on the WebID in the access token payload
  * @param authorizationHeader
  * @param dpopHeader
  * @param method
@@ -13,14 +21,23 @@ import { verify as verifyDPoPToken } from "./DPoP";
  */
 export async function verify(
   authorizationHeader: string,
+  issuers: GetIssuersFunction = getIssuers,
+  keySet: GetKeySetFunction = getKeySet,
   dpopHeader: string,
   method: RequestMethod,
   url: string,
   jtis: Array<string> = []
 ): Promise<AccessTokenPayload> {
-  const accessToken = await verifyAuthorizationToken(authorizationHeader);
+  const accessToken = await verifyAuthorizationToken(
+    authorizationHeader,
+    issuers,
+    keySet
+  );
 
-  if (authorizationHeader.startsWith("DPoP ")) {
+  if (
+    isObjectPropertyOf(accessToken.payload, "cnf") ||
+    authorizationHeader.startsWith("DPoP ")
+  ) {
     await verifyDPoPToken(dpopHeader, accessToken, method, url, jtis);
   }
 
