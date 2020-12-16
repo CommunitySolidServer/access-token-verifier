@@ -1,5 +1,5 @@
-import LRUCache from 'lru-cache';
-import type { JTICheckFunction } from '../types';
+import LRUCache from "lru-cache";
+import type { JTICheckFunction } from "../types";
 
 export class DPoPJTICache extends LRUCache<string, boolean> {
   public constructor() {

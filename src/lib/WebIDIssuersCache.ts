@@ -1,6 +1,6 @@
-import LRUCache from 'lru-cache';
-import type { GetIssuersFunction } from '../types';
-import { issuers } from './WebID'
+import LRUCache from "lru-cache";
+import type { GetIssuersFunction } from "../types";
+import { issuers } from "./WebID";
 
 export class WebIDIssuersCache extends LRUCache<string, Array<string>> {
   public constructor() {

@@ -1,9 +1,12 @@
-import LRUCache from 'lru-cache';
-import type { GetKeySetFunction } from '../types';
 import type createRemoteJWKSet from "jose/jwks/remote";
-import { keySet } from './Issuer'
+import LRUCache from "lru-cache";
+import type { GetKeySetFunction } from "../types";
+import { keySet } from "./Issuer";
 
-export class IssuerKeySetCache extends LRUCache<string, ReturnType<typeof createRemoteJWKSet>> {
+export class IssuerKeySetCache extends LRUCache<
+  string,
+  ReturnType<typeof createRemoteJWKSet>
+> {
   public constructor() {
     super({ max: 50, maxAge: 30000 });
   }

@@ -6,7 +6,12 @@ import {
   isDPoPTokenHeader,
   isDPoPTokenBody,
 } from "../guards";
-import type { AccessToken, DPoPToken, JTICheckFunction, RequestMethod } from "../types";
+import type {
+  AccessToken,
+  DPoPToken,
+  JTICheckFunction,
+  RequestMethod,
+} from "../types";
 import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
 
 function isValidProof(

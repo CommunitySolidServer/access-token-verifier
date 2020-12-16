@@ -14,7 +14,7 @@ export const issuers: GetIssuersFunction = async function (
   const issuer: string[] = [];
 
   return new Promise((resolve) => {
-    store.import(quadStream as Stream<Quad>).on("end", () => {
+    store.import(quadStream as Stream).on("end", () => {
       store
         .match(
           DataFactory.namedNode(webid.toString()),
