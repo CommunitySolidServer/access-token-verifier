@@ -10,8 +10,9 @@ export class WebIDIssuersCache extends LRUCache<string, Array<string>> {
   public async getIssuers(webid: URL): ReturnType<GetIssuersFunction> {
     const cachedValue = this.get(webid.toString());
     if (cachedValue === undefined) {
-      this.set(webid.toString(), await issuers(webid));
-      return this.get(webid.toString());
+      const issuersValue = await issuers(webid);
+      this.set(webid.toString(), issuersValue);
+      return issuersValue;
     }
     return cachedValue;
   }

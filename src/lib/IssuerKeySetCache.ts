@@ -14,8 +14,9 @@ export class IssuerKeySetCache extends LRUCache<
   public async getKeySet(iss: URL): ReturnType<GetKeySetFunction> {
     const cachedValue = this.get(iss.toString());
     if (cachedValue === undefined) {
-      this.set(iss.toString(), await keySet(iss));
-      return this.get(iss.toString());
+      const keySetValue = await keySet(iss)
+      this.set(iss.toString(), keySetValue);
+      return keySetValue;
     }
     return cachedValue;
   }
