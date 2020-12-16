@@ -52,7 +52,7 @@ function urlClaim(claim: string): URL {
  * @param token
  */
 function verifiableClaims(token: string): { iss: URL; webid: URL } {
-  const tokenPayload = decode(token.split(".")[1]);
+  const tokenPayload = JSON.parse(decode(token.split(".")[1]));
 
   isAccessTokenPayload(tokenPayload);
 
