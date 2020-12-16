@@ -1,17 +1,20 @@
 import EmbeddedJWK from "jose/jwk/embedded";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import { isDPoPBoundAccessTokenPayload } from "../guard/AccessTokenGuard";
-import { isDPoPTokenHeader, isDPoPTokenBody } from "../guard/DPoPTokenGuard";
-import type { AccessToken, DPoPToken, RequestMethod } from "../type";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
+import {
+  isDPoPBoundAccessTokenPayload,
+  isDPoPTokenHeader,
+  isDPoPTokenBody,
+} from "../guards";
+import type { AccessToken, DPoPToken, JTICheckFunction, RequestMethod } from "../types";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
 
 function isValidProof(
   accessToken: AccessToken,
   dpop: DPoPToken,
   method: RequestMethod,
   url: string,
-  jtis: Array<string>
+  isDuplicateJTI: JTICheckFunction
 ) {
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
   isDPoPBoundAccessTokenPayload(accessToken.payload);
@@ -22,10 +25,7 @@ function isValidProof(
   // Check DPoP Token claims method, url and unique token id
   asserts.isLiteral(dpop.payload.htm, method);
   asserts.isLiteral(dpop.payload.htu, url);
-  asserts.isLiteral(
-    jtis.filter((jti) => jti === dpop.payload.jti).length === 0,
-    true
-  );
+  asserts.isLiteral(isDuplicateJTI(dpop.payload.jti), false);
 }
 
 /**
@@ -46,7 +46,7 @@ export async function verify(
   accessToken: AccessToken,
   method: RequestMethod,
   url: string,
-  jtis: Array<string>
+  isDuplicateJTI: JTICheckFunction
 ): Promise<DPoPToken> {
   const { payload, protectedHeader } = await jwtVerify(
     dpopHeader,
@@ -68,7 +68,7 @@ export async function verify(
     signature: dpopHeader.split(".")[2],
   };
 
-  isValidProof(accessToken, dpop, method, url, jtis);
+  isValidProof(accessToken, dpop, method, url, isDuplicateJTI);
 
   return dpop;
 }

@@ -1,8 +1,9 @@
-import type { SolidOIDCErrorCode } from "../type/SolidOIDCError";
+import type { SolidIdentityErrorCode } from "../types";
+
 /**
  * Generic Error class for everything DPoP
  */
-export class SolidOIDCError extends Error {
+export class SolidIdentityError extends Error {
   // HTTP unauthorized client error status
   public code;
 
@@ -13,7 +14,7 @@ export class SolidOIDCError extends Error {
    * @param name - Error name. Useful for logging and stack tracing.
    * @param message - Message to be thrown.
    */
-  public constructor(code: SolidOIDCErrorCode, message?: string) {
+  public constructor(code: SolidIdentityErrorCode, message?: string) {
     super(message);
     this.code = code;
   }

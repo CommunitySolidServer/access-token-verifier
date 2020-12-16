@@ -1,6 +1,6 @@
 {
   "name": "ts-dpop",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "DPoP bound access tokens",
   "author": "Matthieu Bosquet",
   "license": "MIT",
@@ -38,14 +38,12 @@
   },
   "homepage": "https://github.com/matthieubosquet/ts-dpop#readme",
   "devDependencies": {
-    "@inrupt/eslint-config-base": "^0.1.0",
-    "@inrupt/eslint-config-lib": "^0.1.0",
     "@tsconfig/node12": "^1.0.0",
     "@types/jest": "^26.0.15",
+    "@types/lru-cache": "^5.1.0",
     "@types/node": "^14.14.7",
-    "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^3.10.1",
-    "@typescript-eslint/parser": "^3.10.1",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^6.15.0",
@@ -62,16 +60,15 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
-    "@types/rdf-js": "^4.0.0",
     "cross-fetch": "^3.0.6",
     "jose": "^3.1.3",
+    "lru-cache": "^6.0.0",
     "n3": "^1.6.4",
     "nmspc": "^0.2.2",
     "rdf-data-factory": "^1.0.4",
     "rdf-dereference": "^1.6.0",
     "rdf-parse": "^1.6.1",
     "rdf-store-stream": "^1.1.0",
-    "ts-guards": "^0.5.1",
-    "uuid": "^8.3.1"
+    "ts-guards": "^0.5.1"
   }
 }

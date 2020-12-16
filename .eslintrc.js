@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["@inrupt/eslint-config-lib"],
+  extends: ["./.eslintrc.base.js"],
 
   rules: {
     // TODO: Remove after https://github.com/benmosher/eslint-plugin-import/issues/1810

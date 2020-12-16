@@ -3,5 +3,5 @@ export * from "./DPoPJWK";
 export * from "./DPoPToken";
 export * from "./Issuer";
 export * from "./RequestMethod";
-export * from "./SolidOIDCError";
+export * from "./SolidIdentityError";
 export * from "./WebID";

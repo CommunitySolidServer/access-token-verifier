@@ -25,3 +25,7 @@ export type DPoPTokenPayload = {
   iat: number;
   jti: string;
 };
+
+export interface JTICheckFunction {
+  (jti: string): boolean;
+}

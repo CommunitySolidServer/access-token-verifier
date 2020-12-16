@@ -2,7 +2,7 @@ import { DataFactory, Store } from "n3";
 import { SOLID } from "nmspc";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad, Stream } from "rdf-js";
-import type { GetIssuersFunction } from "../type";
+import type { GetIssuersFunction } from "../types";
 
 export const issuers: GetIssuersFunction = async function (
   webid: URL

@@ -1,21 +1,18 @@
 import { get as http } from "http";
 import type { ClientRequest } from "http";
 import { get as https } from "https";
-import jwtVerify from "jose/jwt/verify";
 import type { JWSHeaderParameters } from "jose/jwt/verify";
-import {
-  isAccessTokenHeader,
-  isAccessTokenPayload,
-} from "../guard/AccessTokenGuard";
+import jwtVerify from "jose/jwt/verify";
+import { isAccessTokenHeader, isAccessTokenPayload } from "../guards";
 import type {
   AccessToken,
   AccessTokenPayload,
   GetIssuersFunction,
   GetKeySetFunction,
-} from "../type";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
+} from "../types";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
 import { decode } from "./JWT";
-import { SolidOIDCError } from "./SolidOIDCError";
+import { SolidIdentityError } from "./SolidIdentityError";
 
 /**
  * Remove the Bearer and DPoP prefixes from the authorization header
@@ -52,7 +49,7 @@ function urlClaim(claim: string): URL {
  * @param token
  */
 function verifiableClaims(token: string): { iss: URL; webid: URL } {
-  const tokenPayload = JSON.parse(decode(token.split(".")[1]));
+  const tokenPayload: unknown = JSON.parse(decode(token.split(".")[1]));
 
   isAccessTokenPayload(tokenPayload);
 
@@ -64,7 +61,7 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
 
 /**
  * Verify Access Token
- * - Retrieves oidc issuers jwk sets using the webID claim
+ * - Retrieves identity issuers jwk sets using the webID claim
  * - Signature of Access Token JWT/JWS matches a key in the remote jwks
  * - Access Token max age 1 day
  * - Claims:
@@ -86,8 +83,8 @@ export async function verify(
 
   // Check issuer claim against WebID issuers
   if (!(await issuers(webid)).includes(iss.toString())) {
-    throw new SolidOIDCError(
-      "SolidOIDCInvalidIssuerClaim",
+    throw new SolidIdentityError(
+      "SolidIdentityInvalidIssuerClaim",
       `Incorrect issuer ${iss.toString()} for WebID ${webid.toString()}`
     );
   }

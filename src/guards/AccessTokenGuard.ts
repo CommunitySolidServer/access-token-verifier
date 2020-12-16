@@ -5,8 +5,8 @@ import type {
   AccessTokenHeader,
   AccessTokenPayload,
   DPoPBoundAccessTokenPayload,
-} from "../type";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../type";
+} from "../types";
+import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
 
 /**
  * Check valid Access Token
