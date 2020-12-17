@@ -1,10 +1,10 @@
 # Solid Identity Verifier
 
-Instantiate a Solid Identity Verifier; Use a Verify Solid Identity function to:
-Check Solid Access Tokens and get back an error if the verification fails,
-a payload which must contain WebID and Client WebID claims if the verification succeeds.
+This library asserts ownership of a WebID and conforms to authentication described
+in the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).
 
-Supports:
+## Supports
+
 - DPoP Bound Access Tokens
 - Bearer Access Tokens
 - Caching of:
@@ -20,7 +20,7 @@ Supports:
 
 ## How to?
 
-Use one simple async function verifying Solid Access Tokens:
+Verify Solid Access Tokens with a simple function:
 
 ```javascript
 import type { RequestMethod, VerifyIdentityFunction } from 'ts-dpop';
