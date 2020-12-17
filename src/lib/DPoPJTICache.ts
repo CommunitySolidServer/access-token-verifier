@@ -1,9 +1,10 @@
 import LRUCache from "lru-cache";
 import type { JTICheckFunction } from "../types";
+import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class DPoPJTICache extends LRUCache<string, boolean> {
   public constructor() {
-    super({ max: 50, maxAge: 30000 });
+    super({ max: maxRequestsPerSecond*maxAgeInMilliseconds/1000, maxAge: maxAgeInMilliseconds });
   }
 
   public isDuplicateJTI(jti: string): ReturnType<JTICheckFunction> {

@@ -1,10 +1,11 @@
 import LRUCache from "lru-cache";
 import type { GetIssuersFunction } from "../types";
 import { issuers } from "./WebID";
+import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class WebIDIssuersCache extends LRUCache<string, Array<string>> {
   public constructor() {
-    super({ max: 50, maxAge: 30000 });
+    super({ max: maxRequestsPerSecond, maxAge: maxAgeInMilliseconds });
   }
 
   public async getIssuers(webid: URL): ReturnType<GetIssuersFunction> {

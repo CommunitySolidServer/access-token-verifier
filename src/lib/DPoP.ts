@@ -13,6 +13,7 @@ import type {
   RequestMethod,
 } from "../types";
 import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
+import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 
 function isValidProof(
   accessToken: AccessToken,
@@ -59,8 +60,8 @@ export async function verify(
     {
       typ: "dpop+jwt",
       algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-      maxTokenAge: `60s`,
-      clockTolerance: `5s`,
+      maxTokenAge: `${maxAgeInMilliseconds}ms`,
+      clockTolerance: `${clockToleranceInSeconds}s`,
     }
   );
 

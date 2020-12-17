@@ -1,33 +1,51 @@
-# ts-dpop
+# Solid Identity Verifier
 
-Verify DPoP Bound Access Tokens; Get WebID.
+Instantiate a Solid Identity Verifier; Use a Verify Solid Identity function to:
+Check Solid Access Tokens and get back an error if the verification fails,
+a payload which must contain WebID and Client WebID claims if the verification succeeds.
+
+Supports:
+- DPoP Bound Access Tokens
+- Bearer Access Tokens
+- Caching of:
+  - WebID Identity Providers
+  - Identity Providers JSON Web Key Sets
+  - A minimalistic version of DPoP tokens identifiers to mitigate replays otherwise mostly
+  mitigated by the 60 seconds maximum DPoP Token age, should be improved to take a configurable
+  max requests per seconds to avoid overflow of cache before replay. But de facto, if someone really
+  wanted to mitigate this attack, they should plug a cache that can support high numbers of requests.
+  Someone could easily overflow a lru cache by logging lots of requests as themselves before replaying
+  the token. That is if the server can answer fast enough...
+- Custom Identity Verification Classes to extend to specific caching strategies if needed
 
 ## How to?
 
-Use one simple async function returning the webid of the user initiating the request:
+Use one simple async function verifying Solid Access Tokens:
 
 ```javascript
-import { verify } from "ts-dpop";
+import type { RequestMethod, VerifyIdentityFunction } from 'ts-dpop';
+import { createSolidIdentityVerifier } from 'ts-dpop';
 
-async function test() {
-  const authorizationHeader =
-    "DPoP Bound Encoded JWT Access Token in 'authorization' header xxx";
-  const dpopHeader = "DPoP proof encoded JWT in 'dpop' request header";
-  const requestMethod =
-    "The Request method which the DPoP htm claim is gonna be verified against, for example: GET";
-  const requestURL =
-    "The Request URL which the DPoP htu claim is gonna be verified against, for example: https://example.com/profile/card";
-  const webid = await verify(
-    authorizationHeader,
-    dpopHeader,
-    requestMethod,
-    requestURL
-  );
-  console.log(webid);
+const solidIdentityVerifier: VerifyIdentityFunction = createSolidIdentityVerifier();
+
+try {
+  const { client_id, webid } = await solidIdentityVerifier(authorizationHeader as string, dpopHeader as string, method as RequestMethod, requestURL as string);
+
+  console.log(`Verified Access Token via WebID: ${webid}`);
+
+  return { webId: webid };
+} catch (error: unknown) {
+  const message = `Error verifying Access Token via WebID: ${(error as Error).message}`;
+
+  console.log(message);
+
+  throw new Error(message);
 }
-
-test();
 ```
+
+# TODO
+
+Possibly further sanitation of inputs, for example a maximum authorization header size. Needs further discussions before resolution.
 
 # See also
 

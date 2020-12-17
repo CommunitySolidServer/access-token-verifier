@@ -13,6 +13,7 @@ import type {
 import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
 import { decode } from "./JWT";
 import { SolidIdentityError } from "./SolidIdentityError";
+import { clockToleranceInSeconds, maxAccessTokenAgeInSeconds } from "./Defaults";
 
 /**
  * Remove the Bearer and DPoP prefixes from the authorization header
@@ -73,7 +74,8 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
 export async function verify(
   authorizationHeader: string,
   issuers: GetIssuersFunction,
-  keySet: GetKeySetFunction
+  keySet: GetKeySetFunction,
+  maxTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<AccessToken> {
   // Get JWT value for either DPoP or Bearer tokens
   const token = value(authorizationHeader);
@@ -96,8 +98,8 @@ export async function verify(
     {
       audience: "solid",
       algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-      maxTokenAge: "86400s",
-      clockTolerance: "5s",
+      maxTokenAge: `${maxTokenAge}s`,
+      clockTolerance: `${clockToleranceInSeconds}s`,
     }
   )) as { payload: AccessTokenPayload; protectedHeader: JWSHeaderParameters };
 

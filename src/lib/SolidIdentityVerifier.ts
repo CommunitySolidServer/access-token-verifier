@@ -1,7 +1,7 @@
 import type {
   AccessTokenPayload,
   RequestMethod,
-  VerifyIdentityFunction,
+  VerifySolidIdentityFunction,
 } from "../types";
 import { DPoPJTICache } from "./DPoPJTICache";
 import { IssuerKeySetCache } from "./IssuerKeySetCache";
@@ -39,7 +39,7 @@ class SolidIdentityVerifier {
   }
 }
 
-export function createSolidIdentityVerifier(): VerifyIdentityFunction {
+export function createSolidIdentityVerifier(): VerifySolidIdentityFunction {
   const cache = new SolidIdentityVerifier();
   return cache.verify.bind(cache);
 }

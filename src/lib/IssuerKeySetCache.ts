@@ -2,13 +2,14 @@ import type createRemoteJWKSet from "jose/jwks/remote";
 import LRUCache from "lru-cache";
 import type { GetKeySetFunction } from "../types";
 import { keySet } from "./Issuer";
+import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class IssuerKeySetCache extends LRUCache<
   string,
   ReturnType<typeof createRemoteJWKSet>
 > {
   public constructor() {
-    super({ max: 50, maxAge: 30000 });
+    super({ max: maxRequestsPerSecond, maxAge: maxAgeInMilliseconds });
   }
 
   public async getKeySet(iss: URL): ReturnType<GetKeySetFunction> {
