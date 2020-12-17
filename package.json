@@ -1,6 +1,6 @@
 {
   "name": "ts-dpop",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "DPoP bound access tokens",
   "author": "Matthieu Bosquet",
   "license": "MIT",

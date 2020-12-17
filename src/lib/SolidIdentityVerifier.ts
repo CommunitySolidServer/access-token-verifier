@@ -32,9 +32,9 @@ class SolidIdentityVerifier {
       dpopHeader,
       method,
       url,
-      this.WebIDIssuersCache.getIssuers.bind(this),
-      this.IssuerKeySetCache.getKeySet.bind(this),
-      this.DPoPJTICache.isDuplicateJTI.bind(this)
+      this.WebIDIssuersCache.getIssuers.bind(this.WebIDIssuersCache),
+      this.IssuerKeySetCache.getKeySet.bind(this.IssuerKeySetCache),
+      this.DPoPJTICache.isDuplicateJTI.bind(this.DPoPJTICache)
     );
   }
 }
