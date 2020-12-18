@@ -75,7 +75,7 @@ export async function verify(
   authorizationHeader: string,
   issuers: GetIssuersFunction,
   keySet: GetKeySetFunction,
-  maxTokenAge = maxAccessTokenAgeInSeconds
+  maxAccessTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<AccessToken> {
   // Get JWT value for either DPoP or Bearer tokens
   const token = value(authorizationHeader);
@@ -98,7 +98,7 @@ export async function verify(
     {
       audience: "solid",
       algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-      maxTokenAge: `${maxTokenAge}s`,
+      maxTokenAge: `${maxAccessTokenAge}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }
   )) as { payload: AccessTokenPayload; protectedHeader: JWSHeaderParameters };

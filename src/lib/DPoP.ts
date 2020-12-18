@@ -60,7 +60,7 @@ export async function verify(
     {
       typ: "dpop+jwt",
       algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
-      maxTokenAge: `${maxAgeInMilliseconds}ms`,
+      maxTokenAge: `${maxAgeInMilliseconds/1000}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }
   );
