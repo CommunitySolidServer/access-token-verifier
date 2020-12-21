@@ -1,7 +1,7 @@
 import { decode } from "../src/lib/JWT";
 
 describe("JSON Web Token decoder", () => {
-  it("Correctly decodes JWT", async () => {
+  it("Correctly decodes JWT", () => {
     const token = decode(
       ".eyJibGEiOiJibGEiLCJ3ZWJpZCI6Imh0dHBzOi8vZXhhbXBsZS5jb20vdGVzdF93ZWJpZCNtZSJ9."
     );

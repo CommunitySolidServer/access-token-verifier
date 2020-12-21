@@ -24,7 +24,7 @@ describe("WebID Issuers cache", () => {
     );
   });
 
-  it("Returns undefined for non-existant keys", async () => {
+  it("Returns undefined for non-existant keys", () => {
     expect(cache.get("non-existant") as any).toBeUndefined();
   });
 
