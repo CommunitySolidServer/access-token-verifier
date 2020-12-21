@@ -4,7 +4,10 @@ import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class DPoPJTICache extends LRUCache<string, boolean> {
   public constructor() {
-    super({ max: maxRequestsPerSecond*maxAgeInMilliseconds/1000, maxAge: maxAgeInMilliseconds });
+    super({
+      max: (maxRequestsPerSecond * maxAgeInMilliseconds) / 1000,
+      maxAge: maxAgeInMilliseconds,
+    });
   }
 
   public isDuplicateJTI(jti: string): ReturnType<JTICheckFunction> {

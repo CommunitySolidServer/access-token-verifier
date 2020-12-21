@@ -11,11 +11,11 @@ in the [Solid Identity specification](https://solid.github.io/authentication-pan
   - WebID Identity Providers
   - Identity Providers JSON Web Key Sets
   - A minimalistic version of DPoP tokens identifiers to mitigate replays otherwise mostly
-  mitigated by the 60 seconds maximum DPoP Token age, should be improved to take a configurable
-  max requests per seconds to avoid overflow of cache before replay. But de facto, if someone really
-  wanted to mitigate this attack, they should plug a cache that can support high numbers of requests.
-  Someone could easily overflow a lru cache by logging lots of requests as themselves before replaying
-  the token. That is if the server can answer fast enough...
+    mitigated by the 60 seconds maximum DPoP Token age, should be improved to take a configurable
+    max requests per seconds to avoid overflow of cache before replay. But de facto, if someone really
+    wanted to mitigate this attack, they should plug a cache that can support high numbers of requests.
+    Someone could easily overflow a lru cache by logging lots of requests as themselves before replaying
+    the token. That is if the server can answer fast enough...
 - Custom Identity Verification Classes to extend to specific caching strategies if needed
 
 ## How to?

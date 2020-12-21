@@ -11,9 +11,12 @@ import type {
   GetKeySetFunction,
 } from "../types";
 import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
+import {
+  clockToleranceInSeconds,
+  maxAccessTokenAgeInSeconds,
+} from "./Defaults";
 import { decode } from "./JWT";
 import { SolidIdentityError } from "./SolidIdentityError";
-import { clockToleranceInSeconds, maxAccessTokenAgeInSeconds } from "./Defaults";
 
 /**
  * Remove the Bearer and DPoP prefixes from the authorization header

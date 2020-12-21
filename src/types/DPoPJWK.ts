@@ -46,7 +46,7 @@ export const keyType = new Set([
   ...asymmetricKeyType,
   ...symmetricKeyType,
 ] as const);
-export type KeyType = AsymmetricKeyType | SymmetricKeyType;
+export type JWKKeyType = AsymmetricKeyType | SymmetricKeyType;
 
 /**
  * JWK EC Curve
@@ -55,13 +55,6 @@ export type KeyType = AsymmetricKeyType | SymmetricKeyType;
  */
 export const curve = new Set(["P-256", "P-384", "P-521"] as const);
 export type Curve = typeof curve extends Set<infer T> ? T : never;
-
-/**
- * DPoP JWK as defined in https://tools.ietf.org/html/draft-fett-oauth-dpop-04
- * - Must be an Elliptic Curve or RSA public key
- */
-export type DPoPJWK = ECJWK | RSAJWK;
-export type DPoPPublicJWK = ECPublicJWK | RSAPublicJWK;
 
 export const privateKeyProperties = new Set([
   "d",
@@ -120,3 +113,10 @@ export type RSAJWK = Required<
 };
 
 export type RSAPublicJWK = Omit<RSAJWK, PrivateKeyProperties>;
+
+/**
+ * DPoP JWK as defined in https://tools.ietf.org/html/draft-fett-oauth-dpop-04
+ * - Must be an Elliptic Curve or RSA public key
+ */
+export type DPoPJWK = ECJWK | RSAJWK;
+export type DPoPPublicJWK = ECPublicJWK | RSAPublicJWK;

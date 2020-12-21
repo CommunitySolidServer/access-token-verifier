@@ -7,12 +7,6 @@ import type { RequestMethod } from "./RequestMethod";
 /**
  * DPoP as defined in https://tools.ietf.org/html/draft-fett-oauth-dpop-04
  */
-export interface DPoPToken {
-  header: DPoPTokenHeader;
-  payload: DPoPTokenPayload;
-  signature: string;
-}
-
 export interface DPoPTokenHeader {
   alg: DigitalSignatureAsymetricCryptographicAlgorithm;
   jwk: DPoPPublicJWK;
@@ -25,6 +19,12 @@ export type DPoPTokenPayload = {
   iat: number;
   jti: string;
 };
+
+export interface DPoPToken {
+  header: DPoPTokenHeader;
+  payload: DPoPTokenPayload;
+  signature: string;
+}
 
 export interface JTICheckFunction {
   (jti: string): boolean;

@@ -9,16 +9,16 @@ import { verify as verifyIdentity } from "./Verify";
 import { WebIDIssuersCache } from "./WebIDIssuersCache";
 
 class SolidIdentityVerifier {
-  private DPoPJTICache: DPoPJTICache;
+  private dpopJtiCache: DPoPJTICache;
 
-  private IssuerKeySetCache: IssuerKeySetCache;
+  private issuerKeySetCache: IssuerKeySetCache;
 
-  private WebIDIssuersCache: WebIDIssuersCache;
+  private webIDIssuersCache: WebIDIssuersCache;
 
   public constructor() {
-    this.DPoPJTICache = new DPoPJTICache();
-    this.IssuerKeySetCache = new IssuerKeySetCache();
-    this.WebIDIssuersCache = new WebIDIssuersCache();
+    this.dpopJtiCache = new DPoPJTICache();
+    this.issuerKeySetCache = new IssuerKeySetCache();
+    this.webIDIssuersCache = new WebIDIssuersCache();
   }
 
   public async verify(
@@ -32,9 +32,9 @@ class SolidIdentityVerifier {
       dpopHeader,
       method,
       url,
-      this.WebIDIssuersCache.getIssuers.bind(this.WebIDIssuersCache),
-      this.IssuerKeySetCache.getKeySet.bind(this.IssuerKeySetCache),
-      this.DPoPJTICache.isDuplicateJTI.bind(this.DPoPJTICache)
+      this.webIDIssuersCache.getIssuers.bind(this.webIDIssuersCache),
+      this.issuerKeySetCache.getKeySet.bind(this.issuerKeySetCache),
+      this.dpopJtiCache.isDuplicateJTI.bind(this.dpopJtiCache)
     );
   }
 }
