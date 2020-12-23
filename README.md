@@ -1,7 +1,10 @@
-# Solid Identity Verifier
+# Solid Token Verifier
 
-This library asserts ownership of a WebID and conforms to authentication described
-in the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).
+This library verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.
+
+It conforms to authentication described in the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).
+
+See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authentication-panel/solid-oidc-primer/#request-flow)
 
 ## Supports
 
@@ -29,11 +32,11 @@ import { createSolidIdentityVerifier } from 'ts-dpop';
 const solidIdentityVerifier: VerifyIdentityFunction = createSolidIdentityVerifier();
 
 try {
-  const { client_id, webid } = await solidIdentityVerifier(authorizationHeader as string, dpopHeader as string, method as RequestMethod, requestURL as string);
+  const { client_id: clientId, webid: webId } = await solidIdentityVerifier(authorizationHeader as string, dpopHeader as string, method as RequestMethod, requestURL as string);
 
-  console.log(`Verified Access Token via WebID: ${webid}`);
+  console.log(`Verified Access Token via WebID: ${webId} and for client: ${clientId}`);
 
-  return { webId: webid };
+  return { webId, clientId };
 } catch (error: unknown) {
   const message = `Error verifying Access Token via WebID: ${(error as Error).message}`;
 
@@ -43,10 +46,6 @@ try {
 }
 ```
 
-# TODO
+## TODO
 
 Possibly further sanitation of inputs, for example a maximum authorization header size. Needs further discussions before resolution.
-
-# See also
-
-The [Solid OIDC Primer Request Flow](https://solid.github.io/authentication-panel/solid-oidc-primer/#request-flow).
