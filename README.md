@@ -6,7 +6,7 @@
 
 This library verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.
 
-It conforms to authentication described in the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).
+It conforms to the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).
 
 See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authentication-panel/solid-oidc-primer/#request-flow)
 
