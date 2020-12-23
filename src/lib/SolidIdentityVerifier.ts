@@ -1,14 +1,14 @@
 import type {
   AccessTokenPayload,
   RequestMethod,
-  VerifySolidIdentityFunction,
+  SolidTokenVerifierFunction,
 } from "../types";
 import { DPoPJTICache } from "./DPoPJTICache";
 import { IssuerKeySetCache } from "./IssuerKeySetCache";
 import { verify as verifyIdentity } from "./Verify";
 import { WebIDIssuersCache } from "./WebIDIssuersCache";
 
-class SolidIdentityVerifier {
+class SolidTokenVerifier {
   private dpopJtiCache: DPoPJTICache;
 
   private issuerKeySetCache: IssuerKeySetCache;
@@ -39,7 +39,7 @@ class SolidIdentityVerifier {
   }
 }
 
-export function createSolidIdentityVerifier(): VerifySolidIdentityFunction {
-  const cache = new SolidIdentityVerifier();
+export function createSolidTokenVerifier(): SolidTokenVerifierFunction {
+  const cache = new SolidTokenVerifier();
   return cache.verify.bind(cache);
 }

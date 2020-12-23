@@ -1,6 +1,6 @@
 import type { AccessTokenPayload, RequestMethod } from ".";
 
-export interface VerifySolidIdentityFunction {
+export interface SolidTokenVerifierFunction {
   (
     authorizationHeader: string,
     dpopHeader: string,

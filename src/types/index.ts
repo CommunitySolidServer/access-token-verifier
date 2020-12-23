@@ -3,6 +3,6 @@ export * from "./DPoPJWK";
 export * from "./DPoPToken";
 export * from "./Issuer";
 export * from "./RequestMethod";
-export * from "./SolidIdentityError";
+export * from "./SolidTokenVerifierError";
 export * from "./Verify";
 export * from "./WebID";

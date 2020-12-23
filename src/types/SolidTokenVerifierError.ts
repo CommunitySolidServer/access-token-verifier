@@ -1,14 +1,14 @@
 /**
  * Solid Identity Errors
  */
-export const solidIdentityErrorCode = new Set([
+export const solidTokenVerifierErrorCode = new Set([
   "SolidIdentityInvalidAcccessToken",
   "SolidIdentityInvalidDPoPToken",
   "SolidIdentityInvalidIssuerClaim",
   "SolidIdentityHTTPError",
   "SolidIdentityIssuerConfigError",
 ] as const);
-export type SolidIdentityErrorCode = typeof solidIdentityErrorCode extends Set<
+export type SolidTokenVerifierErrorCode = typeof solidTokenVerifierErrorCode extends Set<
   infer T
 >
   ? T

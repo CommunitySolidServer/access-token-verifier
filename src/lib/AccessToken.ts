@@ -16,7 +16,7 @@ import {
   maxAccessTokenAgeInSeconds,
 } from "./Defaults";
 import { decode } from "./JWT";
-import { SolidIdentityError } from "./SolidIdentityError";
+import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
 
 /**
  * Remove the Bearer and DPoP prefixes from the authorization header
@@ -88,7 +88,7 @@ export async function verify(
 
   // Check issuer claim against WebID issuers
   if (!(await issuers(webid)).includes(iss.toString())) {
-    throw new SolidIdentityError(
+    throw new SolidTokenVerifierError(
       "SolidIdentityInvalidIssuerClaim",
       `Incorrect issuer ${iss.toString()} for WebID ${webid.toString()}`
     );
