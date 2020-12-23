@@ -1,6 +1,6 @@
 {
   "name": "ts-dpop",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "DPoP bound access tokens",
   "license": "MIT",
   "keywords": [
@@ -20,7 +20,7 @@
     "lint:eslint": "eslint --ignore-path .gitignore --fix .",
     "lint:prettier": "prettier --ignore-path .gitignore --write '**/*.{css,md,mdx}'",
     "lint:staged": "lint-staged",
-    "prepublishOnly": "pinst --disable && npm ci && npm run build",
+    "prepublishOnly": "npm ci && pinst --disable && npm run build",
     "postpublish": "pinst --enable",
     "postinstall": "[[ ! -d \"$CI\" ]] || husky install",
     "test": "jest"
