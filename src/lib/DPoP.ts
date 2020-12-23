@@ -12,7 +12,7 @@ import type {
   JTICheckFunction,
   RequestMethod,
 } from "../types";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
+import { asymetricCryptographicAlgorithm } from "../types";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 
 function isValidProof(
@@ -59,7 +59,7 @@ export async function verify(
     EmbeddedJWK,
     {
       typ: "dpop+jwt",
-      algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
+      algorithms: Array.from(asymetricCryptographicAlgorithm),
       maxTokenAge: `${maxAgeInMilliseconds / 1000}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }

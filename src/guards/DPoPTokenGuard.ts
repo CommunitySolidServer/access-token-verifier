@@ -1,8 +1,5 @@
 import { asserts } from "ts-guards";
-import {
-  digitalSignatureAsymetricCryptographicAlgorithm,
-  requestMethod,
-} from "../types";
+import { asymetricCryptographicAlgorithm, requestMethod } from "../types";
 import type { DPoPToken, DPoPTokenHeader, DPoPTokenPayload } from "../types";
 import { isDPoPPublicJWK } from "./DPoPJWKGuard";
 
@@ -19,7 +16,7 @@ export function isDPoPToken(x: unknown): asserts x is DPoPToken {
 
 export function isDPoPTokenHeader(x: unknown): asserts x is DPoPTokenHeader {
   asserts.areObjectPropertiesOf(x, ["alg", "jwk", "typ"]);
-  asserts.isLiteralType(x.alg, digitalSignatureAsymetricCryptographicAlgorithm);
+  asserts.isLiteralType(x.alg, asymetricCryptographicAlgorithm);
   isDPoPPublicJWK(x.jwk);
   asserts.isLiteral(x.typ, "dpop+jwt" as const);
 }

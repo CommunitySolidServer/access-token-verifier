@@ -1,4 +1,4 @@
-import type { DigitalSignatureAsymetricCryptographicAlgorithm } from "./DPoPJWK";
+import type { AsymetricCryptographicAlgorithm } from "./DPoPJWK";
 
 /**
  * Solid DPoP Bound Access Token
@@ -7,7 +7,7 @@ import type { DigitalSignatureAsymetricCryptographicAlgorithm } from "./DPoPJWK"
  */
 export interface AccessTokenHeader {
   kid: string;
-  alg: DigitalSignatureAsymetricCryptographicAlgorithm;
+  alg: AsymetricCryptographicAlgorithm;
 }
 
 export interface AccessTokenPayload {

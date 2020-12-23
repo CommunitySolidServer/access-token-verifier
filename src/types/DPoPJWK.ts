@@ -12,7 +12,7 @@ import type { JWK } from "jose/types";
  */
 export const rsaAlgorithm = new Set(["RS256", "RS384", "RS512"] as const);
 export type RSAAlgorithm = typeof rsaAlgorithm extends Set<infer T> ? T : never;
-export const digitalSignatureAsymetricCryptographicAlgorithm = new Set([
+export const asymetricCryptographicAlgorithm = new Set([
   "ES256",
   "ES384",
   "ES512",
@@ -21,7 +21,7 @@ export const digitalSignatureAsymetricCryptographicAlgorithm = new Set([
   "PS512",
   ...rsaAlgorithm,
 ] as const);
-export type DigitalSignatureAsymetricCryptographicAlgorithm = typeof digitalSignatureAsymetricCryptographicAlgorithm extends Set<
+export type AsymetricCryptographicAlgorithm = typeof asymetricCryptographicAlgorithm extends Set<
   infer T
 >
   ? T

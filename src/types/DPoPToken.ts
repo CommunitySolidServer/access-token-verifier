@@ -1,14 +1,11 @@
-import type {
-  DigitalSignatureAsymetricCryptographicAlgorithm,
-  DPoPPublicJWK,
-} from "./DPoPJWK";
+import type { AsymetricCryptographicAlgorithm, DPoPPublicJWK } from "./DPoPJWK";
 import type { RequestMethod } from "./RequestMethod";
 
 /**
  * DPoP as defined in https://tools.ietf.org/html/draft-fett-oauth-dpop-04
  */
 export interface DPoPTokenHeader {
-  alg: DigitalSignatureAsymetricCryptographicAlgorithm;
+  alg: AsymetricCryptographicAlgorithm;
   jwk: DPoPPublicJWK;
   typ: "dpop+jwt";
 }

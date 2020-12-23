@@ -10,7 +10,7 @@ import type {
   GetIssuersFunction,
   GetKeySetFunction,
 } from "../types";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
+import { asymetricCryptographicAlgorithm } from "../types";
 import {
   clockToleranceInSeconds,
   maxAccessTokenAgeInSeconds,
@@ -100,7 +100,7 @@ export async function verify(
     await keySet(iss),
     {
       audience: "solid",
-      algorithms: Array.from(digitalSignatureAsymetricCryptographicAlgorithm),
+      algorithms: Array.from(asymetricCryptographicAlgorithm),
       maxTokenAge: `${maxAccessTokenAge}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }

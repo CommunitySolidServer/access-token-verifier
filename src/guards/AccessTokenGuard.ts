@@ -6,7 +6,7 @@ import type {
   AccessTokenPayload,
   DPoPBoundAccessTokenPayload,
 } from "../types";
-import { digitalSignatureAsymetricCryptographicAlgorithm } from "../types";
+import { asymetricCryptographicAlgorithm } from "../types";
 
 /**
  * Check valid Access Token
@@ -23,7 +23,7 @@ export function isAccessTokenHeader(
   x: unknown
 ): asserts x is AccessTokenHeader {
   asserts.areObjectPropertiesOf(x, ["alg", "kid"]);
-  asserts.isLiteralType(x.alg, digitalSignatureAsymetricCryptographicAlgorithm);
+  asserts.isLiteralType(x.alg, asymetricCryptographicAlgorithm);
   asserts.isString(x.kid);
 }
 
