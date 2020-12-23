@@ -4,9 +4,7 @@
     "declaration": true,
     "incremental": true,
     "inlineSources": true,
-    "lib": [
-      "DOM"
-    ],
+    "lib": [ "DOM", "es2019", "es2020.promise", "es2020.bigint", "es2020.string" ],
     "newLine": "lf",
     "noUnusedLocals": true,
     "outDir": "dist",

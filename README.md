@@ -1,5 +1,9 @@
 # Solid Token Verifier
 
+[![build](https://github.com/matthieubosquet/ts-dpop/workflows/build/badge.svg?branch=main)](https://github.com/matthieubosquet/ts-dpop/actions?query=workflow%3A"build")
+[![coverage](https://codecov.io/gh/matthieubosquet/ts-dpop/branch/main/graph/badge.svg)](https://codecov.io/gh/matthieubosquet/ts-dpop)
+[![npm](https://img.shields.io/npm/v/ts-dpop)](https://www.npmjs.com/package/ts-dpop)
+
 This library verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.
 
 It conforms to authentication described in the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).

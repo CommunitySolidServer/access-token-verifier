@@ -15,16 +15,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "tsc",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint --ignore-path .gitignore --fix .",
     "lint:prettier": "prettier --ignore-path .gitignore --write '**/*.{css,md,mdx}'",
     "lint:staged": "lint-staged",
-    "prepublishOnly": "npm install && pinst --disable",
+    "prepublishOnly": "pinst --disable && npm ci && npm run build",
     "postpublish": "pinst --enable",
-    "preinstall": "rm -rf node_modules",
-    "postinstall": "npm run build && husky install",
-    "test": "jest \"test/.*\\.test\\.ts\""
+    "postinstall": "[[ ! -d \"$CI\" ]] || husky install",
+    "test": "jest"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
