@@ -1,12 +1,10 @@
 import { get as http } from "http";
 import type { ClientRequest } from "http";
 import { get as https } from "https";
-import type { JWSHeaderParameters } from "jose/jwt/verify";
 import jwtVerify from "jose/jwt/verify";
-import { isAccessTokenHeader, isAccessTokenPayload } from "../guards";
+import { isAccessToken, isAccessTokenPayload } from "../guards";
 import type {
   AccessToken,
-  AccessTokenPayload,
   GetIssuersFunction,
   GetKeySetFunction,
 } from "../types";
@@ -95,7 +93,7 @@ export async function verify(
   }
 
   // Check token against issuer's key set
-  const { payload, protectedHeader } = (await jwtVerify(
+  const { payload, protectedHeader } = await jwtVerify(
     token,
     await keySet(iss),
     {
@@ -104,13 +102,15 @@ export async function verify(
       maxTokenAge: `${maxAccessTokenAge}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }
-  )) as { payload: AccessTokenPayload; protectedHeader: JWSHeaderParameters };
+  );
 
-  isAccessTokenHeader(protectedHeader);
-
-  return {
+  const accessToken = {
     header: protectedHeader,
     payload,
     signature: token.split(".")[2],
   };
+
+  isAccessToken(accessToken);
+
+  return accessToken;
 }

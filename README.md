@@ -55,3 +55,4 @@ try {
 - Further sanitation of inputs? For example a maximum authorization header size. Needs further discussions before resolution.
 - Improve default caching? Assess other libraries that might be used.
 - Evolve the type guards and the type guard library.
+- Make the access token client_id claim always required.
