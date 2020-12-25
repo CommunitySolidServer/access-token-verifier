@@ -16,12 +16,14 @@ describe("WebID Issuers cache", () => {
     expect((await cache.getIssuers(webid))[0]).toBe(
       "https://example-issuer.com/"
     );
+    expect(issuers).toHaveBeenCalledTimes(1);
   });
 
   it("Caches WebIDs", async () => {
     expect((await cache.getIssuers(webid))[0]).toBe(
       "https://example-issuer.com/"
     );
+    expect(issuers).toHaveBeenCalledTimes(1);
   });
 
   it("Returns undefined for non-existant keys", () => {

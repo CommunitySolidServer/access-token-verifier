@@ -1,28 +1,23 @@
 import { asserts } from "ts-guards";
-import type {
-  DPoPJWK,
-  DPoPPublicJWK,
-  ECJWK,
-  ECPublicJWK,
-  RSAJWK,
-  RSAPublicJWK,
-} from "../types";
+import type { DPoPPublicJWK, ECPublicJWK, RSAPublicJWK } from "../types";
 import { curve, rsaAlgorithm } from "../types";
 
 /**
  * JWK Validation
  */
 /* eslint-disable no-use-before-define */
-export function isDPoPJWK(x: unknown): asserts x is DPoPJWK {
-  asserts.isObjectPropertyOf(x, "kty");
-  if (x.kty === "EC") {
-    isECJWK(x);
-  } else if (x.kty === "RSA") {
-    isRSAJWK(x);
-  } else {
-    asserts.error("EC or RSA", x.kty);
-  }
-}
+/*
+ * export function isDPoPJWK(x: unknown): asserts x is DPoPJWK {
+ *   asserts.isObjectPropertyOf(x, "kty");
+ *   if (x.kty === "EC") {
+ *     isECJWK(x);
+ *   } else if (x.kty === "RSA") {
+ *     isRSAJWK(x);
+ *   } else {
+ *     asserts.error("EC or RSA", x.kty);
+ *   }
+ * }
+ */
 
 export function isDPoPPublicJWK(x: unknown): asserts x is DPoPPublicJWK {
   asserts.isObjectPropertyOf(x, "kty");
@@ -35,11 +30,13 @@ export function isDPoPPublicJWK(x: unknown): asserts x is DPoPPublicJWK {
   }
 }
 
-export function isECJWK(x: unknown): asserts x is ECJWK {
-  isECPublicJWK(x);
-  asserts.isObjectPropertyOf(x, "d");
-  asserts.isString(x.d);
-}
+/*
+ * export function isECJWK(x: unknown): asserts x is ECJWK {
+ *   isECPublicJWK(x);
+ *   asserts.isObjectPropertyOf(x, "d");
+ *   asserts.isString(x.d);
+ * }
+ */
 
 export function isECPublicJWK(x: unknown): asserts x is ECPublicJWK {
   asserts.areObjectPropertiesOf(x, ["kid", "kty", "crv", "x", "y"]);
@@ -50,16 +47,18 @@ export function isECPublicJWK(x: unknown): asserts x is ECPublicJWK {
   asserts.isString(x.y);
 }
 
-export function isRSAJWK(x: unknown): asserts x is RSAJWK {
-  isRSAPublicJWK(x);
-  asserts.areObjectPropertiesOf(x, ["d", "p", "q", "dp", "dq", "qi"]);
-  asserts.isString(x.d);
-  asserts.isString(x.p);
-  asserts.isString(x.q);
-  asserts.isString(x.dp);
-  asserts.isString(x.dq);
-  asserts.isString(x.qi);
-}
+/*
+ * export function isRSAJWK(x: unknown): asserts x is RSAJWK {
+ *   isRSAPublicJWK(x);
+ *   asserts.areObjectPropertiesOf(x, ["d", "p", "q", "dp", "dq", "qi"]);
+ *   asserts.isString(x.d);
+ *   asserts.isString(x.p);
+ *   asserts.isString(x.q);
+ *   asserts.isString(x.dp);
+ *   asserts.isString(x.dq);
+ *   asserts.isString(x.qi);
+ * }
+ */
 
 export function isRSAPublicJWK(x: unknown): asserts x is RSAPublicJWK {
   asserts.areObjectPropertiesOf(x, ["alg", "kid", "kty", "n", "e"]);

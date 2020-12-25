@@ -1,11 +1,7 @@
 import EmbeddedJWK from "jose/jwk/embedded";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import {
-  isDPoPBoundAccessTokenPayload,
-  isDPoPTokenHeader,
-  isDPoPTokenBody,
-} from "../guards";
+import { isDPoPBoundAccessTokenPayload, isDPoPToken } from "../guards";
 import type {
   AccessToken,
   DPoPToken,
@@ -65,14 +61,13 @@ export async function verify(
     }
   );
 
-  isDPoPTokenBody(payload);
-  isDPoPTokenHeader(protectedHeader);
-
   const dpop = {
     header: protectedHeader,
     payload,
     signature: dpopHeader.split(".")[2],
   };
+
+  isDPoPToken(dpop);
 
   isValidProof(accessToken, dpop, method, url, isDuplicateJTI);
 
