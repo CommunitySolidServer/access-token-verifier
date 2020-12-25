@@ -30,8 +30,16 @@ export function isAccessTokenHeader(
 export function isAccessTokenPayload(
   x: unknown
 ): asserts x is AccessTokenPayload {
-  asserts.areObjectPropertiesOf(x, ["aud", "exp", "iat", "iss", "webid"]);
+  asserts.areObjectPropertiesOf(x, [
+    "aud",
+    "client_id",
+    "exp",
+    "iat",
+    "iss",
+    "webid",
+  ]);
   asserts.isLiteral(x.aud, "solid" as const);
+  asserts.isString(x.client_id);
   asserts.isNumber(x.exp);
   asserts.isNumber(x.iat);
   asserts.isString(x.iss);
@@ -39,9 +47,6 @@ export function isAccessTokenPayload(
   if (isObjectPropertyOf(x, "cnf")) {
     asserts.isObjectPropertyOf(x.cnf, "jkt");
     asserts.isString(x.cnf.jkt);
-  }
-  if (isObjectPropertyOf(x, "client_id")) {
-    asserts.isString(x.client_id);
   }
 }
 
