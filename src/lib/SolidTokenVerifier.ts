@@ -5,7 +5,7 @@ import type {
 } from "../types";
 import { DPoPJTICache } from "./DPoPJTICache";
 import { IssuerKeySetCache } from "./IssuerKeySetCache";
-import { verify as verifyIdentity } from "./Verify";
+import { verify as verifyToken } from "./Verify";
 import { WebIDIssuersCache } from "./WebIDIssuersCache";
 
 class SolidTokenVerifier {
@@ -27,7 +27,7 @@ class SolidTokenVerifier {
     method: RequestMethod,
     url: string
   ): Promise<AccessTokenPayload> {
-    return verifyIdentity(
+    return verifyToken(
       authorizationHeader,
       dpopHeader,
       method,
