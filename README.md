@@ -30,13 +30,13 @@ See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authenticatio
 Verify Solid Access Tokens with a simple function:
 
 ```javascript
-import type { RequestMethod, VerifyIdentityFunction } from 'ts-dpop';
-import { createSolidIdentityVerifier } from 'ts-dpop';
+import type { RequestMethod, SolidTokenVerifierFunction } from 'ts-dpop';
+import { createSolidTokenVerifier } from 'ts-dpop';
 
-const solidIdentityVerifier: VerifyIdentityFunction = createSolidIdentityVerifier();
+const solidTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier();
 
 try {
-  const { client_id: clientId, webid: webId } = await solidIdentityVerifier(authorizationHeader as string, dpopHeader as string, method as RequestMethod, requestURL as string);
+  const { client_id: clientId, webid: webId } = await solidTokenVerifier(authorizationHeader as string, dpopHeader as string, method as RequestMethod, requestURL as string);
 
   console.log(`Verified Access Token via WebID: ${webId} and for client: ${clientId}`);
 
@@ -52,4 +52,6 @@ try {
 
 ## TODO
 
-Possibly further sanitation of inputs, for example a maximum authorization header size. Needs further discussions before resolution.
+- Further sanitation of inputs? For example a maximum authorization header size. Needs further discussions before resolution.
+- Improve default caching? Assess other libraries that might be used.
+- Evolve the type guards and the type guard library.
