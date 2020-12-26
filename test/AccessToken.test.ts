@@ -18,6 +18,14 @@ describe("Access Token", () => {
     client_id: "https://example.com/clientid",
     cnf: { jkt: "confirmed_ID" },
   };
+  const bearerAccessTokenPayload: AccessTokenPayload = {
+    aud: "solid",
+    exp: 1603386448,
+    iat: 1603386448,
+    iss: "https://example.com/issuer",
+    webid: "https://example.com/webid",
+    client_id: "https://example.com/clientid",
+  };
   const wrongAccessTokenPayload: AccessTokenPayload = {
     aud: "solid",
     exp: 1603386448,
@@ -38,11 +46,14 @@ describe("Access Token", () => {
   const authorizationHeader = `${base64Encode(
     JSON.stringify(accessToken.header)
   )}.${base64Encode(JSON.stringify(accessToken.payload))}.`;
+  const bearerAuthorizationHeader = `${base64Encode(
+    JSON.stringify(accessToken.header)
+  )}.${base64Encode(JSON.stringify(bearerAccessTokenPayload))}.`;
   const wrongAuthorizationHeader = `${base64Encode(
     JSON.stringify(accessToken.header)
   )}.${base64Encode(JSON.stringify(wrongAccessTokenPayload))}.`;
 
-  it("Checks conforming access token", async () => {
+  it("Checks DPoP bound access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: accessToken.payload,
       protectedHeader: accessToken.header,
@@ -59,6 +70,29 @@ describe("Access Token", () => {
         getKeySet
       )
     ).toStrictEqual(accessToken);
+  });
+
+  it("Checks bearer access token", async () => {
+    (jwtVerify as jest.Mock).mockResolvedValueOnce({
+      payload: bearerAccessTokenPayload,
+      protectedHeader: accessToken.header,
+    });
+
+    expect(
+      await verify(
+        bearerAuthorizationHeader,
+        () =>
+          Promise.resolve([
+            "https://example.com/abc",
+            "https://example.com/issuer",
+          ]),
+        getKeySet
+      )
+    ).toStrictEqual({
+      header: accessToken.header,
+      payload: bearerAccessTokenPayload,
+      signature: accessToken.signature,
+    });
   });
 
   it("Throws on non conforming access token", async () => {
