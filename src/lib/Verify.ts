@@ -6,9 +6,10 @@ import type {
   JTICheckFunction,
   RequestMethod,
 } from "../types";
-import { verify as verifyAuthorizationToken } from "./AccessToken";
+import { verify as verifyAccessToken } from "./AccessToken";
 import { verify as verifyDPoPToken } from "./DPoP";
 import { keySet as getKeySet } from "./Issuer";
+import { isDuplicate } from "./JTI";
 import { issuers as getIssuers } from "./WebID";
 
 /**
@@ -29,17 +30,17 @@ export async function verify(
   url: string,
   issuers: GetIssuersFunction = getIssuers,
   keySet: GetKeySetFunction = getKeySet,
-  isDuplicateJTI: JTICheckFunction = () => false
+  isDuplicateJTI: JTICheckFunction = isDuplicate
 ): Promise<AccessTokenPayload> {
-  const accessToken = await verifyAuthorizationToken(
+  const accessToken = await verifyAccessToken(
     authorizationHeader,
     issuers,
     keySet
   );
 
   if (
-    isObjectPropertyOf(accessToken.payload, "cnf") ||
-    authorizationHeader.startsWith("DPoP ")
+    authorizationHeader.startsWith("DPoP ") ||
+    isObjectPropertyOf(accessToken.payload, "cnf")
   ) {
     await verifyDPoPToken(dpopHeader, accessToken, method, url, isDuplicateJTI);
   }

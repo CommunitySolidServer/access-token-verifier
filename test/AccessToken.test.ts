@@ -1,57 +1,18 @@
 import jwtVerify from "jose/jwt/verify";
-import { encode as base64Encode } from "jose/util/base64url";
 import { verify } from "../src/lib/AccessToken";
 import { keySet as getKeySet } from "../src/lib/Issuer";
-import type { AccessToken, AccessTokenPayload } from "../src/types";
+import { token as bearerToken } from "./fixture/BearerAccessToken";
+import {
+  badProtocolPayload,
+  token as accessToken,
+} from "./fixture/DPoPBoundAccessToken";
+import { encodeToken } from "./fixture/EncodeToken";
 
 jest.mock("jose/jwt/verify");
 jest.mock("../src/lib/Issuer");
 
 describe("Access Token", () => {
   (getKeySet as jest.Mock).mockImplementation(() => true);
-  const accessTokenPayload: AccessTokenPayload = {
-    aud: "solid",
-    exp: 1603386448,
-    iat: 1603386448,
-    iss: "https://example.com/issuer",
-    webid: "https://example.com/webid",
-    client_id: "https://example.com/clientid",
-    cnf: { jkt: "confirmed_ID" },
-  };
-  const bearerAccessTokenPayload: AccessTokenPayload = {
-    aud: "solid",
-    exp: 1603386448,
-    iat: 1603386448,
-    iss: "https://example.com/issuer",
-    webid: "https://example.com/webid",
-    client_id: "https://example.com/clientid",
-  };
-  const wrongAccessTokenPayload: AccessTokenPayload = {
-    aud: "solid",
-    exp: 1603386448,
-    iat: 1603386448,
-    iss: "https://example.com/issuer",
-    webid: "xyz://example.com/webid",
-    client_id: "https://example.com/clientid",
-    cnf: { jkt: "confirmed_ID" },
-  };
-  const accessToken: AccessToken = {
-    header: {
-      alg: "RS256",
-      kid: "x",
-    },
-    payload: accessTokenPayload,
-    signature: "",
-  };
-  const authorizationHeader = `${base64Encode(
-    JSON.stringify(accessToken.header)
-  )}.${base64Encode(JSON.stringify(accessToken.payload))}.`;
-  const bearerAuthorizationHeader = `${base64Encode(
-    JSON.stringify(accessToken.header)
-  )}.${base64Encode(JSON.stringify(bearerAccessTokenPayload))}.`;
-  const wrongAuthorizationHeader = `${base64Encode(
-    JSON.stringify(accessToken.header)
-  )}.${base64Encode(JSON.stringify(wrongAccessTokenPayload))}.`;
 
   it("Checks DPoP bound access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
@@ -61,7 +22,7 @@ describe("Access Token", () => {
 
     expect(
       await verify(
-        authorizationHeader,
+        encodeToken(accessToken),
         () =>
           Promise.resolve([
             "https://example.com/abc",
@@ -74,13 +35,13 @@ describe("Access Token", () => {
 
   it("Checks bearer access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
-      payload: bearerAccessTokenPayload,
+      payload: bearerToken.payload,
       protectedHeader: accessToken.header,
     });
 
     expect(
       await verify(
-        bearerAuthorizationHeader,
+        encodeToken(bearerToken),
         () =>
           Promise.resolve([
             "https://example.com/abc",
@@ -89,16 +50,22 @@ describe("Access Token", () => {
         getKeySet
       )
     ).toStrictEqual({
-      header: accessToken.header,
-      payload: bearerAccessTokenPayload,
-      signature: accessToken.signature,
+      header: bearerToken.header,
+      payload: bearerToken.payload,
+      signature: bearerToken.signature,
     });
   });
 
   it("Throws on non conforming access token", async () => {
+    const wrongProtocolToken = {
+      header: accessToken.header,
+      payload: badProtocolPayload,
+      signature: accessToken.signature,
+    };
+
     await expect(
       verify(
-        wrongAuthorizationHeader,
+        encodeToken(wrongProtocolToken),
         () => Promise.resolve(["https://example.com/issuer"]),
         getKeySet
       )
@@ -113,7 +80,7 @@ describe("Access Token", () => {
 
     await expect(
       verify(
-        authorizationHeader,
+        encodeToken(accessToken),
         () => Promise.resolve(["https://example.com/not_the_issuer"]),
         getKeySet
       )
