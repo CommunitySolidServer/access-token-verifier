@@ -36,7 +36,12 @@ import { createSolidTokenVerifier } from 'ts-dpop';
 const solidTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier();
 
 try {
-  const { client_id: clientId, webid: webId } = await solidTokenVerifier(authorizationHeader as string, dpopHeader as string, method as RequestMethod, requestURL as string);
+  const { client_id: clientId, webid: webId } = await solidTokenVerifier(
+    authorizationHeader as string,
+    dpopHeader as string,
+    method as RequestMethod,
+    requestURL as string
+  );
 
   console.log(`Verified Access Token via WebID: ${webId} and for client: ${clientId}`);
 
