@@ -31,14 +31,21 @@ async function config(iss: URL): Promise<JSON> {
   );
 }
 
-async function jwksUri(iss: URL): Promise<string> {
+async function jwksUri(iss: URL): Promise<URL> {
   const issuerConfig = await config(iss);
 
   if (
     isObjectPropertyOf(issuerConfig, "jwks_uri") &&
     isString(issuerConfig.jwks_uri)
   ) {
-    return issuerConfig.jwks_uri;
+    try {
+      return new URL(issuerConfig.jwks_uri);
+    } catch (_) {
+      throw new SolidTokenVerifierError(
+        "SolidIdentityIssuerConfigError",
+        `Failed parsing jwks_uri from identity issuer configuration at URL ${iss.toString()} as a URL`
+      );
+    }
   }
 
   throw new SolidTokenVerifierError(
@@ -48,5 +55,5 @@ async function jwksUri(iss: URL): Promise<string> {
 }
 
 export const keySet: GetKeySetFunction = async function (iss: URL) {
-  return createRemoteJWKSet(new URL(await jwksUri(iss)));
+  return createRemoteJWKSet(await jwksUri(iss));
 };

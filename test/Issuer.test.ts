@@ -44,7 +44,18 @@ describe("Issuer key set", () => {
     );
   });
 
-  it("Throws when Issuer doesn't", async () => {
+  it("Throws when Issuer's JWKS URI is not a URL", async () => {
+    (crossFetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => ({ jwks_uri: "not_a_URI" }),
+    });
+
+    await expect(keySet(issuer)).rejects.toThrow(
+      "Failed parsing jwks_uri from identity issuer configuration at URL https://example-issuer.com/ as a URL"
+    );
+  });
+
+  it("Throws when Issuer config fetch fails", async () => {
     (crossFetch as jest.Mock).mockResolvedValueOnce({
       status: 400,
       json: () => ({}),
