@@ -38,9 +38,11 @@ const solidTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier(
 try {
   const { client_id: clientId, webid: webId } = await solidTokenVerifier(
     authorizationHeader as string,
-    dpopHeader as string,
-    method as RequestMethod,
-    requestURL as string
+    {
+      header: dpopHeader as string,
+      method: requestMethod as RequestMethod,
+      url: requestURL as string
+    }
   );
 
   console.log(`Verified Access Token via WebID: ${webId} and for client: ${clientId}`);
@@ -55,8 +57,12 @@ try {
 }
 ```
 
+The `solidTokenVerifier` function takes an authorization header which can be an encoded Bearer or
+DPoP bound access token and optional DPoP parameters.
+
 ## TODO
 
 - Further sanitation of inputs? For example a maximum authorization header size. Needs further discussions before resolution.
 - Improve default caching? Assess other libraries that might be used.
 - Evolve the type guards and the type guard library.
+- Enforce https on all WebIDs as per: https://github.com/solid/authentication-panel/issues/114.
