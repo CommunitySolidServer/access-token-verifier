@@ -4,6 +4,7 @@
 export const solidTokenVerifierErrorCode = new Set([
   "SolidIdentityInvalidAcccessToken",
   "SolidIdentityInvalidDPoPToken",
+  "SolidIdentityDPoPError",
   "SolidIdentityInvalidIssuerClaim",
   "SolidIdentityHTTPError",
   "SolidIdentityIssuerConfigError",

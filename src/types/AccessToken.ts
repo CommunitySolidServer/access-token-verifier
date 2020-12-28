@@ -29,3 +29,9 @@ export interface AccessToken {
 export interface DPoPBoundAccessTokenPayload extends AccessTokenPayload {
   cnf: { jkt: string };
 }
+
+export interface DPoPBoundAccessToken {
+  header: AccessTokenHeader;
+  payload: DPoPBoundAccessTokenPayload;
+  signature: string;
+}

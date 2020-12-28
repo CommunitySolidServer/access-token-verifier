@@ -3,13 +3,23 @@ import { verify as verifyToken } from "../src/lib/Verify";
 
 jest.mock("../src/lib/Verify");
 
-describe("Verifying Token", () => {
-  it("Returns a verify solid token function that calls the solid token verification function", async () => {
-    (verifyToken as jest.Mock).mockResolvedValueOnce(true);
-    const solidTokenVerifier = createSolidTokenVerifier();
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
-    const x = await solidTokenVerifier("", "", "GET", "");
-    expect(x).toStrictEqual(true);
+describe("Solid Token Verifier", () => {
+  (verifyToken as jest.Mock).mockResolvedValue(true);
+  const solidTokenVerifier = createSolidTokenVerifier();
+
+  it("Calls the verification function with DPoP options", async () => {
+    expect(
+      await solidTokenVerifier("", { header: "", method: "GET", url: "" })
+    ).toStrictEqual(true);
+    expect(verifyToken).toHaveBeenCalledTimes(1);
+  });
+
+  it("Calls the verification function with authorization header", async () => {
+    expect(await solidTokenVerifier("")).toStrictEqual(true);
     expect(verifyToken).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,2 +1,2 @@
 export * from "./types";
-export * from "./lib/SolidTokenVerifier";
+export { createSolidTokenVerifier } from "./lib";

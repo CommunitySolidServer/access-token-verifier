@@ -1,3 +1,4 @@
+import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import type {
   AccessTokenPayload,
   RequestMethod,
@@ -23,18 +24,26 @@ class SolidTokenVerifier {
 
   public async verify(
     authorizationHeader: string,
-    dpopHeader: string,
-    method: RequestMethod,
-    url: string
+    dpop?: { header: string; method: RequestMethod; url: string }
   ): Promise<AccessTokenPayload> {
+    let dpopArgs;
+    if (isNotNullOrUndefined(dpop)) {
+      dpopArgs = {
+        header: dpop.header,
+        method: dpop.method,
+        url: dpop.url,
+        isDuplicateJTI: this.dpopJtiCache.isDuplicateJTI.bind(
+          this.dpopJtiCache
+        ),
+      };
+    }
     return verifyToken(
-      authorizationHeader,
-      dpopHeader,
-      method,
-      url,
-      this.webIDIssuersCache.getIssuers.bind(this.webIDIssuersCache),
-      this.issuerKeySetCache.getKeySet.bind(this.issuerKeySetCache),
-      this.dpopJtiCache.isDuplicateJTI.bind(this.dpopJtiCache)
+      {
+        header: authorizationHeader,
+        issuers: this.webIDIssuersCache.getIssuers.bind(this.webIDIssuersCache),
+        keySet: this.issuerKeySetCache.getKeySet.bind(this.issuerKeySetCache),
+      },
+      dpopArgs
     );
   }
 }

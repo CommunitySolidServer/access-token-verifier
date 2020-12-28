@@ -1,10 +1,8 @@
-import type { AccessTokenPayload, RequestMethod } from ".";
+import type { AccessTokenPayload, DPoPOptions } from ".";
 
 export interface SolidTokenVerifierFunction {
   (
     authorizationHeader: string,
-    dpopHeader: string,
-    method: RequestMethod,
-    url: string
+    dpop?: DPoPOptions
   ): Promise<AccessTokenPayload>;
 }

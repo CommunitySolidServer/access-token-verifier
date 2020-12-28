@@ -1,7 +1,10 @@
 import { verify as verifyAccessToken } from "../src/lib/AccessToken";
 import { verify as verifyDPoPToken } from "../src/lib/DPoP";
+import { keySet as getKeySet } from "../src/lib/Issuer";
 import { isDuplicate as isDuplicateJTI } from "../src/lib/JTI";
 import { verify } from "../src/lib/Verify";
+import { issuers as getIssuers } from "../src/lib/WebID";
+import type { DPoPOptions } from "../src/types";
 import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
 import { encodeToken } from "./fixture/EncodeToken";
@@ -14,6 +17,14 @@ afterEach(() => {
 });
 
 describe("Verifying Token", () => {
+  const dpopOptions: DPoPOptions = { header: "", method: "GET", url: "" };
+  const dpopOptionsWithJTICheckFunction: DPoPOptions = {
+    header: "",
+    method: "GET",
+    url: "",
+    isDuplicateJTI: () => false,
+  };
+
   it("Verifies DPoP bound token based on cnf claim", async () => {
     (verifyAccessToken as jest.Mock).mockResolvedValueOnce(
       dpopBoundAccessToken
@@ -21,7 +32,7 @@ describe("Verifying Token", () => {
     (verifyDPoPToken as jest.Mock).mockResolvedValueOnce(true);
 
     expect(
-      await verify(encodeToken(dpopBoundAccessToken), "", "GET", "")
+      await verify({ header: encodeToken(dpopBoundAccessToken) }, dpopOptions)
     ).toStrictEqual(dpopBoundAccessToken.payload);
     expect(verifyAccessToken).toHaveBeenCalledTimes(1);
     expect(verifyDPoPToken).toHaveBeenCalledTimes(1);
@@ -34,7 +45,30 @@ describe("Verifying Token", () => {
     (verifyDPoPToken as jest.Mock).mockResolvedValueOnce(true);
 
     expect(
-      await verify(`DPoP ${encodeToken(dpopBoundAccessToken)}`, "", "GET", "")
+      await verify(
+        { header: `DPoP ${encodeToken(dpopBoundAccessToken)}` },
+        dpopOptions
+      )
+    ).toStrictEqual(dpopBoundAccessToken.payload);
+    expect(verifyAccessToken).toHaveBeenCalledTimes(1);
+    expect(verifyDPoPToken).toHaveBeenCalledTimes(1);
+  });
+
+  it("Verifies DPoP bound token with custom GetIssuersFunction, GetKeySetFunction and JTICheckFunction", async () => {
+    (verifyAccessToken as jest.Mock).mockResolvedValueOnce(
+      dpopBoundAccessToken
+    );
+    (verifyDPoPToken as jest.Mock).mockResolvedValueOnce(true);
+
+    expect(
+      await verify(
+        {
+          header: `DPoP ${encodeToken(dpopBoundAccessToken)}`,
+          issuers: getIssuers,
+          keySet: getKeySet,
+        },
+        dpopOptionsWithJTICheckFunction
+      )
     ).toStrictEqual(dpopBoundAccessToken.payload);
     expect(verifyAccessToken).toHaveBeenCalledTimes(1);
     expect(verifyDPoPToken).toHaveBeenCalledTimes(1);
@@ -49,17 +83,37 @@ describe("Verifying Token", () => {
     );
 
     await expect(
-      verify(`DPoP ${encodeToken(dpopBoundAccessToken)}`, "", "GET", "")
+      verify(
+        { header: `DPoP ${encodeToken(dpopBoundAccessToken)}` },
+        dpopOptions
+      )
     ).rejects.toThrow("Not a proof");
     expect(verifyAccessToken).toHaveBeenCalledTimes(1);
     expect(verifyDPoPToken).toHaveBeenCalledTimes(1);
+  });
+
+  it("Throws when DPoP options are missing", async () => {
+    (verifyAccessToken as jest.Mock).mockResolvedValueOnce(
+      dpopBoundAccessToken
+    );
+    (verifyDPoPToken as jest.Mock).mockRejectedValueOnce(
+      new Error("Not a proof")
+    );
+
+    await expect(
+      verify({ header: `DPoP ${encodeToken(dpopBoundAccessToken)}` })
+    ).rejects.toThrow(
+      "DPoP options missing for DPoP bound access token verification"
+    );
+    expect(verifyAccessToken).toHaveBeenCalledTimes(1);
+    expect(verifyDPoPToken).toHaveBeenCalledTimes(0);
   });
 
   it("Verifies Bearer token", async () => {
     (verifyAccessToken as jest.Mock).mockResolvedValueOnce(bearerAccessToken);
 
     expect(
-      await verify(encodeToken(bearerAccessToken), "", "GET", "")
+      await verify({ header: encodeToken(bearerAccessToken) })
     ).toStrictEqual(bearerAccessToken.payload);
     expect(verifyAccessToken).toHaveBeenCalledTimes(1);
     expect(verifyDPoPToken).toHaveBeenCalledTimes(0);
@@ -71,7 +125,10 @@ describe("Verifying Token", () => {
     );
 
     await expect(
-      verify(`DPoP ${encodeToken(dpopBoundAccessToken)}`, "", "GET", "")
+      verify(
+        { header: `DPoP ${encodeToken(dpopBoundAccessToken)}` },
+        dpopOptions
+      )
     ).rejects.toThrow("Not a valid access token");
     expect(verifyAccessToken).toHaveBeenCalledTimes(1);
     expect(verifyDPoPToken).toHaveBeenCalledTimes(0);

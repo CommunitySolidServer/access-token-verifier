@@ -22,7 +22,3 @@ export interface DPoPToken {
   payload: DPoPTokenPayload;
   signature: string;
 }
-
-export interface JTICheckFunction {
-  (jti: string): boolean;
-}

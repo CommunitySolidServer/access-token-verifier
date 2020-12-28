@@ -1,48 +1,78 @@
+import { asserts } from "ts-guards";
+import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import type {
   AccessTokenPayload,
+  AuthorizationOptions,
+  DPoPOptions,
   GetIssuersFunction,
   GetKeySetFunction,
   JTICheckFunction,
-  RequestMethod,
 } from "../types";
 import { verify as verifyAccessToken } from "./AccessToken";
 import { verify as verifyDPoPToken } from "./DPoP";
 import { keySet as getKeySet } from "./Issuer";
 import { isDuplicate } from "./JTI";
+import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
 import { issuers as getIssuers } from "./WebID";
 
 /**
  * Verify the validity of Solid Identity Access Tokens
  * Validation based on the WebID in the access token payload
  * @param authorizationHeader
- * @param dpopHeader
- * @param method
- * @param url
  * @param issuers
  * @param keySet
- * @param isDuplicateJTI
+ * @param dpop
  */
 export async function verify(
-  authorizationHeader: string,
-  dpopHeader: string,
-  method: RequestMethod,
-  url: string,
-  issuers: GetIssuersFunction = getIssuers,
-  keySet: GetKeySetFunction = getKeySet,
-  isDuplicateJTI: JTICheckFunction = isDuplicate
+  authorization: AuthorizationOptions,
+  dpop?: DPoPOptions
 ): Promise<AccessTokenPayload> {
+  let getIssuersFunction: GetIssuersFunction;
+  if (isNotNullOrUndefined(authorization.issuers)) {
+    getIssuersFunction = authorization.issuers;
+  } else {
+    getIssuersFunction = getIssuers;
+  }
+
+  let getKeySetFunction: GetKeySetFunction;
+  if (isNotNullOrUndefined(authorization.keySet)) {
+    getKeySetFunction = authorization.keySet;
+  } else {
+    getKeySetFunction = getKeySet;
+  }
+
   const accessToken = await verifyAccessToken(
-    authorizationHeader,
-    issuers,
-    keySet
+    authorization.header,
+    getIssuersFunction,
+    getKeySetFunction
   );
 
   if (
-    authorizationHeader.startsWith("DPoP ") ||
+    authorization.header.startsWith("DPoP ") ||
     isObjectPropertyOf(accessToken.payload, "cnf")
   ) {
-    await verifyDPoPToken(dpopHeader, accessToken, method, url, isDuplicateJTI);
+    try {
+      asserts.isNotNullOrUndefined(dpop);
+    } catch (_) {
+      throw new SolidTokenVerifierError(
+        "SolidIdentityDPoPError",
+        "DPoP options missing for DPoP bound access token verification"
+      );
+    }
+    let isDuplicateJTIFunction: JTICheckFunction;
+    if (!isNotNullOrUndefined(dpop.isDuplicateJTI)) {
+      isDuplicateJTIFunction = isDuplicate;
+    } else {
+      isDuplicateJTIFunction = dpop.isDuplicateJTI;
+    }
+    await verifyDPoPToken(
+      dpop.header,
+      accessToken,
+      dpop.method,
+      dpop.url,
+      isDuplicateJTIFunction
+    );
   }
 
   return accessToken.payload;
