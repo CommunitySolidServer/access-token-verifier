@@ -1,6 +1,6 @@
 {
   "name": "ts-dpop",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.",
   "license": "MIT",
   "keywords": [
@@ -44,8 +44,8 @@
     "@types/jest": "^26.0.19",
     "@types/lru-cache": "^5.1.0",
     "@types/node": "12.x",
-    "@typescript-eslint/eslint-plugin": "^4.11.0",
-    "@typescript-eslint/parser": "^4.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
     "eslint": "^7.16.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
@@ -57,7 +57,7 @@
     "jest-circus": "^26.6.3",
     "lint-staged": "^10.5.3",
     "pinst": "^2.1.1",
-    "prettier": "^2.2.0",
+    "prettier": "^2.2.1",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
   },
