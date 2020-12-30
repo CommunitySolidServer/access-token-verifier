@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:eslint": "eslint --ignore-path .gitignore --fix .",
+    "lint:eslint": "eslint --cache --fix --ignore-path .gitignore .",
     "lint:prettier": "prettier --ignore-path .gitignore --write '**/*.{css,md,mdx}'",
     "lint:staged": "lint-staged",
     "prepublishOnly": "npm ci && pinst --disable && npm run build",
