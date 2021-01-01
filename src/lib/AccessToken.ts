@@ -1,6 +1,3 @@
-import { get as http } from "http";
-import type { ClientRequest } from "http";
-import { get as https } from "https";
 import jwtVerify from "jose/jwt/verify";
 import { isAccessToken, isAccessTokenPayload } from "../guards";
 import type {
@@ -26,21 +23,15 @@ function value(token: string): string {
 
 /**
  * URL Claims
- * TODO: Allowing HTTP seems wrong, see to only allowing HTTPs
- * @param token
+ * Restricts to HTTPS, TODO: Check if we can restrict to HTTP over TLS if/when in the future
  */
-function urlClaim(claim: string): URL {
-  const protocols: {
-    [protocol: string]: (...args: Parameters<typeof https>) => ClientRequest;
-  } = {
-    "https:": https,
-    "http:": http,
-  };
-
+function urlClaim(type: string, claim: string): URL {
   const url = new URL(claim);
 
-  if (protocols[url.protocol] === undefined) {
-    throw new TypeError("Unsupported URL claim protocol.");
+  if (url.protocol !== "https:") {
+    throw new TypeError(
+      `Verifiable URL claim ${type} needs to use the https protocol.`
+    );
   }
 
   return url;
@@ -48,7 +39,6 @@ function urlClaim(claim: string): URL {
 
 /**
  * Checks the access token structure and its WebID and Issuer claims
- * @param token
  */
 function verifiableClaims(token: string): { iss: URL; webid: URL } {
   const tokenPayload: unknown = JSON.parse(decode(token.split(".")[1]));
@@ -56,8 +46,8 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
   isAccessTokenPayload(tokenPayload);
 
   return {
-    iss: urlClaim(tokenPayload.iss),
-    webid: urlClaim(tokenPayload.webid),
+    iss: urlClaim("issuer", tokenPayload.iss),
+    webid: urlClaim("web_id", tokenPayload.webid),
   };
 }
 

@@ -69,7 +69,9 @@ describe("Access Token", () => {
         () => Promise.resolve(["https://example.com/issuer"]),
         getKeySet
       )
-    ).rejects.toThrow("Unsupported URL claim protocol.");
+    ).rejects.toThrow(
+      "Verifiable URL claim web_id needs to use the https protocol."
+    );
   });
 
   it("Throws when issuer doesn't match", async () => {
