@@ -1,8 +1,8 @@
 # Solid Token Verifier
 
-[![build](https://github.com/matthieubosquet/ts-dpop/workflows/build/badge.svg?branch=main)](https://github.com/matthieubosquet/ts-dpop/actions?query=workflow%3A"build")
-[![coverage](https://codecov.io/gh/matthieubosquet/ts-dpop/branch/main/graph/badge.svg)](https://codecov.io/gh/matthieubosquet/ts-dpop)
-[![npm](https://img.shields.io/npm/v/ts-dpop)](https://www.npmjs.com/package/ts-dpop)
+[![build](https://github.com/solid/identity-token-verifier/workflows/build/badge.svg?branch=main)](https://github.com/solid/identity-token-verifier/actions?query=workflow%3A"build")
+[![coverage](https://codecov.io/gh/solid/identity-token-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/solid/identity-token-verifier)
+[![npm](https://img.shields.io/npm/v/@solid/identity-token-verifier)](https://www.npmjs.com/package/@solid/identity-token-verifier)
 
 This library verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.
 
@@ -30,8 +30,8 @@ See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authenticatio
 Verify Solid Access Tokens with a simple function:
 
 ```javascript
-import type { RequestMethod, SolidTokenVerifierFunction } from 'ts-dpop';
-import { createSolidTokenVerifier } from 'ts-dpop';
+import type { RequestMethod, SolidTokenVerifierFunction } from '@solid/identity-token-verifier';
+import { createSolidTokenVerifier } from '@solid/identity-token-verifier';
 
 const solidTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier();
 
@@ -65,4 +65,4 @@ DPoP bound access token and optional DPoP parameters.
 - Further sanitation of inputs? For example a maximum authorization header size. Needs further discussions before resolution.
 - Improve default caching? Assess other libraries that might be used.
 - Evolve the type guards and the type guard library.
-- Enforce https on all WebIDs as per: https://github.com/solid/authentication-panel/issues/114.
+- Allow http over tls on all WebIDs instead of enforcing https as per: https://github.com/solid/authentication-panel/issues/114.
