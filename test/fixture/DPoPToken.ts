@@ -5,28 +5,29 @@ import type {
 } from "../../src/types";
 
 const dpopTokenHeaderEC: DPoPTokenHeader = {
+  typ: "dpop+jwt",
   alg: "ES256",
   jwk: {
-    crv: "P-256",
-    x: "",
-    y: "",
-    kid: "confirmed_ID",
     kty: "EC",
+    x: "l8tFrhx-34tV3hRICRDY9zCkDlpBhF42UQUfWVAWBFs",
+    y: "9VE4jf_Ok_o64zbTTlcuNJajHmt6v9TDVrU0CdvGRDA",
+    crv: "P-256",
   },
-  typ: "dpop+jwt",
 };
 
-const dpopTokenHeaderRSA: DPoPTokenHeader = {
-  alg: "RS256",
-  jwk: {
-    alg: "RS256",
-    e: "",
-    n: "",
-    kid: "confirmed_ID",
-    kty: "RSA",
-  },
-  typ: "dpop+jwt",
-};
+/*
+ * const dpopTokenHeaderRSA: DPoPTokenHeader = {
+ *   alg: "RS256",
+ *   jwk: {
+ *     alg: "RS256",
+ *     e: "",
+ *     n: "",
+ *     kid: "confirmed_ID",
+ *     kty: "RSA",
+ *   },
+ *   typ: "dpop+jwt",
+ * };
+ */
 
 export const dpopTokenHeaderUnsupported: any = {
   alg: "RS256",
@@ -53,8 +54,10 @@ export const dpopTokenEC: DPoPToken = {
   signature: "",
 };
 
-export const dpopTokenRSA: DPoPToken = {
-  header: dpopTokenHeaderRSA,
-  payload: dpopTokenPayload,
-  signature: "",
-};
+/*
+ * export const dpopTokenRSA: DPoPToken = {
+ *   header: dpopTokenHeaderRSA,
+ *   payload: dpopTokenPayload,
+ *   signature: "",
+ * };
+ */

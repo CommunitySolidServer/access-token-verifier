@@ -7,5 +7,5 @@ export function encodeToken(token: {
 }): string {
   return `${encode(JSON.stringify(token.header))}.${encode(
     JSON.stringify(token.payload)
-  )}.`;
+  )}.${token.signature}`;
 }

@@ -16,7 +16,7 @@ const payload: AccessTokenPayload = {
   iss: "https://example.com/issuer",
   webid: "https://example.com/webid",
   client_id: "https://example.com/clientid",
-  cnf: { jkt: "confirmed_ID" },
+  cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
 };
 
 export const badProtocolPayload: AccessTokenPayload = {
@@ -26,7 +26,7 @@ export const badProtocolPayload: AccessTokenPayload = {
   iss: "https://example.com/issuer",
   webid: "xyz://example.com/webid",
   client_id: "https://example.com/clientid",
-  cnf: { jkt: "confirmed_ID" },
+  cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
 };
 
 export const token: AccessToken = {

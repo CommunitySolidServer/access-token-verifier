@@ -39,8 +39,7 @@ export function isDPoPPublicJWK(x: unknown): asserts x is DPoPPublicJWK {
  */
 
 export function isECPublicJWK(x: unknown): asserts x is ECPublicJWK {
-  asserts.areObjectPropertiesOf(x, ["kid", "kty", "crv", "x", "y"]);
-  asserts.isString(x.kid);
+  asserts.areObjectPropertiesOf(x, ["kty", "crv", "x", "y"]);
   asserts.isLiteral(x.kty, "EC" as const);
   asserts.isLiteralType(x.crv, curve);
   asserts.isString(x.x);
@@ -61,9 +60,8 @@ export function isECPublicJWK(x: unknown): asserts x is ECPublicJWK {
  */
 
 export function isRSAPublicJWK(x: unknown): asserts x is RSAPublicJWK {
-  asserts.areObjectPropertiesOf(x, ["alg", "kid", "kty", "n", "e"]);
+  asserts.areObjectPropertiesOf(x, ["alg", "kty", "n", "e"]);
   asserts.isLiteralType(x.alg, rsaAlgorithm);
-  asserts.isString(x.kid);
   asserts.isLiteral(x.kty, "RSA" as const);
   asserts.isString(x.n);
   asserts.isString(x.e);

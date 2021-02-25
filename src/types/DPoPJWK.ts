@@ -75,16 +75,7 @@ export type PrivateKeyProperties = typeof privateKeyProperties extends Set<
  * - Must have kid, kty, crv, x, y & d
  * - d is the private part of the key, it must be ommited from the public embedded DPoP JWK
  */
-export type ECJWK = Required<
-  Pick<JWK, "kid" | "kty" | "crv" | "x" | "y" | "d">
-> & {
-  kid: string;
-  kty: "EC";
-  crv: Curve;
-  x: string;
-  y: string;
-  d: string;
-};
+export type ECJWK = Required<Pick<JWK, "kty" | "crv" | "x" | "y" | "d">>;
 
 export type ECPublicJWK = Omit<ECJWK, PrivateKeyProperties>;
 
@@ -94,23 +85,8 @@ export type ECPublicJWK = Omit<ECJWK, PrivateKeyProperties>;
  * - d is the private part of the key, it must be ommited from the public embedded DPoP JWK
  */
 export type RSAJWK = Required<
-  Pick<
-    JWK,
-    "kid" | "kty" | "alg" | "n" | "e" | "d" | "p" | "q" | "dp" | "dq" | "qi"
-  >
-> & {
-  kid: string;
-  kty: "RSA";
-  alg: RSAAlgorithm;
-  n: string;
-  e: string;
-  d: string;
-  p: string;
-  q: string;
-  dp: string;
-  dq: string;
-  qi: string;
-};
+  Pick<JWK, "kty" | "alg" | "n" | "e" | "d" | "p" | "q" | "dp" | "dq" | "qi">
+>;
 
 export type RSAPublicJWK = Omit<RSAJWK, PrivateKeyProperties>;
 

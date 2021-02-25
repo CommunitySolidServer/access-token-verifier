@@ -1,6 +1,6 @@
 {
   "name": "@solid/identity-token-verifier",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.",
   "license": "MIT",
   "keywords": [

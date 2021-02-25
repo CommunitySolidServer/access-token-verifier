@@ -1,4 +1,5 @@
 import EmbeddedJWK from "jose/jwk/embedded";
+import calculateThumbprint from "jose/jwk/thumbprint";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
 import { isDPoPBoundAccessTokenPayload, isDPoPToken } from "../guards";
@@ -11,7 +12,7 @@ import type {
 import { asymetricCryptographicAlgorithm } from "../types";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 
-function isValidProof(
+async function isValidProof(
   accessToken: AccessToken,
   dpop: DPoPToken,
   method: RequestMethod,
@@ -21,8 +22,17 @@ function isValidProof(
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
   isDPoPBoundAccessTokenPayload(accessToken.payload);
 
-  // Check DPoP is bound to the access token
-  asserts.isLiteral(dpop.header.jwk.kid, accessToken.payload.cnf.jkt);
+  /*
+   * Check DPoP is bound to the access token
+   * The value in "jkt" MUST be the base64url encoding [RFC7515] of the
+   * JWK SHA-256 Thumbprint (according to [RFC7638]) of the public key to
+   * which the access token is bound.
+   * https://tools.ietf.org/html/draft-fett-oauth-dpop-04#section-7
+   */
+  asserts.isLiteral(
+    await calculateThumbprint(dpop.header.jwk),
+    accessToken.payload.cnf.jkt
+  );
 
   // Check DPoP Token claims method, url and unique token id
   asserts.isLiteral(dpop.payload.htm, method);
@@ -69,7 +79,7 @@ export async function verify(
 
   isDPoPToken(dpop);
 
-  isValidProof(accessToken, dpop, method, url, isDuplicateJTI);
+  await isValidProof(accessToken, dpop, method, url, isDuplicateJTI);
 
   return dpop;
 }
