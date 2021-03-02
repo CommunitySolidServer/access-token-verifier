@@ -28,7 +28,10 @@ function value(token: string): string {
 function urlClaim(type: string, claim: string): URL {
   const url = new URL(claim);
 
-  if (url.protocol !== "https:") {
+  if (
+    url.protocol !== "https:" &&
+    !url.toString().startsWith("http://localhost:")
+  ) {
     throw new TypeError(
       `Verifiable URL claim ${type} needs to use the https protocol.`
     );
