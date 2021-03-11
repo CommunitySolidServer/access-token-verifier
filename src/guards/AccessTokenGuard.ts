@@ -1,4 +1,4 @@
-import { asserts } from "ts-guards";
+import { asserts, literalType, standardObject } from "ts-guards";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import type {
   AccessToken,
@@ -31,7 +31,11 @@ export function isAccessTokenPayload(
   x: unknown
 ): asserts x is AccessTokenPayload {
   asserts.areObjectPropertiesOf(x, ["aud", "exp", "iat", "iss", "webid"]);
-  asserts.isLiteral(x.aud, "solid" as const);
+  asserts.isLiteral(
+    literalType.isLiteral(x.aud, "solid" as const) ||
+      (standardObject.isArray(x.aud) && x.aud.includes("solid")),
+    true
+  );
   asserts.isNumber(x.exp);
   asserts.isNumber(x.iat);
   asserts.isString(x.iss);

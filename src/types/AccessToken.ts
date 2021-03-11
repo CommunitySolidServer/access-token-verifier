@@ -11,7 +11,7 @@ export interface AccessTokenHeader {
 }
 
 export interface AccessTokenPayload {
-  aud: "solid";
+  aud: "solid" | string[];
   client_id?: string;
   cnf?: { jkt: string };
   exp: number;

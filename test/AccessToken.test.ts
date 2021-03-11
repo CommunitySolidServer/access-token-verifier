@@ -5,6 +5,7 @@ import { token as bearerToken } from "./fixture/BearerAccessToken";
 import {
   badProtocolPayload,
   token as accessToken,
+  tokenAudienceArray,
 } from "./fixture/DPoPBoundAccessToken";
 import { encodeToken } from "./fixture/EncodeToken";
 
@@ -31,6 +32,25 @@ describe("Access Token", () => {
         getKeySet
       )
     ).toStrictEqual(accessToken);
+  });
+
+  it("Checks DPoP bound access token with audience array", async () => {
+    (jwtVerify as jest.Mock).mockResolvedValueOnce({
+      payload: tokenAudienceArray.payload,
+      protectedHeader: tokenAudienceArray.header,
+    });
+
+    expect(
+      await verify(
+        encodeToken(tokenAudienceArray),
+        () =>
+          Promise.resolve([
+            "https://example.com/abc",
+            "https://example.com/issuer",
+          ]),
+        getKeySet
+      )
+    ).toStrictEqual(tokenAudienceArray);
   });
 
   it("Checks bearer access token", async () => {
