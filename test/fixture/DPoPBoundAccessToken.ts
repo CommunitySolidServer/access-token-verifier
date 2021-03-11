@@ -19,6 +19,16 @@ const payload: AccessTokenPayload = {
   cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
 };
 
+const payloadAudienceArray: AccessTokenPayload = {
+  aud: ["solid"],
+  exp: 1603386448,
+  iat: 1603386448,
+  iss: "https://example.com/issuer",
+  webid: "https://example.com/webid",
+  client_id: "https://example.com/clientid",
+  cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
+};
+
 export const badProtocolPayload: AccessTokenPayload = {
   aud: "solid",
   exp: 1603386448,
@@ -32,5 +42,11 @@ export const badProtocolPayload: AccessTokenPayload = {
 export const token: AccessToken = {
   header,
   payload,
+  signature: "",
+};
+
+export const tokenAudienceArray: AccessToken = {
+  header,
+  payload: payloadAudienceArray,
   signature: "",
 };
