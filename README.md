@@ -1,4 +1,4 @@
-# Solid Token Verifier
+# Solid Identity Token Verifier
 
 [![build](https://github.com/solid/identity-token-verifier/workflows/build/badge.svg?branch=main)](https://github.com/solid/identity-token-verifier/actions?query=workflow%3A"build")
 [![coverage](https://codecov.io/gh/solid/identity-token-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/solid/identity-token-verifier)
