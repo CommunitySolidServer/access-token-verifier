@@ -1,6 +1,6 @@
 {
   "name": "@solid/access-token-verifier",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Verifies Solid OIDC access tokens via their webid claim, and thus asserts ownership of a WebID.",
   "license": "MIT",
   "keywords": [
@@ -30,7 +30,7 @@
     "test": "jest",
     "postinstall": "npm run build",
     "prepare": "[[ -n \"$CI\" ]] || husky install",
-    "prepublishOnly": "npm run audit && npm ci && npm run test"
+    "prepublishOnly": "npm run audit && npm ci --ignore-scripts && npm run build && npm run test"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
