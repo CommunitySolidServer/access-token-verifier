@@ -1,13 +1,13 @@
-# Solid Identity Token Verifier
+# Solid OIDC Access Token Verifier
 
 [![](https://img.shields.io/badge/project-Solid-7C4DFF.svg)](https://github.com/solid/solid)
 [![build](https://github.com/solid/identity-token-verifier/workflows/build/badge.svg?branch=main)](https://github.com/solid/identity-token-verifier/actions?query=workflow%3A"build")
 [![coverage](https://codecov.io/gh/solid/identity-token-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/solid/identity-token-verifier)
 [![npm](https://img.shields.io/npm/v/@solid/identity-token-verifier)](https://www.npmjs.com/package/@solid/identity-token-verifier)
 
-This library verifies Solid access tokens via their WebID claim, and thus asserts ownership of WebIDs.
+This library verifies Solid OIDC access tokens via their `webid` claim, and thus asserts ownership of a [WebID](https://www.w3.org/2005/Incubator/webid/spec/).
 
-It conforms to the [Solid Identity specification](https://solid.github.io/authentication-panel/solid-oidc/).
+It conforms to the [Solid OIDC specification](https://solid.github.io/authentication-panel/solid-oidc/).
 
 See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authentication-panel/solid-oidc-primer/#request-flow)
 
@@ -34,10 +34,10 @@ Verify Solid Access Tokens with a simple function:
 import type { RequestMethod, SolidTokenVerifierFunction } from '@solid/identity-token-verifier';
 import { createSolidTokenVerifier } from '@solid/identity-token-verifier';
 
-const solidTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier();
+const solidOidcAccessTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier();
 
 try {
-  const { client_id: clientId, webid: webId } = await solidTokenVerifier(
+  const { client_id: clientId, webid: webId } = await solidOidcAccessTokenVerifier(
     authorizationHeader as string,
     {
       header: dpopHeader as string,
@@ -58,8 +58,7 @@ try {
 }
 ```
 
-The `solidTokenVerifier` function takes an authorization header which can be an encoded Bearer or
-DPoP bound access token and optional DPoP parameters.
+The `solidOidcAccessTokenVerifier` function takes an authorization header which can be an encoded Bearer or DPoP bound access token and optional DPoP parameters.
 
 ## TODO
 
