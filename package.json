@@ -29,7 +29,8 @@
     "start": "npm run build && node .",
     "test": "jest",
     "postinstall": "npm run build",
-    "prepare": "[[ -n \"$CI\" ]] || husky install"
+    "prepare": "[[ -n \"$CI\" ]] || husky install",
+    "prepublishOnly": "npm run audit && npm ci && npm run test"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

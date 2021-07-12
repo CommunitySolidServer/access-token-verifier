@@ -11,10 +11,6 @@ jobs:
       with:
         node-version: '14.x'
         registry-url: 'https://registry.npmjs.org'
-    - run: npm audit --production --audit-level high
-    - run: npm ci
-    - run: npm run build
-    - run: npm run test
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
