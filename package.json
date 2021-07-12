@@ -26,9 +26,10 @@
     "build": "tsc",
     "lint": "eslint --cache --fix --ignore-path .gitignore .",
     "lint:staged": "lint-staged",
-    "postinstall": "[[ -n \"$CI\" ]] || husky install",
     "start": "npm run build && node .",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "npm run build",
+    "prepare": "[[ -n \"$CI\" ]] || husky install"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -50,7 +51,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^5.1.3",
+    "husky": "^7.0.1",
     "jest": "^27.0.4",
     "jest-circus": "^27.0.4",
     "lint-staged": "^11.0.0",
