@@ -1,9 +1,9 @@
 # Solid OIDC Access Token Verifier
 
 [![](https://img.shields.io/badge/project-Solid-7C4DFF.svg)](https://github.com/solid/solid)
-[![build](https://github.com/solid/identity-token-verifier/workflows/build/badge.svg?branch=main)](https://github.com/solid/identity-token-verifier/actions?query=workflow%3A"build")
-[![coverage](https://codecov.io/gh/solid/identity-token-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/solid/identity-token-verifier)
-[![npm](https://img.shields.io/npm/v/@solid/identity-token-verifier)](https://www.npmjs.com/package/@solid/identity-token-verifier)
+[![build](https://github.com/solid/access-token-verifier/workflows/test/badge.svg?branch=main)](https://github.com/solid/access-token-verifier/actions?query=workflow%3A"test")
+[![coverage](https://codecov.io/gh/solid/access-token-verifier/branch/main/graph/badge.svg)](https://codecov.io/gh/solid/access-token-verifier)
+[![npm](https://img.shields.io/npm/v/@solid/access-token-verifier)](https://www.npmjs.com/package/@solid/access-token-verifier)
 
 This library verifies Solid OIDC access tokens via their `webid` claim, and thus asserts ownership of a [WebID](https://www.w3.org/2005/Incubator/webid/spec/).
 
@@ -31,8 +31,8 @@ See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authenticatio
 Verify Solid Access Tokens with a simple function:
 
 ```javascript
-import type { RequestMethod, SolidTokenVerifierFunction } from '@solid/identity-token-verifier';
-import { createSolidTokenVerifier } from '@solid/identity-token-verifier';
+import type { RequestMethod, SolidTokenVerifierFunction } from '@solid/access-token-verifier';
+import { createSolidTokenVerifier } from '@solid/access-token-verifier';
 
 const solidOidcAccessTokenVerifier: SolidTokenVerifierFunction = createSolidTokenVerifier();
 
