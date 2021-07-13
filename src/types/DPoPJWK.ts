@@ -21,11 +21,8 @@ export const asymetricCryptographicAlgorithm = new Set([
   "PS512",
   ...rsaAlgorithm,
 ] as const);
-export type AsymetricCryptographicAlgorithm = typeof asymetricCryptographicAlgorithm extends Set<
-  infer T
->
-  ? T
-  : never;
+export type AsymetricCryptographicAlgorithm =
+  typeof asymetricCryptographicAlgorithm extends Set<infer T> ? T : never;
 
 /**
  * JWK Key Type
