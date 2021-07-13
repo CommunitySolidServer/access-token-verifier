@@ -18,7 +18,9 @@ describe("Issuer key set", () => {
     (createRemoteJWKSet as jest.Mock).mockReturnValueOnce(() => true);
 
     expect(
-      await (await keySet(issuer))({}, { payload: "", signature: "" })
+      await (
+        await keySet(issuer)
+      )({}, { payload: "", signature: "" })
     ).toBe(true);
 
     expect(crossFetch).toHaveBeenCalledTimes(1);
