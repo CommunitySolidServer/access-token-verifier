@@ -25,6 +25,7 @@
     "audit": "npm audit --production --audit-level=high",
     "build": "tsc",
     "lint": "npm run lint:eslint && npm run lint:prettier",
+    "lint:check": "eslint --ignore-path .gitignore . && prettier --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'",
     "lint:eslint": "eslint --cache --fix --ignore-path .gitignore .",
     "lint:prettier": "prettier --write --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'",
     "start": "npm run build && node .",

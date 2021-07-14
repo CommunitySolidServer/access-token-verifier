@@ -13,5 +13,4 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: npx --yes eslint --ignore-path .gitignore .
-      - run: npx --yes prettier --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'
+      - run: npm run lint:check
