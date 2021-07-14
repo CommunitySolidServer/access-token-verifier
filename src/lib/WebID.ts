@@ -1,5 +1,4 @@
 import { DataFactory, Store } from "n3";
-import { SOLID } from "nmspc";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad } from "rdf-js";
 import type { GetIssuersFunction } from "../types";
@@ -18,7 +17,7 @@ export const issuers: GetIssuersFunction = async function (
       store
         .match(
           DataFactory.namedNode(webid.toString()),
-          DataFactory.namedNode(SOLID.oidcIssuer)
+          DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer")
         )
         .on("data", (quad: Quad) => {
           issuer.push(quad.object.value);

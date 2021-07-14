@@ -63,7 +63,6 @@
     "jose": "^3.14.0",
     "lru-cache": "^6.0.0",
     "n3": "^1.11.0",
-    "nmspc": "^0.2.4",
     "rdf-data-factory": "^1.0.4",
     "rdf-dereference": "^1.8.0",
     "rdf-parse": "^1.8.1",
