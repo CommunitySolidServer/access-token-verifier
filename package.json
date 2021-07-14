@@ -63,10 +63,7 @@
     "jose": "^3.14.0",
     "lru-cache": "^6.0.0",
     "n3": "^1.11.0",
-    "rdf-data-factory": "^1.0.4",
     "rdf-dereference": "^1.8.0",
-    "rdf-parse": "^1.8.1",
-    "rdf-store-stream": "^1.2.0",
     "ts-guards": "^0.5.1"
   }
 }
