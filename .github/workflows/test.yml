@@ -20,5 +20,3 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run build
       - run: npm run test
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
