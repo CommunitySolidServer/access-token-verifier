@@ -14,5 +14,5 @@ jobs:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
       - run: npm ci --ignore-scripts
-      - run: npx --yes eslint --ignore-path .gitignore .
-      - run: npx --yes prettier --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'
+      - run: npx --no-install eslint --ignore-path .gitignore .
+      - run: npx --no-install prettier --check --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'
