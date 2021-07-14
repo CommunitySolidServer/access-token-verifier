@@ -40,7 +40,7 @@
   "homepage": "https://github.com/solid/access-token-verifier#readme",
   "devDependencies": {
     "@solid/eslint-config-base": "^0.2.2",
-    "@tsconfig/node14": "^1.0.1",
+    "@tsconfig/node16": "^1.0.1",
     "@types/jest": "^26.0.23",
     "@types/lru-cache": "^5.1.0",
     "@types/node": "^12.19.12",
