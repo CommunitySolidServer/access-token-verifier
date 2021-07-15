@@ -18,7 +18,7 @@ async function isValidProof(
   method: RequestMethod,
   url: string,
   isDuplicateJTI: JTICheckFunction
-) {
+): Promise<void> {
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
   isDPoPBoundAccessTokenPayload(accessToken.payload);
 

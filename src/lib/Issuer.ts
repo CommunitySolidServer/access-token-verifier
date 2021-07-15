@@ -5,19 +5,17 @@ import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import type { GetKeySetFunction } from "../types";
 import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
 
-/* eslint-disable @typescript-eslint/naming-convention */
-const requestInit = {
-  method: "GET",
-  headers: { "Content-Type": "application/json" },
-};
-/* eslint-enable @typescript-eslint/naming-convention */
-
 function configUrl(iss: string): string {
   return iss.replace(/\/$/, "").concat("/.well-known/openid-configuration");
 }
 
 async function config(iss: URL): Promise<JSON> {
-  const response = await crossFetch(configUrl(iss.toString()), requestInit);
+  /* eslint-disable @typescript-eslint/naming-convention */
+  const response = await crossFetch(configUrl(iss.toString()), {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  /* eslint-enable @typescript-eslint/naming-convention */
 
   if (response.ok) {
     return (await response.json()) as JSON;
