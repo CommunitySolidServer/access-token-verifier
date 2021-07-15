@@ -1,7 +1,7 @@
 import jwtVerify from "jose/jwt/verify";
 import { isAccessToken, isAccessTokenPayload } from "../guards";
 import type {
-  AccessToken,
+  SolidAccessToken,
   GetIssuersFunction,
   GetKeySetFunction,
 } from "../types";
@@ -70,7 +70,7 @@ export async function verify(
   issuers: GetIssuersFunction,
   keySet: GetKeySetFunction,
   maxAccessTokenAge = maxAccessTokenAgeInSeconds
-): Promise<AccessToken> {
+): Promise<SolidAccessToken> {
   // Get JWT value for either DPoP or Bearer tokens
   const token = value(authorizationHeader);
 

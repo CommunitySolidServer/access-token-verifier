@@ -54,6 +54,7 @@ async function jwksUri(iss: URL): Promise<URL> {
   );
 }
 
+/* eslint-disable-next-line func-names */
 export const keySet: GetKeySetFunction = async function (iss: URL) {
   return createRemoteJWKSet(await jwksUri(iss));
 };

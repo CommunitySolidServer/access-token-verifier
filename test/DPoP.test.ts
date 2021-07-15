@@ -1,14 +1,9 @@
 import jwtVerify from "jose/jwt/verify";
 import { verify } from "../src/lib/DPoP";
 import type { DPoPToken } from "../src/types";
-/*
- * import {
- *   dpopTokenHeaderUnsupported,
- *   dpopTokenEC,
- * } from "./fixture/DPoPToken";
- */
 import { encodeToken } from "./fixture/EncodeToken";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock("jose/jwt/verify");
 
 const dpop: DPoPToken = {

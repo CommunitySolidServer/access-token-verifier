@@ -3,6 +3,7 @@ import rdfDereferencer from "rdf-dereference";
 import type { Quad } from "rdf-js";
 import type { GetIssuersFunction } from "../types";
 
+/* eslint-disable-next-line func-names */
 export const issuers: GetIssuersFunction = async function (
   webid: URL
 ): Promise<Array<string>> {

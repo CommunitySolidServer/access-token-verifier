@@ -15,21 +15,7 @@ const dpopTokenHeaderEC: DPoPTokenHeader = {
   },
 };
 
-/*
- * const dpopTokenHeaderRSA: DPoPTokenHeader = {
- *   alg: "RS256",
- *   jwk: {
- *     alg: "RS256",
- *     e: "",
- *     n: "",
- *     kid: "confirmed_ID",
- *     kty: "RSA",
- *   },
- *   typ: "dpop+jwt",
- * };
- */
-
-export const dpopTokenHeaderUnsupported: any = {
+export const dpopTokenHeaderUnsupported: unknown = {
   alg: "RS256",
   jwk: {
     alg: "RS256",
@@ -53,11 +39,3 @@ export const dpopTokenEC: DPoPToken = {
   payload: dpopTokenPayload,
   signature: "",
 };
-
-/*
- * export const dpopTokenRSA: DPoPToken = {
- *   header: dpopTokenHeaderRSA,
- *   payload: dpopTokenPayload,
- *   signature: "",
- * };
- */

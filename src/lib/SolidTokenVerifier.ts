@@ -1,6 +1,6 @@
 import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import type {
-  AccessTokenPayload,
+  SolidAccessTokenPayload,
   RequestMethod,
   SolidTokenVerifierFunction,
 } from "../types";
@@ -25,7 +25,7 @@ class SolidTokenVerifier {
   public async verify(
     authorizationHeader: string,
     dpop?: { header: string; method: RequestMethod; url: string }
-  ): Promise<AccessTokenPayload> {
+  ): Promise<SolidAccessTokenPayload> {
     let dpopArgs;
     if (isNotNullOrUndefined(dpop)) {
       dpopArgs = {

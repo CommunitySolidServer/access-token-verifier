@@ -1,8 +1,8 @@
 import { encode } from "jose/util/base64url";
 
 export function encodeToken(token: {
-  header: any;
-  payload: any;
+  header: unknown;
+  payload: unknown;
   signature: string;
 }): string {
   return `${encode(JSON.stringify(token.header))}.${encode(

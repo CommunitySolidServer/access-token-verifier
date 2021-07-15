@@ -8,12 +8,12 @@ jest.mock("jose/jwks/remote");
 /* eslint-disable @typescript-eslint/naming-convention */
 describe("Issuer key set", () => {
   const issuer = new URL("https://example-issuer.com/");
-  const jwks_uri = "https://example.com/JWKS_URI";
+  const jwksUri = "https://example.com/JWKS_URI";
 
   it("Returns a function", async () => {
     (crossFetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
-      json: () => ({ jwks_uri }),
+      json: () => ({ jwks_uri: jwksUri }),
     });
     (createRemoteJWKSet as jest.Mock).mockReturnValueOnce(() => true);
 
@@ -32,7 +32,7 @@ describe("Issuer key set", () => {
       }
     );
     expect(createRemoteJWKSet).toHaveBeenCalledTimes(1);
-    expect(createRemoteJWKSet).toHaveBeenCalledWith(new URL(jwks_uri));
+    expect(createRemoteJWKSet).toHaveBeenCalledWith(new URL(jwksUri));
   });
 
   it("Throws when Issuer's JWKS URI is missing", async () => {

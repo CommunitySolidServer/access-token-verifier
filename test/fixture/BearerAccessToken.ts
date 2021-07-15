@@ -1,15 +1,15 @@
 import type {
-  AccessToken,
-  AccessTokenHeader,
-  AccessTokenPayload,
+  SolidAccessToken,
+  SolidAccessTokenHeader,
+  SolidAccessTokenPayload,
 } from "../../src/types";
 
-const header: AccessTokenHeader = {
+const header: SolidAccessTokenHeader = {
   alg: "RS256",
   kid: "x",
 };
 
-const payload: AccessTokenPayload = {
+const payload: SolidAccessTokenPayload = {
   aud: "solid",
   exp: 1603386448,
   iat: 1603386448,
@@ -18,7 +18,7 @@ const payload: AccessTokenPayload = {
   client_id: "https://example.com/clientid",
 };
 
-export const token: AccessToken = {
+export const token: SolidAccessToken = {
   header,
   payload,
   signature: "",

@@ -8,7 +8,7 @@ export interface GetIssuersFunction {
   (webid: URL): Promise<Array<string>>;
 }
 
-export interface AuthorizationOptions {
+export interface AuthenticationOptions {
   header: string;
   issuers?: GetIssuersFunction;
   keySet?: GetKeySetFunction;

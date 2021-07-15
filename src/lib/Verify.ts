@@ -2,8 +2,8 @@ import { asserts } from "ts-guards";
 import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import type {
-  AccessTokenPayload,
-  AuthorizationOptions,
+  SolidAccessTokenPayload,
+  AuthenticationOptions,
   DPoPOptions,
   GetIssuersFunction,
   GetKeySetFunction,
@@ -25,9 +25,9 @@ import { issuers as getIssuers } from "./WebID";
  * @param dpop
  */
 export async function verify(
-  authorization: AuthorizationOptions,
+  authorization: AuthenticationOptions,
   dpop?: DPoPOptions
-): Promise<AccessTokenPayload> {
+): Promise<SolidAccessTokenPayload> {
   let getIssuersFunction: GetIssuersFunction;
   if (isNotNullOrUndefined(authorization.issuers)) {
     getIssuersFunction = authorization.issuers;

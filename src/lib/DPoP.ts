@@ -4,7 +4,7 @@ import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
 import { isDPoPBoundAccessTokenPayload, isDPoPToken } from "../guards";
 import type {
-  AccessToken,
+  SolidAccessToken,
   DPoPToken,
   JTICheckFunction,
   RequestMethod,
@@ -13,7 +13,7 @@ import { asymetricCryptographicAlgorithm } from "../types";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 
 async function isValidProof(
-  accessToken: AccessToken,
+  accessToken: SolidAccessToken,
   dpop: DPoPToken,
   method: RequestMethod,
   url: string,
@@ -55,7 +55,7 @@ async function isValidProof(
  */
 export async function verify(
   dpopHeader: string,
-  accessToken: AccessToken,
+  accessToken: SolidAccessToken,
   method: RequestMethod,
   url: string,
   isDuplicateJTI: JTICheckFunction
