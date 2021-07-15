@@ -5,8 +5,8 @@ import type {
   SolidAccessTokenHeader,
   SolidAccessTokenPayload,
   SolidDpopBoundAccessTokenPayload,
-} from "../types";
-import { asymetricCryptographicAlgorithm } from "../types";
+} from "../type";
+import { asymetricCryptographicAlgorithm } from "../type";
 
 /**
  * Check valid Access Token

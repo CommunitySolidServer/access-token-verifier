@@ -1,5 +1,5 @@
 import LRUCache from "lru-cache";
-import type { JTICheckFunction } from "../types";
+import type { JTICheckFunction } from "../type";
 import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class DPoPJTICache extends LRUCache<string, boolean> {

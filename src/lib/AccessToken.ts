@@ -4,8 +4,8 @@ import type {
   SolidAccessToken,
   GetIssuersFunction,
   GetKeySetFunction,
-} from "../types";
-import { asymetricCryptographicAlgorithm } from "../types";
+} from "../type";
+import { asymetricCryptographicAlgorithm } from "../type";
 import {
   clockToleranceInSeconds,
   maxAccessTokenAgeInSeconds,

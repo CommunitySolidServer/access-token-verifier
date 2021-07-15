@@ -8,8 +8,8 @@ import type {
   DPoPToken,
   JTICheckFunction,
   RequestMethod,
-} from "../types";
-import { asymetricCryptographicAlgorithm } from "../types";
+} from "../type";
+import { asymetricCryptographicAlgorithm } from "../type";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 
 async function isValidProof(

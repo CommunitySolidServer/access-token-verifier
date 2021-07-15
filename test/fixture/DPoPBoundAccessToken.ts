@@ -2,7 +2,7 @@ import type {
   SolidAccessToken,
   SolidAccessTokenHeader,
   SolidDpopBoundAccessTokenPayload,
-} from "../../src/types";
+} from "../../src/type";
 
 const header: SolidAccessTokenHeader = {
   alg: "RS256",

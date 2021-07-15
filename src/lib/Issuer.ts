@@ -2,7 +2,7 @@ import { fetch as crossFetch } from "cross-fetch";
 import createRemoteJWKSet from "jose/jwks/remote";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
-import type { GetKeySetFunction } from "../types";
+import type { GetKeySetFunction } from "../type";
 import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
 
 function configUrl(iss: string): string {

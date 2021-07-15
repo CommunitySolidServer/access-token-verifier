@@ -4,7 +4,7 @@ import { keySet as getKeySet } from "../src/lib/Issuer";
 import { isDuplicate as isDuplicateJTI } from "../src/lib/JTI";
 import { verify } from "../src/lib/Verify";
 import { issuers as getIssuers } from "../src/lib/WebID";
-import type { DPoPOptions } from "../src/types";
+import type { DPoPOptions } from "../src/type";
 import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
 import { encodeToken } from "./fixture/EncodeToken";

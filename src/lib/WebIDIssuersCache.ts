@@ -1,5 +1,5 @@
 import LRUCache from "lru-cache";
-import type { GetIssuersFunction } from "../types";
+import type { GetIssuersFunction } from "../type";
 import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 import { issuers } from "./WebID";
 

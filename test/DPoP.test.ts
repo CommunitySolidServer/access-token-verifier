@@ -1,6 +1,6 @@
 import jwtVerify from "jose/jwt/verify";
 import { verify } from "../src/lib/DPoP";
-import type { DPoPToken } from "../src/types";
+import type { DPoPToken } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

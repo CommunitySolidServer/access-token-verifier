@@ -1,4 +1,4 @@
-import type { SolidTokenVerifierErrorCode } from "../types";
+import type { SolidTokenVerifierErrorCode } from "../type";
 
 /**
  * Generic Error class for everything DPoP

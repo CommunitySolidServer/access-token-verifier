@@ -1,6 +1,6 @@
 import type createRemoteJWKSet from "jose/jwks/remote";
 import LRUCache from "lru-cache";
-import type { GetKeySetFunction } from "../types";
+import type { GetKeySetFunction } from "../type";
 import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 import { keySet } from "./Issuer";
 

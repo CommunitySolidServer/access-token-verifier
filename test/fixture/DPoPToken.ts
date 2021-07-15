@@ -2,7 +2,7 @@ import type {
   DPoPToken,
   DPoPTokenHeader,
   DPoPTokenPayload,
-} from "../../src/types";
+} from "../../src/type";
 
 const dpopTokenHeaderEC: DPoPTokenHeader = {
   typ: "dpop+jwt",

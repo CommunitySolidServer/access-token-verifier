@@ -3,7 +3,7 @@ import type {
   SolidAccessTokenPayload,
   RequestMethod,
   SolidTokenVerifierFunction,
-} from "../types";
+} from "../type";
 import { DPoPJTICache } from "./DPoPJTICache";
 import { IssuerKeySetCache } from "./IssuerKeySetCache";
 import { verify as verifyToken } from "./Verify";

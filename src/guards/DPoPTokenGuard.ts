@@ -1,6 +1,6 @@
 import { asserts } from "ts-guards";
-import { asymetricCryptographicAlgorithm, requestMethod } from "../types";
-import type { DPoPToken, DPoPTokenHeader, DPoPTokenPayload } from "../types";
+import { asymetricCryptographicAlgorithm, requestMethod } from "../type";
+import type { DPoPToken, DPoPTokenHeader, DPoPTokenPayload } from "../type";
 import { isDPoPPublicJWK } from "./DPoPJWKGuard";
 
 /**

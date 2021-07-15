@@ -1,7 +1,7 @@
 import { DataFactory, Store } from "n3";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad } from "rdf-js";
-import type { GetIssuersFunction } from "../types";
+import type { GetIssuersFunction } from "../type";
 
 /* eslint-disable-next-line func-names */
 export const issuers: GetIssuersFunction = async function (

@@ -1,6 +1,6 @@
 import { asserts } from "ts-guards";
-import type { DPoPPublicJWK, ECPublicJWK, RSAPublicJWK } from "../types";
-import { curve, rsaAlgorithm } from "../types";
+import type { DPoPPublicJWK, ECPublicJWK, RSAPublicJWK } from "../type";
+import { curve, rsaAlgorithm } from "../type";
 
 /**
  * JWK Validation

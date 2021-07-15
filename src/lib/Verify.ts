@@ -8,7 +8,7 @@ import type {
   GetIssuersFunction,
   GetKeySetFunction,
   JTICheckFunction,
-} from "../types";
+} from "../type";
 import { verify as verifyAccessToken } from "./AccessToken";
 import { verify as verifyDPoPToken } from "./DPoP";
 import { keySet as getKeySet } from "./Issuer";
