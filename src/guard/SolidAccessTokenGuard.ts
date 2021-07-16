@@ -12,14 +12,14 @@ import { asymetricCryptographicAlgorithm } from "../type";
  * Check valid Access Token
  */
 /* eslint-disable no-use-before-define */
-export function isAccessToken(x: unknown): asserts x is SolidAccessToken {
+export function isSolidAccessToken(x: unknown): asserts x is SolidAccessToken {
   asserts.areObjectPropertiesOf(x, ["header", "payload", "signature"]);
-  isAccessTokenHeader(x.header);
-  isAccessTokenPayload(x.payload);
+  isSolidAccessTokenHeader(x.header);
+  isSolidAccessTokenPayload(x.payload);
   asserts.isString(x.signature);
 }
 
-export function isAccessTokenHeader(
+export function isSolidAccessTokenHeader(
   x: unknown
 ): asserts x is SolidAccessTokenHeader {
   asserts.areObjectPropertiesOf(x, ["alg", "kid"]);
@@ -27,7 +27,7 @@ export function isAccessTokenHeader(
   asserts.isString(x.kid);
 }
 
-export function isAccessTokenPayload(
+export function isSolidAccessTokenPayload(
   x: unknown
 ): asserts x is SolidAccessTokenPayload {
   asserts.areObjectPropertiesOf(x, ["aud", "exp", "iat", "iss", "webid"]);
@@ -46,7 +46,7 @@ export function isAccessTokenPayload(
   }
 }
 
-export function isDPoPBoundAccessTokenPayload(
+export function isSolidDPoPBoundAccessTokenPayload(
   x: SolidAccessTokenPayload
 ): asserts x is SolidDpopBoundAccessTokenPayload {
   asserts.isObjectPropertyOf(x, "cnf");

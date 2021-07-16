@@ -1,5 +1,5 @@
 import jwtVerify from "jose/jwt/verify";
-import { isAccessToken, isAccessTokenPayload } from "../guards";
+import { isSolidAccessToken, isSolidAccessTokenPayload } from "../guard";
 import type {
   SolidAccessToken,
   GetIssuersFunction,
@@ -46,7 +46,7 @@ function urlClaim(type: string, claim: string): URL {
 function verifiableClaims(token: string): { iss: URL; webid: URL } {
   const tokenPayload: unknown = JSON.parse(decode(token.split(".")[1]));
 
-  isAccessTokenPayload(tokenPayload);
+  isSolidAccessTokenPayload(tokenPayload);
 
   return {
     iss: urlClaim("issuer", tokenPayload.iss),
@@ -103,7 +103,7 @@ export async function verify(
     signature: token.split(".")[2],
   };
 
-  isAccessToken(accessToken);
+  isSolidAccessToken(accessToken);
 
   return accessToken;
 }

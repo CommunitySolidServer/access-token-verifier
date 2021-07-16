@@ -1,3 +1,3 @@
-export * from "./AccessTokenGuard";
+export * from "./SolidAccessTokenGuard";
 export * from "./DPoPJWKGuard";
 export * from "./DPoPTokenGuard";

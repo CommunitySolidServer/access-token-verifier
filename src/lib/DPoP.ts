@@ -2,7 +2,7 @@ import EmbeddedJWK from "jose/jwk/embedded";
 import calculateThumbprint from "jose/jwk/thumbprint";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import { isDPoPBoundAccessTokenPayload, isDPoPToken } from "../guards";
+import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
 import type {
   SolidAccessToken,
   DPoPToken,
@@ -20,7 +20,7 @@ async function isValidProof(
   isDuplicateJTI: JTICheckFunction
 ): Promise<void> {
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
-  isDPoPBoundAccessTokenPayload(accessToken.payload);
+  isSolidDPoPBoundAccessTokenPayload(accessToken.payload);
 
   /*
    * Check DPoP is bound to the access token

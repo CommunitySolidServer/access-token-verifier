@@ -22,11 +22,11 @@ import { issuers as getIssuers } from "./WebID";
  * @param authorizationHeader
  * @param issuers
  * @param keySet
- * @param dpop
+ * @param dpopOptions
  */
 export async function verify(
   authorization: AuthenticationOptions,
-  dpop?: DPoPOptions
+  dpopOptions?: DPoPOptions
 ): Promise<SolidAccessTokenPayload> {
   let getIssuersFunction: GetIssuersFunction;
   if (isNotNullOrUndefined(authorization.issuers)) {
@@ -53,7 +53,7 @@ export async function verify(
     isObjectPropertyOf(accessToken.payload, "cnf")
   ) {
     try {
-      asserts.isNotNullOrUndefined(dpop);
+      asserts.isNotNullOrUndefined(dpopOptions);
     } catch (_) {
       throw new SolidTokenVerifierError(
         "SolidIdentityDPoPError",
@@ -61,16 +61,16 @@ export async function verify(
       );
     }
     let isDuplicateJTIFunction: JTICheckFunction;
-    if (!isNotNullOrUndefined(dpop.isDuplicateJTI)) {
+    if (!isNotNullOrUndefined(dpopOptions.isDuplicateJTI)) {
       isDuplicateJTIFunction = isDuplicate;
     } else {
-      isDuplicateJTIFunction = dpop.isDuplicateJTI;
+      isDuplicateJTIFunction = dpopOptions.isDuplicateJTI;
     }
     await verifyDPoPToken(
-      dpop.header,
+      dpopOptions.header,
       accessToken,
-      dpop.method,
-      dpop.url,
+      dpopOptions.method,
+      dpopOptions.url,
       isDuplicateJTIFunction
     );
   }
