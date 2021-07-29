@@ -22,4 +22,6 @@ export interface DPoPTokenPayload {
   htu: string;
   iat: number;
   jti: string;
+  // TODO: Phased-in ath becomes enforced
+  ath?: string;
 }

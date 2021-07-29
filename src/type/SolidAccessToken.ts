@@ -19,6 +19,7 @@ export interface SolidAccessTokenHeader {
 
 export interface SolidAccessTokenPayload {
   aud: "solid" | string[];
+  // TODO: Phased-in client_id becomes enforced
   client_id?: string;
   exp: number;
   iat: number;

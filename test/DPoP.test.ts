@@ -1,10 +1,12 @@
 import jwtVerify from "jose/jwt/verify";
+import { isValidAthClaim } from "../src/algorithm/isValidAthClaim";
 import { verify } from "../src/lib/DPoP";
-import type { DPoPToken } from "../src/type";
+import type { DPoPToken, DPoPTokenPayload } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock("jose/jwt/verify");
+jest.mock("../src/algorithm/isValidAthClaim");
 
 const dpop: DPoPToken = {
   header: {
@@ -25,6 +27,14 @@ const dpop: DPoPToken = {
   },
   signature:
     "lNhmpAX1WwmpBvwhok4E74kWCiGBNdavjLAeevGy32H3dbF0Jbri69Nm2ukkwb-uyUI4AUg1JSskfWIyo4UCbQ",
+};
+
+const dpopPayloadWithAth: DPoPTokenPayload = {
+  jti: "e1j3V_bKic8-LAEB",
+  htm: "GET",
+  htu: "https://resource.example.org/protectedresource",
+  iat: 1562262618,
+  ath: "bla",
 };
 
 const dpopRSA: DPoPToken = {
@@ -77,6 +87,54 @@ describe("DPoP proof", () => {
         () => false
       )
     ).toStrictEqual(dpop);
+  });
+
+  it("Checks conforming proof with EC Key and ath claim", async () => {
+    (jwtVerify as jest.Mock).mockResolvedValueOnce({
+      payload: dpopPayloadWithAth,
+      protectedHeader: dpop.header,
+    });
+    (isValidAthClaim as jest.Mock).mockReturnValueOnce(true);
+
+    expect(
+      await verify(
+        encodeToken(dpop),
+        {
+          payload: {
+            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
+          },
+        } as any,
+        "GET",
+        "https://resource.example.org/protectedresource",
+        () => false
+      )
+    ).toStrictEqual({
+      header: dpop.header,
+      payload: dpopPayloadWithAth,
+      signature: dpop.signature,
+    });
+  });
+
+  it("Throws on invalid ath claim", async () => {
+    (jwtVerify as jest.Mock).mockResolvedValueOnce({
+      payload: dpopPayloadWithAth,
+      protectedHeader: dpop.header,
+    });
+    (isValidAthClaim as jest.Mock).mockReturnValueOnce(false);
+
+    await expect(
+      verify(
+        encodeToken(dpop),
+        {
+          payload: {
+            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
+          },
+        } as any,
+        "GET",
+        "https://resource.example.org/protectedresource",
+        () => false
+      )
+    ).rejects.toThrow("Expected true, got:\nfalse");
   });
 
   it("Checks conforming proof with RSA Key", async () => {
