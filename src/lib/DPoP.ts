@@ -2,7 +2,7 @@ import EmbeddedJWK from "jose/jwk/embedded";
 import calculateThumbprint from "jose/jwk/thumbprint";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import { isValidAthClaim } from "../algorithm";
+import { verifyAccessTokenHash } from "../algorithm";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
 import type {
   SolidAccessToken,
@@ -42,15 +42,12 @@ async function isValidProof(
 
   // TODO: Phased-in ath becomes enforced
   if (typeof dpop.payload.ath === "string" && dpop.payload.ath) {
-    asserts.isLiteral(
-      isValidAthClaim(JSON.stringify(accessToken), dpop.payload.ath),
-      true
-    );
+    verifyAccessTokenHash(JSON.stringify(accessToken), dpop.payload.ath);
   }
 }
 
 /**
- * Verify DPoP
+ * Verify DPoP Proof
  * - Signature of DPoP JWT/JWS matches the key embedded in its header
  * - DPoP max age 60 seconds
  * - Claims:

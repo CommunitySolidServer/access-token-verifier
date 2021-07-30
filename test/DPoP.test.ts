@@ -1,12 +1,12 @@
 import jwtVerify from "jose/jwt/verify";
-import { isValidAthClaim } from "../src/algorithm/isValidAthClaim";
+import { verifyAccessTokenHash } from "../src/algorithm/verifyAccessTokenHash";
 import { verify } from "../src/lib/DPoP";
 import type { DPoPToken, DPoPTokenPayload } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock("jose/jwt/verify");
-jest.mock("../src/algorithm/isValidAthClaim");
+jest.mock("../src/algorithm/verifyAccessTokenHash");
 
 const dpop: DPoPToken = {
   header: {
@@ -94,7 +94,7 @@ describe("DPoP proof", () => {
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
     });
-    (isValidAthClaim as jest.Mock).mockReturnValueOnce(true);
+    (verifyAccessTokenHash as jest.Mock).mockReturnValueOnce(true);
 
     expect(
       await verify(
@@ -120,7 +120,7 @@ describe("DPoP proof", () => {
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
     });
-    (isValidAthClaim as jest.Mock).mockReturnValueOnce(false);
+    (verifyAccessTokenHash as jest.Mock).mockReturnValueOnce(false);
 
     await expect(
       verify(

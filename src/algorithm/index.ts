@@ -1,1 +1,1 @@
-export * from "./isValidAthClaim";
+export * from "./verifyAccessTokenHash";
