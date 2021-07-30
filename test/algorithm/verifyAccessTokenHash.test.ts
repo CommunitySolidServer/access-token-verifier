@@ -1,7 +1,7 @@
 import { verifyAccessTokenHash } from "../../src/algorithm/verifyAccessTokenHash";
 import { AccessTokenHashVerificationError } from "../../src/error";
 
-// Example data extracted from https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-7.1
+// Test data extracted from https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-7.1
 describe("The verifyAccessTokenHash function", () => {
   it("Doesn't throw when the access token hash is matched", () => {
     expect(() => {

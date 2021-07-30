@@ -3,6 +3,7 @@ import { verifyAccessTokenHash } from "../src/algorithm/verifyAccessTokenHash";
 import {
   HttpMethodVerificationError,
   HttpUriVerificationError,
+  JwkThumbprintVerificationError,
   JwtTokenIdentifierNotUniqueError,
 } from "../src/error";
 import { verify } from "../src/lib/DPoP";
@@ -263,8 +264,6 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => false
       )
-    ).rejects.toThrow(
-      "Expected UNCONFIRMED_KEY_THUMBPRINT, got:\n0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
-    );
+    ).rejects.toThrow(JwkThumbprintVerificationError);
   });
 });

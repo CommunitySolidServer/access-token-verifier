@@ -1,11 +1,11 @@
 import EmbeddedJWK from "jose/jwk/embedded";
-import calculateThumbprint from "jose/jwk/thumbprint";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
 import {
   verifyAccessTokenHash,
   verifyHttpMethod,
   verifyHttpUri,
+  verifyJwkThumbprint,
   verifyJwtTokenIdentifier,
 } from "../algorithm";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
@@ -28,17 +28,7 @@ async function isValidProof(
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
   isSolidDPoPBoundAccessTokenPayload(accessToken.payload);
 
-  /*
-   * Check DPoP is bound to the access token
-   * The value in "jkt" MUST be the base64url encoding [RFC7515] of the
-   * JWK SHA-256 Thumbprint (according to [RFC7638]) of the public key to
-   * which the access token is bound.
-   * https://tools.ietf.org/html/draft-fett-oauth-dpop-04#section-7
-   */
-  asserts.isLiteral(
-    await calculateThumbprint(dpop.header.jwk),
-    accessToken.payload.cnf.jkt
-  );
+  await verifyJwkThumbprint(dpop.header.jwk, accessToken.payload.cnf.jkt);
 
   verifyHttpMethod(httpMethod, dpop.payload.htm);
 
