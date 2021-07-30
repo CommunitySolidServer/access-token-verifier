@@ -18,30 +18,6 @@ import type {
 import { asymetricCryptographicAlgorithm } from "../type";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 
-async function isValidProof(
-  accessToken: SolidAccessToken,
-  dpop: DPoPToken,
-  httpMethod: RequestMethod,
-  uri: string,
-  isDuplicateJTI: JTICheckFunction
-): Promise<void> {
-  asserts.isObjectPropertyOf(accessToken.payload, "cnf");
-  isSolidDPoPBoundAccessTokenPayload(accessToken.payload);
-
-  await verifyJwkThumbprint(dpop.header.jwk, accessToken.payload.cnf.jkt);
-
-  verifyHttpMethod(httpMethod, dpop.payload.htm);
-
-  verifyHttpUri(uri, dpop.payload.htu);
-
-  verifyJwtTokenIdentifier(isDuplicateJTI, dpop.payload.jti);
-
-  // TODO: Phased-in ath becomes enforced
-  if (typeof dpop.payload.ath === "string" && dpop.payload.ath) {
-    verifyAccessTokenHash(JSON.stringify(accessToken), dpop.payload.ath);
-  }
-}
-
 /**
  * Verify DPoP Proof
  * - Signature of DPoP JWT/JWS matches the key embedded in its header
@@ -55,11 +31,11 @@ async function isValidProof(
  * - DPoP tokens can rely on iat+maxTokenAge to be invalidated since they are specific to a request
  *   (so the exp claim which is not required in DPoP tokens' bodys is also redundant)
  */
-export async function verify(
+export async function verifyDpopProof(
   dpopHeader: string,
   accessToken: SolidAccessToken,
-  method: RequestMethod,
-  url: string,
+  httpMethod: RequestMethod,
+  uri: string,
   isDuplicateJTI: JTICheckFunction
 ): Promise<DPoPToken> {
   const { payload, protectedHeader } = await jwtVerify(
@@ -81,7 +57,21 @@ export async function verify(
 
   isDPoPToken(dpop);
 
-  await isValidProof(accessToken, dpop, method, url, isDuplicateJTI);
+  asserts.isObjectPropertyOf(accessToken.payload, "cnf");
+  isSolidDPoPBoundAccessTokenPayload(accessToken.payload);
+
+  await verifyJwkThumbprint(dpop.header.jwk, accessToken.payload.cnf.jkt);
+
+  verifyHttpMethod(httpMethod, dpop.payload.htm);
+
+  verifyHttpUri(uri, dpop.payload.htu);
+
+  verifyJwtTokenIdentifier(isDuplicateJTI, dpop.payload.jti);
+
+  // TODO: Phased-in ath becomes enforced
+  if (typeof dpop.payload.ath === "string" && dpop.payload.ath) {
+    verifyAccessTokenHash(JSON.stringify(accessToken), dpop.payload.ath);
+  }
 
   return dpop;
 }

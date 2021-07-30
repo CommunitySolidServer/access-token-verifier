@@ -10,7 +10,7 @@ import type {
   JTICheckFunction,
 } from "../type";
 import { verify as verifyAccessToken } from "./AccessToken";
-import { verify as verifyDPoPToken } from "./DPoP";
+import { verifyDpopProof } from "./DPoP";
 import { keySet as getKeySet } from "./Issuer";
 import { isDuplicate } from "./JTI";
 import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
@@ -66,7 +66,7 @@ export async function verify(
     } else {
       isDuplicateJTIFunction = dpopOptions.isDuplicateJTI;
     }
-    await verifyDPoPToken(
+    await verifyDpopProof(
       dpopOptions.header,
       accessToken,
       dpopOptions.method,

@@ -1,6 +1,6 @@
 export { verify as verifyAccessToken } from "./AccessToken";
 export * from "./Defaults";
-export { verify as verifyDPoPToken } from "./DPoP";
+export * from "./DPoP";
 export * from "./DPoPJTICache";
 export * from "./Issuer";
 export * from "./IssuerKeySetCache";

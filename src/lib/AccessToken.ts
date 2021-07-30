@@ -1,4 +1,5 @@
 import jwtVerify from "jose/jwt/verify";
+import { verifySecureUriClaim } from "../algorithm/verifySecureUriClaim";
 import { isSolidAccessToken, isSolidAccessTokenPayload } from "../guard";
 import type {
   SolidAccessToken,
@@ -22,25 +23,6 @@ function value(token: string): string {
 }
 
 /**
- * URL Claims
- * Restricts to HTTPS, TODO: Check if we can restrict to HTTP over TLS if/when in the future
- */
-function urlClaim(type: string, claim: string): URL {
-  const url = new URL(claim);
-
-  if (
-    url.protocol !== "https:" &&
-    !url.toString().startsWith("http://localhost:")
-  ) {
-    throw new TypeError(
-      `Verifiable URL claim ${type} needs to use the https protocol.`
-    );
-  }
-
-  return url;
-}
-
-/**
  * Checks the access token structure and its WebID and Issuer claims
  */
 function verifiableClaims(token: string): { iss: URL; webid: URL } {
@@ -48,9 +30,12 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
 
   isSolidAccessTokenPayload(tokenPayload);
 
+  verifySecureUriClaim(tokenPayload.iss);
+  verifySecureUriClaim(tokenPayload.webid);
+
   return {
-    iss: urlClaim("issuer", tokenPayload.iss),
-    webid: urlClaim("web_id", tokenPayload.webid),
+    iss: new URL(tokenPayload.iss),
+    webid: new URL(tokenPayload.webid),
   };
 }
 
