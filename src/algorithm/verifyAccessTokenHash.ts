@@ -1,5 +1,6 @@
 import { createHash } from "crypto";
 import { encode as base64UrlEncode } from "jose/util/base64url";
+import { AccessTokenHashVerificationError } from "../error";
 
 /**
  * Verifies the DPoP proof ath claim
@@ -8,7 +9,7 @@ import { encode as base64UrlEncode } from "jose/util/base64url";
  * > -- https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-4.2
  *
  * @param accessToken The access token associated with the DPoP proof
- * @param ath The access token hash to verify
+ * @param ath The access token hash to match against
  */
 export function verifyAccessTokenHash(accessToken: string, ath: string): void {
   if (
@@ -16,8 +17,6 @@ export function verifyAccessTokenHash(accessToken: string, ath: string): void {
       createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest()
     ) !== ath
   ) {
-    throw new Error(
-      "The DPoP Proof's ath parameter doesn't match the base64 URL encoded SHA256 hash of the ASCII encoded associated access token's value."
-    );
+    throw AccessTokenHashVerificationError;
   }
 }

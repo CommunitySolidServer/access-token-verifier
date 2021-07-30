@@ -1,3 +1,4 @@
+import { JwtTokenIdentifierNotUniqueError } from "../error";
 import type { JTICheckFunction } from "../type";
 
 /**
@@ -9,15 +10,13 @@ import type { JTICheckFunction } from "../type";
  * Storing JTIs is not the purpose of this library, hence it requires a function to match previously used identifiers.
  *
  * @param isDuplicateJTI The function used to match previously used identifiers
- * @param jti The DPoP proof unique identifier
+ * @param jti The DPoP proof identifier to match against
  */
 export function verifyJwtTokenIdentifier(
   isDuplicateJTI: JTICheckFunction,
   jti: string
 ): void {
   if (isDuplicateJTI(jti)) {
-    throw new Error(
-      "The DPoP Proof's unique identifier has already been used."
-    );
+    throw JwtTokenIdentifierNotUniqueError;
   }
 }

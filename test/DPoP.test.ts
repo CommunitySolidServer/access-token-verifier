@@ -1,5 +1,9 @@
 import jwtVerify from "jose/jwt/verify";
 import { verifyAccessTokenHash } from "../src/algorithm/verifyAccessTokenHash";
+import {
+  HttpUriVerificationError,
+  JwtTokenIdentifierNotUniqueError,
+} from "../src/error";
 import { verify } from "../src/lib/DPoP";
 import type { DPoPToken, DPoPTokenPayload } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
@@ -220,9 +224,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/otherresource",
         () => false
       )
-    ).rejects.toThrow(
-      "Expected https://resource.example.org/otherresource, got:\nhttps://resource.example.org/protectedresource"
-    );
+    ).rejects.toThrow(HttpUriVerificationError);
   });
 
   it("Throws on duplicate JTI", async () => {
@@ -243,9 +245,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => true
       )
-    ).rejects.toThrow(
-      "The DPoP Proof's unique identifier has already been used."
-    );
+    ).rejects.toThrow(JwtTokenIdentifierNotUniqueError);
   });
 
   it("Throws on wrong confirmation claim", async () => {

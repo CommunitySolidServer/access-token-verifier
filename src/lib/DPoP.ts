@@ -2,7 +2,11 @@ import EmbeddedJWK from "jose/jwk/embedded";
 import calculateThumbprint from "jose/jwk/thumbprint";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import { verifyAccessTokenHash, verifyJwtTokenIdentifier } from "../algorithm";
+import {
+  verifyAccessTokenHash,
+  verifyHttpUri,
+  verifyJwtTokenIdentifier,
+} from "../algorithm";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
 import type {
   SolidAccessToken,
@@ -37,7 +41,8 @@ async function isValidProof(
 
   // Check DPoP Token claims method, url and unique token id
   asserts.isLiteral(dpop.payload.htm, method);
-  asserts.isLiteral(dpop.payload.htu, url);
+
+  verifyHttpUri(dpop.payload.htu, url);
 
   verifyJwtTokenIdentifier(isDuplicateJTI, dpop.payload.jti);
 

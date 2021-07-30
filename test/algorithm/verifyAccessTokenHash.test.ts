@@ -1,4 +1,5 @@
 import { verifyAccessTokenHash } from "../../src/algorithm/verifyAccessTokenHash";
+import { AccessTokenHashVerificationError } from "../../src/error";
 
 // Example data extracted from https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-7.1
 describe("The verifyAccessTokenHash function", () => {
@@ -17,8 +18,6 @@ describe("The verifyAccessTokenHash function", () => {
         "Kz~8mXK1EalYznwH-LC-1fBAo.4Ljp~zsPE_NeO.gxU",
         "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo "
       );
-    }).toThrow(
-      "The DPoP Proof's ath parameter doesn't match the base64 URL encoded SHA256 hash of the ASCII encoded associated access token's value."
-    );
+    }).toThrow(AccessTokenHashVerificationError);
   });
 });
