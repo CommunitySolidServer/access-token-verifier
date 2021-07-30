@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 import { encode as base64UrlEncode } from "jose/util/base64url";
-import { AccessTokenHashVerificationError } from "../error";
+import { AccessTokenHashVerificationError } from "../error/AccessTokenHashVerificationError";
 
 /**
  * Verifies the DPoP proof ath claim
@@ -12,11 +12,10 @@ import { AccessTokenHashVerificationError } from "../error";
  * @param ath The access token hash to match against
  */
 export function verifyAccessTokenHash(accessToken: string, ath: string): void {
-  if (
-    base64UrlEncode(
-      createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest()
-    ) !== ath
-  ) {
-    throw AccessTokenHashVerificationError;
+  const actual = base64UrlEncode(
+    createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest()
+  );
+  if (actual !== ath) {
+    throw new AccessTokenHashVerificationError(actual, ath);
   }
 }

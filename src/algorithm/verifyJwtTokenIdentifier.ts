@@ -17,6 +17,6 @@ export function verifyJwtTokenIdentifier(
   jti: string
 ): void {
   if (isDuplicateJTI(jti)) {
-    throw JwtTokenIdentifierNotUniqueError;
+    throw new JwtTokenIdentifierNotUniqueError(jti);
   }
 }

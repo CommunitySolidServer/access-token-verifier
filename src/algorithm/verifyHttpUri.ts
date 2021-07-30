@@ -10,7 +10,8 @@ import { HttpUriVerificationError } from "../error";
  * @param htu The HTTP URI to match against
  */
 export function verifyHttpUri(uri: string, htu: string): void {
-  if (uri.split("?")[0].split("#")[0] !== htu) {
-    throw HttpUriVerificationError;
+  const actual = uri.split("?")[0].split("#")[0];
+  if (actual !== htu) {
+    throw new HttpUriVerificationError(actual, htu);
   }
 }
