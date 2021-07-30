@@ -1,4 +1,5 @@
 import jwtVerify from "jose/jwt/verify";
+import { SecureUriVerificationError } from "../src/error";
 import { verify } from "../src/lib/AccessToken";
 import { keySet as getKeySet } from "../src/lib/Issuer";
 import { token as bearerToken } from "./fixture/BearerAccessToken";
@@ -89,9 +90,7 @@ describe("Access Token", () => {
         () => Promise.resolve(["https://example.com/issuer"]),
         getKeySet
       )
-    ).rejects.toThrow(
-      "Verifiable URL claim web_id needs to use the https protocol."
-    );
+    ).rejects.toThrow(SecureUriVerificationError);
   });
 
   it("Throws when issuer doesn't match", async () => {

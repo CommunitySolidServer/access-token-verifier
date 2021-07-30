@@ -6,7 +6,7 @@ import {
   JwkThumbprintVerificationError,
   JwtTokenIdentifierNotUniqueError,
 } from "../src/error";
-import { verify } from "../src/lib/DPoP";
+import { verifyDpopProof as verify } from "../src/lib/DPoP";
 import type { DPoPToken, DPoPTokenPayload } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
 
