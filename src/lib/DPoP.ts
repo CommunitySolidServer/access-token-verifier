@@ -2,7 +2,7 @@ import EmbeddedJWK from "jose/jwk/embedded";
 import calculateThumbprint from "jose/jwk/thumbprint";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import { verifyAccessTokenHash } from "../algorithm";
+import { verifyAccessTokenHash, verifyJwtTokenIdentifier } from "../algorithm";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
 import type {
   SolidAccessToken,
@@ -38,7 +38,8 @@ async function isValidProof(
   // Check DPoP Token claims method, url and unique token id
   asserts.isLiteral(dpop.payload.htm, method);
   asserts.isLiteral(dpop.payload.htu, url);
-  asserts.isLiteral(isDuplicateJTI(dpop.payload.jti), false);
+
+  verifyJwtTokenIdentifier(isDuplicateJTI, dpop.payload.jti);
 
   // TODO: Phased-in ath becomes enforced
   if (typeof dpop.payload.ath === "string" && dpop.payload.ath) {

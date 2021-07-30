@@ -1,13 +1,10 @@
+import type { JTICheckFunction } from "./JTICheckFunction";
 import type { RequestMethod } from "./RequestMethod";
 import type { SolidAccessTokenPayload } from "./SolidAccessToken";
 
 /**
  * Solid Access Token verification function
  */
-export interface JTICheckFunction {
-  (jti: string): boolean;
-}
-
 export interface DPoPOptions {
   header: string;
   method: RequestMethod;

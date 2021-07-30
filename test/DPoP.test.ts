@@ -120,7 +120,9 @@ describe("DPoP proof", () => {
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
     });
-    (verifyAccessTokenHash as jest.Mock).mockReturnValueOnce(false);
+    (verifyAccessTokenHash as jest.Mock).mockImplementationOnce(() => {
+      throw new Error();
+    });
 
     await expect(
       verify(
@@ -134,7 +136,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => false
       )
-    ).rejects.toThrow("Expected true, got:\nfalse");
+    ).rejects.toThrow();
   });
 
   it("Checks conforming proof with RSA Key", async () => {
@@ -241,7 +243,9 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => true
       )
-    ).rejects.toThrow("Expected false, got:\ntrue");
+    ).rejects.toThrow(
+      "The DPoP Proof's unique identifier has already been used."
+    );
   });
 
   it("Throws on wrong confirmation claim", async () => {
