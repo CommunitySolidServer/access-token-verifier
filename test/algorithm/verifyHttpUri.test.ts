@@ -2,7 +2,7 @@ import { verifyHttpUri } from "../../src/algorithm/verifyHttpUri";
 import { HttpUriVerificationError } from "../../src/error";
 
 describe("The verifyHttpUri function", () => {
-  it("Doesn't throw when an HTTP URI matches", () => {
+  it("Doesn't throw when the HTTP URI matches", () => {
     expect(() => {
       verifyHttpUri("https://example.com/x", "https://example.com/x");
     }).not.toThrow();
@@ -32,7 +32,7 @@ describe("The verifyHttpUri function", () => {
     }).toThrow(HttpUriVerificationError);
   });
 
-  it("Throws when an HTTP URI doesn't match", () => {
+  it("Throws when the HTTP URI doesn't match", () => {
     expect(() => {
       verifyHttpUri("https://example.com/x", "https://example.com/y");
     }).toThrow(HttpUriVerificationError);

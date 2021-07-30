@@ -1,6 +1,7 @@
 import jwtVerify from "jose/jwt/verify";
 import { verifyAccessTokenHash } from "../src/algorithm/verifyAccessTokenHash";
 import {
+  HttpMethodVerificationError,
   HttpUriVerificationError,
   JwtTokenIdentifierNotUniqueError,
 } from "../src/error";
@@ -203,7 +204,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => false
       )
-    ).rejects.toThrow("Expected POST, got:\nGET");
+    ).rejects.toThrow(HttpMethodVerificationError);
   });
 
   it("Throws on wrong url", async () => {

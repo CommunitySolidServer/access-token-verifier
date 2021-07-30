@@ -4,6 +4,7 @@ import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
 import {
   verifyAccessTokenHash,
+  verifyHttpMethod,
   verifyHttpUri,
   verifyJwtTokenIdentifier,
 } from "../algorithm";
@@ -20,8 +21,8 @@ import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
 async function isValidProof(
   accessToken: SolidAccessToken,
   dpop: DPoPToken,
-  method: RequestMethod,
-  url: string,
+  httpMethod: RequestMethod,
+  uri: string,
   isDuplicateJTI: JTICheckFunction
 ): Promise<void> {
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
@@ -39,10 +40,9 @@ async function isValidProof(
     accessToken.payload.cnf.jkt
   );
 
-  // Check DPoP Token claims method, url and unique token id
-  asserts.isLiteral(dpop.payload.htm, method);
+  verifyHttpMethod(httpMethod, dpop.payload.htm);
 
-  verifyHttpUri(dpop.payload.htu, url);
+  verifyHttpUri(uri, dpop.payload.htu);
 
   verifyJwtTokenIdentifier(isDuplicateJTI, dpop.payload.jti);
 
