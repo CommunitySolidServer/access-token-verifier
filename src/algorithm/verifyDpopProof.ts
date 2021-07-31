@@ -1,14 +1,8 @@
 import EmbeddedJWK from "jose/jwk/embedded";
 import jwtVerify from "jose/jwt/verify";
 import { asserts } from "ts-guards";
-import {
-  verifyAccessTokenHash,
-  verifyHttpMethod,
-  verifyHttpUri,
-  verifyJwkThumbprint,
-  verifyJwtTokenIdentifier,
-} from "../algorithm";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
+import { clockToleranceInSeconds, maxAgeInMilliseconds } from "../lib/Defaults";
 import type {
   SolidAccessToken,
   DPoPToken,
@@ -16,7 +10,11 @@ import type {
   RequestMethod,
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
-import { clockToleranceInSeconds, maxAgeInMilliseconds } from "./Defaults";
+import { verifyAccessTokenHash } from "./verifyAccessTokenHash";
+import { verifyHttpMethod } from "./verifyHttpMethod";
+import { verifyHttpUri } from "./verifyHttpUri";
+import { verifyJwkThumbprint } from "./verifyJwkThumbprint";
+import { verifyJwtTokenIdentifier } from "./verifyJwtTokenIdentifier";
 
 /**
  * Verify DPoP Proof

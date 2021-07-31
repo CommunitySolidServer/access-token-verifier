@@ -1,12 +1,12 @@
 import jwtVerify from "jose/jwt/verify";
 import { verifyAccessTokenHash } from "../src/algorithm/verifyAccessTokenHash";
+import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
 import {
   HttpMethodVerificationError,
   HttpUriVerificationError,
   JwkThumbprintVerificationError,
   JwtTokenIdentifierVerificationError,
 } from "../src/error";
-import { verifyDpopProof as verify } from "../src/lib/DPoP";
 import type { DPoPToken, DPoPTokenPayload } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
 
@@ -81,7 +81,7 @@ describe("DPoP proof", () => {
     });
 
     expect(
-      await verify(
+      await verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -103,7 +103,7 @@ describe("DPoP proof", () => {
     (verifyAccessTokenHash as jest.Mock).mockReturnValueOnce(true);
 
     expect(
-      await verify(
+      await verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -131,7 +131,7 @@ describe("DPoP proof", () => {
     });
 
     await expect(
-      verify(
+      verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -152,7 +152,7 @@ describe("DPoP proof", () => {
     });
 
     expect(
-      await verify(
+      await verifyDpopProof(
         encodeToken(dpopRSA),
         {
           payload: {
@@ -173,7 +173,7 @@ describe("DPoP proof", () => {
     });
 
     await expect(
-      verify(
+      verifyDpopProof(
         encodeToken(dpopRSA),
         {
           payload: {
@@ -194,7 +194,7 @@ describe("DPoP proof", () => {
     });
 
     await expect(
-      verify(
+      verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -215,7 +215,7 @@ describe("DPoP proof", () => {
     });
 
     await expect(
-      verify(
+      verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -236,7 +236,7 @@ describe("DPoP proof", () => {
     });
 
     await expect(
-      verify(
+      verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -257,7 +257,7 @@ describe("DPoP proof", () => {
     });
 
     await expect(
-      verify(
+      verifyDpopProof(
         encodeToken(dpop),
         { payload: { cnf: { jkt: "UNCONFIRMED_KEY_THUMBPRINT" } } } as any,
         "GET",

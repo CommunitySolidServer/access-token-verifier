@@ -1,6 +1,7 @@
 import { asserts } from "ts-guards";
 import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
+import { verifyDpopProof } from "../algorithm";
 import type {
   SolidAccessTokenPayload,
   AuthenticationOptions,
@@ -10,7 +11,6 @@ import type {
   JTICheckFunction,
 } from "../type";
 import { verify as verifyAccessToken } from "./AccessToken";
-import { verifyDpopProof } from "./DPoP";
 import { keySet as getKeySet } from "./Issuer";
 import { isDuplicate } from "./JTI";
 import { SolidTokenVerifierError } from "./SolidTokenVerifierError";

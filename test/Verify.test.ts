@@ -1,5 +1,5 @@
+import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
 import { verify as verifyAccessToken } from "../src/lib/AccessToken";
-import { verifyDpopProof } from "../src/lib/DPoP";
 import { keySet as getKeySet } from "../src/lib/Issuer";
 import { isDuplicate as isDuplicateJTI } from "../src/lib/JTI";
 import { verify } from "../src/lib/Verify";
@@ -10,7 +10,7 @@ import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
 import { encodeToken } from "./fixture/EncodeToken";
 
 jest.mock("../src/lib/AccessToken");
-jest.mock("../src/lib/DPoP");
+jest.mock("../src/algorithm/verifyDpopProof");
 
 afterEach(() => {
   jest.clearAllMocks();
