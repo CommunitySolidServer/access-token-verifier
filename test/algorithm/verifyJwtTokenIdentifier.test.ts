@@ -1,5 +1,5 @@
 import { verifyJwtTokenIdentifier } from "../../src/algorithm/verifyJwtTokenIdentifier";
-import { JwtTokenIdentifierNotUniqueError } from "../../src/error";
+import { JwtTokenIdentifierVerificationError } from "../../src/error";
 
 describe("The verifyJwtTokenIdentifier function", () => {
   it("Doesn't throw when the DPoP proof identifier is unique", () => {
@@ -11,6 +11,6 @@ describe("The verifyJwtTokenIdentifier function", () => {
   it("Throws when the DPoP proof identifier is not unique", () => {
     expect(() => {
       verifyJwtTokenIdentifier((jti) => ["x"].includes(jti), "x");
-    }).toThrow(JwtTokenIdentifierNotUniqueError);
+    }).toThrow(JwtTokenIdentifierVerificationError);
   });
 });

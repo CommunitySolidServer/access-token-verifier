@@ -1,5 +1,5 @@
 import jwtVerify from "jose/jwt/verify";
-import { SecureUriVerificationError } from "../src/error";
+import { UriSecuredOverTlsVerificationError } from "../src/error";
 import { verify } from "../src/lib/AccessToken";
 import { keySet as getKeySet } from "../src/lib/Issuer";
 import { token as bearerToken } from "./fixture/BearerAccessToken";
@@ -90,7 +90,7 @@ describe("Access Token", () => {
         () => Promise.resolve(["https://example.com/issuer"]),
         getKeySet
       )
-    ).rejects.toThrow(SecureUriVerificationError);
+    ).rejects.toThrow(UriSecuredOverTlsVerificationError);
   });
 
   it("Throws when issuer doesn't match", async () => {

@@ -4,7 +4,7 @@ import {
   HttpMethodVerificationError,
   HttpUriVerificationError,
   JwkThumbprintVerificationError,
-  JwtTokenIdentifierNotUniqueError,
+  JwtTokenIdentifierVerificationError,
 } from "../src/error";
 import { verifyDpopProof as verify } from "../src/lib/DPoP";
 import type { DPoPToken, DPoPTokenPayload } from "../src/type";
@@ -247,7 +247,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => true
       )
-    ).rejects.toThrow(JwtTokenIdentifierNotUniqueError);
+    ).rejects.toThrow(JwtTokenIdentifierVerificationError);
   });
 
   it("Throws on wrong confirmation claim", async () => {

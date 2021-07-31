@@ -1,5 +1,5 @@
 import jwtVerify from "jose/jwt/verify";
-import { verifySecureUriClaim } from "../algorithm/verifySecureUriClaim";
+import { verifyUriSecuredOverTls } from "../algorithm/verifyUriSecuredOverTls";
 import { isSolidAccessToken, isSolidAccessTokenPayload } from "../guard";
 import type {
   SolidAccessToken,
@@ -30,8 +30,8 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
 
   isSolidAccessTokenPayload(tokenPayload);
 
-  verifySecureUriClaim(tokenPayload.iss);
-  verifySecureUriClaim(tokenPayload.webid);
+  verifyUriSecuredOverTls(tokenPayload.iss);
+  verifyUriSecuredOverTls(tokenPayload.webid);
 
   return {
     iss: new URL(tokenPayload.iss),

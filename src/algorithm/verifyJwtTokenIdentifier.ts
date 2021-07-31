@@ -1,4 +1,4 @@
-import { JwtTokenIdentifierNotUniqueError } from "../error";
+import { JwtTokenIdentifierVerificationError } from "../error";
 import type { JTICheckFunction } from "../type";
 
 /**
@@ -17,6 +17,6 @@ export function verifyJwtTokenIdentifier(
   jti: string
 ): void {
   if (isDuplicateJTI(jti)) {
-    throw new JwtTokenIdentifierNotUniqueError(jti);
+    throw new JwtTokenIdentifierVerificationError(jti);
   }
 }
