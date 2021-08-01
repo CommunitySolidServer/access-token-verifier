@@ -7,7 +7,6 @@ import {
 } from "../lib/Defaults";
 import type {
   SolidAccessToken,
-  GetIssuersFunction,
   GetKeySetFunction,
   RetrieveOidcIssuersFunction,
 } from "../type";
@@ -74,7 +73,7 @@ export async function verifySolidAccessToken(
    * }
    */
 
-  // Check token against issuer's key set
+  // Check token against issuer's key set TODO: get key set
   verifySecureUriClaim(iss.toString(), "iss");
   const { payload, protectedHeader } = await jwtVerify(
     accessTokenValue,
