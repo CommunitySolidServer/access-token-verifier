@@ -7,5 +7,4 @@ export * from "./IssuerKeySetCache";
 export * from "./JTI";
 export * from "./SolidTokenVerifier";
 export * from "./Verify";
-export * from "./WebID";
 export * from "./WebIDIssuersCache";

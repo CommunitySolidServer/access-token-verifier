@@ -44,6 +44,9 @@ export async function verifySolidAccessToken(
   // Check WebID claim is a secure URI
   verifySecureUriClaim(accessTokenPayload.webid, "webid");
 
+  // Check Issuer claim is a secure URI
+  verifySecureUriClaim(accessTokenPayload.iss, "iss");
+
   // Retrieve the issuers listed in the WebID
   const issuers = await retrieveOidcIssuers(
     accessTokenPayload.webid,
@@ -52,9 +55,6 @@ export async function verifySolidAccessToken(
 
   // Check the issuer claim matches one of the WebID's trusted issuers
   verifySolidAccessTokenIssuer(issuers, accessTokenPayload.iss);
-
-  // Check Issuer claim is a secure URI
-  verifySecureUriClaim(accessTokenPayload.iss, "iss");
 
   // Check token against issuer's key set TODO: get key set
   const { payload, protectedHeader } = await jwtVerify(

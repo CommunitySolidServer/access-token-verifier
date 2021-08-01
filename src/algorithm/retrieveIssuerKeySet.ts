@@ -1,15 +1,17 @@
 import { DataFactory, Store } from "n3";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad } from "rdf-js";
-import type { GetIssuersFunction } from "../type";
+import type { RetrieveOidcIssuersFunction } from "../type";
 
-/* eslint-disable-next-line func-names */
-export const issuers: GetIssuersFunction = async function (
-  webid: URL
+export async function retrieveIssuerKeySet(
+  webid: string,
+  getKeySet?: RetrieveOidcIssuersFunction
 ): Promise<Array<string>> {
-  const { quads: quadStream } = await rdfDereferencer.dereference(
-    webid.toString()
-  );
+  if (typeof getIssuers !== "undefined" && typeof getIssuers !== null) {
+    return getIssuers(webid);
+  }
+
+  const { quads: quadStream } = await rdfDereferencer.dereference(webid);
   const store = new Store();
   const issuer: string[] = [];
 
@@ -26,4 +28,4 @@ export const issuers: GetIssuersFunction = async function (
         .on("end", () => resolve(issuer));
     });
   });
-};
+}
