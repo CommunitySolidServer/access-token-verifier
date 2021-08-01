@@ -1,3 +1,4 @@
+export * from "./decodeBase64UrlEncodedJwt";
 export * from "./retrieveOidcIssuers";
 export * from "./verifyDpopProof";
 export * from "./verifyDpopProofAccessTokenHash";

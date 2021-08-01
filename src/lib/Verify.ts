@@ -23,8 +23,9 @@ export async function verify(
   authorization: AuthenticationOptions,
   dpopOptions?: DPoPOptions
 ): Promise<SolidAccessTokenPayload> {
+  // Get JWT value for either DPoP or Bearer tokens
   const accessToken = await verifySolidAccessToken(
-    authorization.header,
+    authorization.header.replace(/^(DPoP|Bearer) /, ""),
     authorization.issuers,
     authorization.keySet
   );

@@ -1,3 +1,4 @@
+export * from "./AccessTokenDecodingError";
 export * from "./AccessTokenHashVerificationError";
 export * from "./HttpMethodVerificationError";
 export * from "./HttpUriVerificationError";
