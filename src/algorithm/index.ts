@@ -9,3 +9,4 @@ export * from "./verifyDpopProofJwtIdentifier";
 export * from "./verifySecureUriClaim";
 export * from "./verifySolidAccessToken";
 export * from "./verifySolidAccessTokenIssuer";
+export * from "./verifySolidAccessTokenRequiredClaims";

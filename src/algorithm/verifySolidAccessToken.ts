@@ -1,6 +1,5 @@
 import jwtVerify from "jose/jwt/verify";
-import { decode as base64Decode } from "jose/util/base64url";
-import { isSolidAccessToken, isSolidAccessTokenPayload } from "../guard";
+import { isSolidAccessToken } from "../guard";
 import {
   clockToleranceInSeconds,
   maxAccessTokenAgeInSeconds,
@@ -15,20 +14,7 @@ import { decodeBase64UrlEncodedJwt } from "./decodeBase64UrlEncodedJwt";
 import { retrieveOidcIssuers } from "./retrieveOidcIssuers";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
-
-/**
- * Checks the access token structure and its WebID and Issuer claims
- */
-function verifiableClaims(token: string): { iss: string; webid: string } {
-  const tokenPayload: unknown = decodeBase64UrlEncodedJwt(token.split(".")[1]);
-
-  isSolidAccessTokenPayload(tokenPayload);
-
-  return {
-    iss: tokenPayload.iss,
-    webid: tokenPayload.webid,
-  };
-}
+import { verifySolidAccessTokenRequiredClaims } from "./verifySolidAccessTokenRequiredClaims";
 
 /**
  * Verify Access Token
@@ -48,32 +34,32 @@ export async function verifySolidAccessToken(
   maxAccessTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<SolidAccessToken> {
   // Decode Solid access token payload
-  const jwt: unknown = decodeBase64UrlEncodedJwt(
+  const accessTokenPayload: unknown = decodeBase64UrlEncodedJwt(
     accessTokenValue.split(".")[1]
   );
 
   // Verify the Solid access token includes all required claims
-  verifySolidAccessTokenClaims(jwt);
-
-  // Extract webid and issuer claims as URLs from valid Access token payload
-  const { iss, webid } = verifiableClaims(accessTokenValue);
+  verifySolidAccessTokenRequiredClaims(accessTokenPayload);
 
   // Check WebID claim is a secure URI
-  verifySecureUriClaim(webid, "webid");
+  verifySecureUriClaim(accessTokenPayload.webid, "webid");
 
   // Retrieve the issuers listed in the WebID
-  const issuers = await retrieveOidcIssuers(webid, getIssuers);
+  const issuers = await retrieveOidcIssuers(
+    accessTokenPayload.webid,
+    getIssuers
+  );
 
   // Check the issuer claim matches one of the WebID's trusted issuers
-  verifySolidAccessTokenIssuer(issuers, iss);
+  verifySolidAccessTokenIssuer(issuers, accessTokenPayload.iss);
 
   // Check Issuer claim is a secure URI
-  verifySecureUriClaim(iss, "iss");
+  verifySecureUriClaim(accessTokenPayload.iss, "iss");
 
   // Check token against issuer's key set TODO: get key set
   const { payload, protectedHeader } = await jwtVerify(
     accessTokenValue,
-    await getKeySet(iss),
+    await getKeySet(accessTokenPayload.iss),
     {
       audience: "solid",
       algorithms: Array.from(asymetricCryptographicAlgorithm),

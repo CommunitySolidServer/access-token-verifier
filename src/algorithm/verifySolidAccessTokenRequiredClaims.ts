@@ -1,5 +1,5 @@
 import { IssuerVerificationError } from "../error";
-import type {SolidAccessTokenPayload} from "../type"
+import type { SolidAccessTokenPayload } from "../type";
 
 /**
  * Verifies the Solid access token required claims are present
@@ -8,8 +8,9 @@ import type {SolidAccessTokenPayload} from "../type"
  *
  * @param payload The JWT payload to verify
  */
-export function verifySolidAccessTokenRequiredClaims(payload: unknown): asserts payload is SolidAccessTokenPayload {
-  
+export function verifySolidAccessTokenRequiredClaims(
+  payload: unknown
+): asserts payload is SolidAccessTokenPayload {
   if (!issuers.includes(iss)) {
     throw new IssuerVerificationError(issuers.toString(), iss);
   }
