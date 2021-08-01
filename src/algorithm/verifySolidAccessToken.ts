@@ -9,8 +9,10 @@ import type {
   SolidAccessToken,
   GetIssuersFunction,
   GetKeySetFunction,
+  RetrieveOidcIssuersFunction,
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
+import { retrieveOidcIssuers } from "./retrieveOidcIssuers";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
 
@@ -45,8 +47,8 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
  */
 export async function verifySolidAccessToken(
   authorizationHeader: string,
-  issuers: GetIssuersFunction,
-  keySet: GetKeySetFunction,
+  getIssuers?: RetrieveOidcIssuersFunction,
+  getKeySet?: GetKeySetFunction,
   maxAccessTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<SolidAccessToken> {
   // Get JWT value for either DPoP or Bearer tokens
@@ -55,9 +57,14 @@ export async function verifySolidAccessToken(
   // Extract webid and issuer claims as URLs from valid Access token payload
   const { iss, webid } = verifiableClaims(accessTokenValue);
 
-  // Check issuer claim against WebID issuers TODO: add issuers cache
+  // Check WebID claim is a secure URI
   verifySecureUriClaim(webid.toString(), "webid");
-  await verifySolidAccessTokenIssuer(webid.toString(), iss.toString());
+
+  // Retrieve the issuers listed in the WebID
+  const issuers = await retrieveOidcIssuers(webid.toString(), getIssuers);
+
+  // Check the 
+  verifySolidAccessTokenIssuer(issuers, iss.toString());
   /*
    * if (!(await issuers(webid)).includes(iss.toString())) {
    *   throw new SolidTokenVerifierError(
@@ -71,7 +78,7 @@ export async function verifySolidAccessToken(
   verifySecureUriClaim(iss.toString(), "iss");
   const { payload, protectedHeader } = await jwtVerify(
     accessTokenValue,
-    await keySet(iss),
+    await getKeySet(iss),
     {
       audience: "solid",
       algorithms: Array.from(asymetricCryptographicAlgorithm),

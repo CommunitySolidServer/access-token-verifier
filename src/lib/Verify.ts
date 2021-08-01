@@ -7,13 +7,9 @@ import type {
   SolidAccessTokenPayload,
   AuthenticationOptions,
   DPoPOptions,
-  GetIssuersFunction,
-  GetKeySetFunction,
   JTICheckFunction,
 } from "../type";
-import { keySet as getKeySet } from "./Issuer";
 import { isDuplicate } from "./JTI";
-import { issuers as getIssuers } from "./WebID";
 
 /**
  * Verify the validity of Solid Identity Access Tokens
@@ -27,24 +23,10 @@ export async function verify(
   authorization: AuthenticationOptions,
   dpopOptions?: DPoPOptions
 ): Promise<SolidAccessTokenPayload> {
-  let getIssuersFunction: GetIssuersFunction;
-  if (isNotNullOrUndefined(authorization.issuers)) {
-    getIssuersFunction = authorization.issuers;
-  } else {
-    getIssuersFunction = getIssuers;
-  }
-
-  let getKeySetFunction: GetKeySetFunction;
-  if (isNotNullOrUndefined(authorization.keySet)) {
-    getKeySetFunction = authorization.keySet;
-  } else {
-    getKeySetFunction = getKeySet;
-  }
-
   const accessToken = await verifySolidAccessToken(
     authorization.header,
-    getIssuersFunction,
-    getKeySetFunction
+    authorization.issuers,
+    authorization.keySet
   );
 
   if (

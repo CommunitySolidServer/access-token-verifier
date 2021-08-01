@@ -1,15 +1,12 @@
 import type createRemoteJWKSet from "jose/jwks/remote";
+import type { RetrieveOidcIssuersFunction } from "./RetrieveOidcIssuersFunction";
 
 export interface GetKeySetFunction {
   (iss: URL): Promise<ReturnType<typeof createRemoteJWKSet>>;
 }
 
-export interface GetIssuersFunction {
-  (webid: URL): Promise<Array<string>>;
-}
-
 export interface AuthenticationOptions {
   header: string;
-  issuers?: GetIssuersFunction;
+  issuers?: RetrieveOidcIssuersFunction;
   keySet?: GetKeySetFunction;
 }

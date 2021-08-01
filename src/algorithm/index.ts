@@ -1,3 +1,4 @@
+export * from "./retrieveOidcIssuers";
 export * from "./verifyDpopProof";
 export * from "./verifyDpopProofAccessTokenHash";
 export * from "./verifyDpopProofHttpMethod";
