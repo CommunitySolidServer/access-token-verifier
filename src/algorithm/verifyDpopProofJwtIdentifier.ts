@@ -12,7 +12,7 @@ import type { JTICheckFunction } from "../type";
  * @param isDuplicateJTI The function used to match previously used identifiers
  * @param jti The DPoP proof jti parameter
  */
-export function verifyJwtTokenIdentifier(
+export function verifyDpopProofJwtIdentifier(
   isDuplicateJTI: JTICheckFunction,
   jti: string
 ): void {

@@ -10,11 +10,11 @@ import type {
   RequestMethod,
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
-import { verifyAccessTokenHash } from "./verifyAccessTokenHash";
-import { verifyHttpMethod } from "./verifyHttpMethod";
-import { verifyHttpUri } from "./verifyHttpUri";
-import { verifyJwkThumbprint } from "./verifyJwkThumbprint";
-import { verifyJwtTokenIdentifier } from "./verifyJwtTokenIdentifier";
+import { verifyDpopProofAccessTokenHash } from "./verifyDpopProofAccessTokenHash";
+import { verifyDpopProofHttpMethod } from "./verifyDpopProofHttpMethod";
+import { verifyDpopProofHttpUri } from "./verifyDpopProofHttpUri";
+import { verifyDpopProofJwkThumbprint } from "./verifyDpopProofJwkThumbprint";
+import { verifyDpopProofJwtIdentifier } from "./verifyDpopProofJwtIdentifier";
 
 /**
  * Verify DPoP Proof
@@ -58,17 +58,23 @@ export async function verifyDpopProof(
   asserts.isObjectPropertyOf(accessToken.payload, "cnf");
   isSolidDPoPBoundAccessTokenPayload(accessToken.payload);
 
-  await verifyJwkThumbprint(dpop.header.jwk, accessToken.payload.cnf.jkt);
+  await verifyDpopProofJwkThumbprint(
+    dpop.header.jwk,
+    accessToken.payload.cnf.jkt
+  );
 
-  verifyHttpMethod(httpMethod, dpop.payload.htm);
+  verifyDpopProofHttpMethod(httpMethod, dpop.payload.htm);
 
-  verifyHttpUri(uri, dpop.payload.htu);
+  verifyDpopProofHttpUri(uri, dpop.payload.htu);
 
-  verifyJwtTokenIdentifier(isDuplicateJTI, dpop.payload.jti);
+  verifyDpopProofJwtIdentifier(isDuplicateJTI, dpop.payload.jti);
 
   // TODO: Phased-in ath becomes enforced
   if (typeof dpop.payload.ath === "string" && dpop.payload.ath) {
-    verifyAccessTokenHash(JSON.stringify(accessToken), dpop.payload.ath);
+    verifyDpopProofAccessTokenHash(
+      JSON.stringify(accessToken),
+      dpop.payload.ath
+    );
   }
 
   return dpop;

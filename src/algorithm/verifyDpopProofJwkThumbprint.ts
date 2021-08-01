@@ -11,7 +11,7 @@ import type { DPoPPublicJWK } from "../type";
  * @param jwk The DPoP proof header jwk parameter
  * @param jkt The access token cnf jkt parameter
  */
-export async function verifyJwkThumbprint(
+export async function verifyDpopProofJwkThumbprint(
   jwk: DPoPPublicJWK,
   jkt: string
 ): Promise<void> {

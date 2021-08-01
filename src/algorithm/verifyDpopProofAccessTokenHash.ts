@@ -11,7 +11,10 @@ import { AccessTokenHashVerificationError } from "../error/AccessTokenHashVerifi
  * @param accessToken The value of the access token associated with the DPoP proof
  * @param ath The DPoP proof ath parameter
  */
-export function verifyAccessTokenHash(accessToken: string, ath: string): void {
+export function verifyDpopProofAccessTokenHash(
+  accessToken: string,
+  ath: string
+): void {
   const actual = base64UrlEncode(
     createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest()
   );

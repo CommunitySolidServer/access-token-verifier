@@ -1,13 +1,11 @@
-export { verify as verifyAccessToken } from "./AccessToken";
+export { verifySolidAccessToken as verifyAccessToken } from "../algorithm/verifySolidAccessToken";
 export * from "./Defaults";
 export * from "../algorithm/verifyDpopProof";
 export * from "./DPoPJTICache";
 export * from "./Issuer";
 export * from "./IssuerKeySetCache";
 export * from "./JTI";
-export * from "./JWT";
 export * from "./SolidTokenVerifier";
-export * from "./SolidTokenVerifierError";
 export * from "./Verify";
 export * from "./WebID";
 export * from "./WebIDIssuersCache";

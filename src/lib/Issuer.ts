@@ -3,7 +3,6 @@ import createRemoteJWKSet from "jose/jwks/remote";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import type { GetKeySetFunction } from "../type";
-import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
 
 function configUrl(iss: string): string {
   return iss.replace(/\/$/, "").concat("/.well-known/openid-configuration");
@@ -21,9 +20,8 @@ async function config(iss: URL): Promise<JSON> {
     return (await response.json()) as JSON;
   }
 
-  throw new SolidTokenVerifierError(
-    "SolidIdentityHTTPError",
-    `Failed fetching identity issuer configuration at URL ${iss.toString()}, got HTTP status code ${
+  throw new Error(
+    `SolidIdentityHTTPError Failed fetching identity issuer configuration at URL ${iss.toString()}, got HTTP status code ${
       response.status
     }`
   );
@@ -39,16 +37,14 @@ async function jwksUri(iss: URL): Promise<URL> {
     try {
       return new URL(issuerConfig.jwks_uri);
     } catch (_) {
-      throw new SolidTokenVerifierError(
-        "SolidIdentityIssuerConfigError",
-        `Failed parsing jwks_uri from identity issuer configuration at URL ${iss.toString()} as a URL`
+      throw new Error(
+        `SolidIdentityIssuerConfigError Failed parsing jwks_uri from identity issuer configuration at URL ${iss.toString()} as a URL`
       );
     }
   }
 
-  throw new SolidTokenVerifierError(
-    "SolidIdentityIssuerConfigError",
-    `Failed extracting jwks_uri from identity issuer configuration at URL ${iss.toString()}`
+  throw new Error(
+    `SolidIdentityIssuerConfigError Failed extracting jwks_uri from identity issuer configuration at URL ${iss.toString()}`
   );
 }
 

@@ -1,25 +1,21 @@
 import jwtVerify from "jose/jwt/verify";
-import { verifyUriSecuredOverTls } from "../algorithm/verifyUriSecuredOverTls";
+import { decode as base64Decode } from "jose/util/base64url";
 import { isSolidAccessToken, isSolidAccessTokenPayload } from "../guard";
+import {
+  clockToleranceInSeconds,
+  maxAccessTokenAgeInSeconds,
+} from "../lib/Defaults";
 import type {
   SolidAccessToken,
   GetIssuersFunction,
   GetKeySetFunction,
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
-import {
-  clockToleranceInSeconds,
-  maxAccessTokenAgeInSeconds,
-} from "./Defaults";
-import { decode } from "./JWT";
-import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
+import { verifySecureUriClaim } from "./verifySecureUriClaim";
+import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
 
-/**
- * Remove the Bearer and DPoP prefixes from the authorization header
- * @param token
- */
-function value(token: string): string {
-  return token.replace(/^(DPoP|Bearer) /, "");
+function decode(x: string): string {
+  return new TextDecoder().decode(base64Decode(x));
 }
 
 /**
@@ -29,9 +25,6 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
   const tokenPayload: unknown = JSON.parse(decode(token.split(".")[1]));
 
   isSolidAccessTokenPayload(tokenPayload);
-
-  verifyUriSecuredOverTls(tokenPayload.iss);
-  verifyUriSecuredOverTls(tokenPayload.webid);
 
   return {
     iss: new URL(tokenPayload.iss),
@@ -50,29 +43,34 @@ function verifiableClaims(token: string): { iss: URL; webid: URL } {
  *    - expiration 'exp' is not in the past
  *    - 'iat' is not in the future
  */
-export async function verify(
+export async function verifySolidAccessToken(
   authorizationHeader: string,
   issuers: GetIssuersFunction,
   keySet: GetKeySetFunction,
   maxAccessTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<SolidAccessToken> {
   // Get JWT value for either DPoP or Bearer tokens
-  const token = value(authorizationHeader);
+  const accessTokenValue = authorizationHeader.replace(/^(DPoP|Bearer) /, "");
 
   // Extract webid and issuer claims as URLs from valid Access token payload
-  const { iss, webid } = verifiableClaims(token);
+  const { iss, webid } = verifiableClaims(accessTokenValue);
 
-  // Check issuer claim against WebID issuers
-  if (!(await issuers(webid)).includes(iss.toString())) {
-    throw new SolidTokenVerifierError(
-      "SolidIdentityInvalidIssuerClaim",
-      `Incorrect issuer ${iss.toString()} for WebID ${webid.toString()}`
-    );
-  }
+  // Check issuer claim against WebID issuers TODO: add issuers cache
+  verifySecureUriClaim(webid.toString(), "webid");
+  await verifySolidAccessTokenIssuer(webid.toString(), iss.toString());
+  /*
+   * if (!(await issuers(webid)).includes(iss.toString())) {
+   *   throw new SolidTokenVerifierError(
+   *     "SolidIdentityInvalidIssuerClaim",
+   *     `Incorrect issuer ${iss.toString()} for WebID ${webid.toString()}`
+   *   );
+   * }
+   */
 
   // Check token against issuer's key set
+  verifySecureUriClaim(iss.toString(), "iss");
   const { payload, protectedHeader } = await jwtVerify(
-    token,
+    accessTokenValue,
     await keySet(iss),
     {
       audience: "solid",
@@ -85,7 +83,7 @@ export async function verify(
   const accessToken = {
     header: protectedHeader,
     payload,
-    signature: token.split(".")[2],
+    signature: accessTokenValue.split(".")[2],
   };
 
   isSolidAccessToken(accessToken);

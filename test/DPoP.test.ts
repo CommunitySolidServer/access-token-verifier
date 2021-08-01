@@ -1,6 +1,6 @@
 import jwtVerify from "jose/jwt/verify";
-import { verifyAccessTokenHash } from "../src/algorithm/verifyAccessTokenHash";
 import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
+import { verifyDpopProofAccessTokenHash } from "../src/algorithm/verifyDpopProofAccessTokenHash";
 import {
   HttpMethodVerificationError,
   HttpUriVerificationError,
@@ -12,7 +12,7 @@ import { encodeToken } from "./fixture/EncodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock("jose/jwt/verify");
-jest.mock("../src/algorithm/verifyAccessTokenHash");
+jest.mock("../src/algorithm/verifyDpopProofAccessTokenHash");
 
 const dpop: DPoPToken = {
   header: {
@@ -100,7 +100,7 @@ describe("DPoP proof", () => {
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
     });
-    (verifyAccessTokenHash as jest.Mock).mockReturnValueOnce(true);
+    (verifyDpopProofAccessTokenHash as jest.Mock).mockReturnValueOnce(true);
 
     expect(
       await verifyDpopProof(
@@ -126,7 +126,7 @@ describe("DPoP proof", () => {
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
     });
-    (verifyAccessTokenHash as jest.Mock).mockImplementationOnce(() => {
+    (verifyDpopProofAccessTokenHash as jest.Mock).mockImplementationOnce(() => {
       throw new Error();
     });
 

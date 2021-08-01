@@ -6,10 +6,10 @@ import { HttpUriVerificationError } from "../error";
  * > "htu": The HTTP URI used for the request, without query and fragment parts (REQUIRED).
  * > -- https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-4.2
  *
- * @param uri The HTTP request URI
+ * @param uri The HTTP URI used for the request
  * @param htu The DPoP proof htu parameter
  */
-export function verifyHttpUri(uri: string, htu: string): void {
+export function verifyDpopProofHttpUri(uri: string, htu: string): void {
   const actual = uri.split("?")[0].split("#")[0];
   if (actual !== htu) {
     throw new HttpUriVerificationError(actual, htu);

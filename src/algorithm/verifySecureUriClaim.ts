@@ -1,4 +1,4 @@
-import { UriSecuredOverTlsVerificationError } from "../error";
+import { SecureUriClaimVerificationError } from "../error";
 
 /**
  * Verifies a URI claim is secured over TLS
@@ -8,8 +8,8 @@ import { UriSecuredOverTlsVerificationError } from "../error";
  *
  * See also: https://solid.github.io/solid-oidc/#security-tls & https://github.com/solid/authentication-panel/issues/114#issuecomment-751867437
  */
-export function verifyUriSecuredOverTls(uri: string): void {
+export function verifySecureUriClaim(uri: string, claim: string): void {
   if (!uri.startsWith("https://") && !uri.startsWith("http://localhost:")) {
-    throw new UriSecuredOverTlsVerificationError(uri);
+    throw new SecureUriClaimVerificationError(uri, claim);
   }
 }

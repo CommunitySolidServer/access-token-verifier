@@ -1,6 +1,6 @@
 import jwtVerify from "jose/jwt/verify";
-import { UriSecuredOverTlsVerificationError } from "../src/error";
-import { verify } from "../src/lib/AccessToken";
+import { verifySolidAccessToken } from "../src/algorithm/verifySolidAccessToken";
+import { SecureUriClaimVerificationError } from "../src/error";
 import { keySet as getKeySet } from "../src/lib/Issuer";
 import { token as bearerToken } from "./fixture/BearerAccessToken";
 import {
@@ -23,7 +23,7 @@ describe("Access Token", () => {
     });
 
     expect(
-      await verify(
+      await verifySolidAccessToken(
         encodeToken(accessToken),
         () =>
           Promise.resolve([
@@ -42,7 +42,7 @@ describe("Access Token", () => {
     });
 
     expect(
-      await verify(
+      await verifySolidAccessToken(
         encodeToken(tokenAudienceArray),
         () =>
           Promise.resolve([
@@ -61,7 +61,7 @@ describe("Access Token", () => {
     });
 
     expect(
-      await verify(
+      await verifySolidAccessToken(
         encodeToken(bearerToken),
         () =>
           Promise.resolve([
@@ -85,12 +85,12 @@ describe("Access Token", () => {
     };
 
     await expect(
-      verify(
+      verifySolidAccessToken(
         encodeToken(wrongProtocolToken),
         () => Promise.resolve(["https://example.com/issuer"]),
         getKeySet
       )
-    ).rejects.toThrow(UriSecuredOverTlsVerificationError);
+    ).rejects.toThrow(SecureUriClaimVerificationError);
   });
 
   it("Throws when issuer doesn't match", async () => {
@@ -100,7 +100,7 @@ describe("Access Token", () => {
     });
 
     await expect(
-      verify(
+      verifySolidAccessToken(
         encodeToken(accessToken),
         () => Promise.resolve(["https://example.com/not_the_issuer"]),
         getKeySet

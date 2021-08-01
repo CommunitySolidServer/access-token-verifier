@@ -1,22 +1,22 @@
-import { verifyUriSecuredOverTls } from "../../src/algorithm/verifyUriSecuredOverTls";
-import { UriSecuredOverTlsVerificationError } from "../../src/error";
+import { verifySecureUriClaim } from "../../src/algorithm/verifySecureUriClaim";
+import { SecureUriClaimVerificationError } from "../../src/error";
 
-describe("The verifyUriSecuredOverTls function", () => {
+describe("The verifySecureUriClaim function", () => {
   it("Doesn't throw when the URI is secure", () => {
     expect(() => {
-      verifyUriSecuredOverTls("https://example.com");
+      verifySecureUriClaim("https://example.com", "");
     }).not.toThrow();
   });
 
   it("Doesn't throw when the URI is localhost", () => {
     expect(() => {
-      verifyUriSecuredOverTls("http://localhost:8080/");
+      verifySecureUriClaim("http://localhost:8080/", "");
     }).not.toThrow();
   });
 
   it("Throws when the URI is not secure", () => {
     expect(() => {
-      verifyUriSecuredOverTls("http://example.com");
-    }).toThrow(UriSecuredOverTlsVerificationError);
+      verifySecureUriClaim("http://example.com", "");
+    }).toThrow(SecureUriClaimVerificationError);
   });
 });

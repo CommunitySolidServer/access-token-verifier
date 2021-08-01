@@ -1,11 +1,11 @@
-import { verifyAccessTokenHash } from "../../src/algorithm/verifyAccessTokenHash";
+import { verifyDpopProofAccessTokenHash } from "../../src/algorithm/verifyDpopProofAccessTokenHash";
 import { AccessTokenHashVerificationError } from "../../src/error";
 
 // Test data extracted from https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-7.1
 describe("The verifyAccessTokenHash function", () => {
   it("Doesn't throw when the access token hash is matched", () => {
     expect(() => {
-      verifyAccessTokenHash(
+      verifyDpopProofAccessTokenHash(
         "Kz~8mXK1EalYznwH-LC-1fBAo.4Ljp~zsPE_NeO.gxU",
         "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo"
       );
@@ -14,7 +14,7 @@ describe("The verifyAccessTokenHash function", () => {
 
   it("Throws when the access token hash doesn't matched", () => {
     expect(() => {
-      verifyAccessTokenHash(
+      verifyDpopProofAccessTokenHash(
         "Kz~8mXK1EalYznwH-LC-1fBAo.4Ljp~zsPE_NeO.gxU",
         "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo "
       );

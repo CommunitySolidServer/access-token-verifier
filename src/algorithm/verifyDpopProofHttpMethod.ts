@@ -9,7 +9,7 @@ import { HttpMethodVerificationError } from "../error";
  * @param method The HTTP request method
  * @param htm The DPoP proof htm parameter
  */
-export function verifyHttpMethod(method: string, htm: string): void {
+export function verifyDpopProofHttpMethod(method: string, htm: string): void {
   if (method !== htm) {
     throw new HttpMethodVerificationError(method, htm);
   }

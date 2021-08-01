@@ -2,6 +2,7 @@ import { asserts } from "ts-guards";
 import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { verifyDpopProof } from "../algorithm";
+import { verifySolidAccessToken } from "../algorithm/verifySolidAccessToken";
 import type {
   SolidAccessTokenPayload,
   AuthenticationOptions,
@@ -10,10 +11,8 @@ import type {
   GetKeySetFunction,
   JTICheckFunction,
 } from "../type";
-import { verify as verifyAccessToken } from "./AccessToken";
 import { keySet as getKeySet } from "./Issuer";
 import { isDuplicate } from "./JTI";
-import { SolidTokenVerifierError } from "./SolidTokenVerifierError";
 import { issuers as getIssuers } from "./WebID";
 
 /**
@@ -42,7 +41,7 @@ export async function verify(
     getKeySetFunction = getKeySet;
   }
 
-  const accessToken = await verifyAccessToken(
+  const accessToken = await verifySolidAccessToken(
     authorization.header,
     getIssuersFunction,
     getKeySetFunction
@@ -55,9 +54,8 @@ export async function verify(
     try {
       asserts.isNotNullOrUndefined(dpopOptions);
     } catch (_) {
-      throw new SolidTokenVerifierError(
-        "SolidIdentityDPoPError",
-        "DPoP options missing for DPoP bound access token verification"
+      throw new Error(
+        "SolidIdentityDPoPError DPoP options missing for DPoP bound access token verification"
       );
     }
     let isDuplicateJTIFunction: JTICheckFunction;
