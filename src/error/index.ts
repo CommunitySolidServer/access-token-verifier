@@ -1,4 +1,4 @@
-export * from "./AccessTokenDecodingError";
+export * from "./Base64UrlEncodedJsonDecodingError";
 export * from "./AccessTokenHashVerificationError";
 export * from "./HttpMethodVerificationError";
 export * from "./HttpUriVerificationError";

@@ -10,7 +10,7 @@ import type {
   RetrieveOidcIssuersFunction,
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
-import { decodeBase64UrlEncodedJwt } from "./decodeBase64UrlEncodedJwt";
+import { decodeBase64UrlEncodedJson } from "./decodeBase64UrlEncodedJson";
 import { retrieveOidcIssuers } from "./retrieveOidcIssuers";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
@@ -34,7 +34,7 @@ export async function verifySolidAccessToken(
   maxAccessTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<SolidAccessToken> {
   // Decode Solid access token payload
-  const accessTokenPayload: unknown = decodeBase64UrlEncodedJwt(
+  const accessTokenPayload: unknown = decodeBase64UrlEncodedJson(
     accessTokenValue.split(".")[1]
   );
 
