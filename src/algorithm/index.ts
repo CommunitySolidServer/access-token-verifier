@@ -1,5 +1,5 @@
 export * from "./decodeBase64UrlEncodedJson";
-export * from "./retrieveIssuerKeySet";
+export * from "./retrieveAccessTokenIssuerKeySet";
 export * from "./retrieveWebidTrustedOidcIssuers";
 export * from "./verifyDpopProof";
 export * from "./verifyDpopProofAccessTokenHash";

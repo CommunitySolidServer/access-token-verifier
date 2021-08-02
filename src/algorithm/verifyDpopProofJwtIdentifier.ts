@@ -1,4 +1,4 @@
-import { JwtTokenIdentifierVerificationError } from "../error";
+import { JwtIdentifierVerificationError } from "../error";
 import type { JTICheckFunction } from "../type";
 
 /**
@@ -17,6 +17,6 @@ export function verifyDpopProofJwtIdentifier(
   jti: string
 ): void {
   if (isDuplicateJTI(jti)) {
-    throw new JwtTokenIdentifierVerificationError(jti);
+    throw new JwtIdentifierVerificationError(jti);
   }
 }
