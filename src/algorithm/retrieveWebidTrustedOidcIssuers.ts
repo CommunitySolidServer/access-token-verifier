@@ -3,9 +3,9 @@ import rdfDereferencer from "rdf-dereference";
 import type { Quad } from "rdf-js";
 import type { RetrieveOidcIssuersFunction } from "../type";
 
-export async function retrieveIssuerKeySet(
+export async function retrieveWebidTrustedOidcIssuers(
   webid: string,
-  getKeySet?: RetrieveOidcIssuersFunction
+  getIssuers?: RetrieveOidcIssuersFunction
 ): Promise<Array<string>> {
   if (typeof getIssuers !== "undefined" && typeof getIssuers !== null) {
     return getIssuers(webid);

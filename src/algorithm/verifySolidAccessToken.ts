@@ -11,7 +11,7 @@ import type {
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
 import { decodeBase64UrlEncodedJson } from "./decodeBase64UrlEncodedJson";
-import { retrieveOidcIssuers } from "./retrieveOidcIssuers";
+import { retrieveWebidTrustedOidcIssuers } from "./retrieveWebidTrustedOidcIssuers";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
 import { verifySolidAccessTokenRequiredClaims } from "./verifySolidAccessTokenRequiredClaims";
@@ -48,7 +48,7 @@ export async function verifySolidAccessToken(
   verifySecureUriClaim(accessTokenPayload.iss, "iss");
 
   // Retrieve the issuers listed in the WebID
-  const issuers = await retrieveOidcIssuers(
+  const issuers = await retrieveWebidTrustedOidcIssuers(
     accessTokenPayload.webid,
     getIssuers
   );

@@ -2,7 +2,7 @@ import { decode as base64Decode } from "jose/util/base64url";
 import { Base64UrlEncodedJsonDecodingError } from "../error/Base64UrlEncodedJsonDecodingError";
 
 /**
- * Decodes Base64url encoded JSON objects
+ * Decodes base 64 URL encoded JSON objects
  *
  * See also: https://datatracker.ietf.org/doc/html/rfc7519#section-7.2
  *
