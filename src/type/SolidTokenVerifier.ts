@@ -18,17 +18,3 @@ export interface SolidTokenVerifierFunction {
     dpop?: DPoPOptions
   ): Promise<SolidAccessTokenPayload>;
 }
-
-/**
- * Solid Access Token verification errors
- */
-export const solidTokenVerifierErrorCode = new Set([
-  "SolidIdentityInvalidAcccessToken",
-  "SolidIdentityInvalidDPoPToken",
-  "SolidIdentityDPoPError",
-  "SolidIdentityInvalidIssuerClaim",
-  "SolidIdentityHTTPError",
-  "SolidIdentityIssuerConfigError",
-] as const);
-export type SolidTokenVerifierErrorCode =
-  typeof solidTokenVerifierErrorCode extends Set<infer T> ? T : never;

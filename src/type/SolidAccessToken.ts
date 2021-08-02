@@ -5,21 +5,15 @@ import type { AsymetricCryptographicAlgorithm } from "./Crypto";
  *
  * See also: https://solid.github.io/authentication-panel/solid-oidc/#tokens-access
  */
-/* eslint-disable no-use-before-define, camelcase */
-export interface SolidAccessToken {
-  header: SolidAccessTokenHeader;
-  payload: SolidAccessTokenPayload;
-  signature: string;
-}
-
 export interface SolidAccessTokenHeader {
   kid: string;
   alg: AsymetricCryptographicAlgorithm;
 }
 
+// TODO: Phased-in client_id becomes enforced
 export interface SolidAccessTokenPayload {
   aud: "solid" | string[];
-  // TODO: Phased-in client_id becomes enforced
+  // eslint-disable-next-line camelcase
   client_id?: string;
   exp: number;
   iat: number;
@@ -27,13 +21,19 @@ export interface SolidAccessTokenPayload {
   webid: string;
 }
 
-export interface SolidDpopBoundAccessToken {
+export interface SolidAccessToken {
   header: SolidAccessTokenHeader;
-  payload: SolidDpopBoundAccessTokenPayload;
+  payload: SolidAccessTokenPayload;
   signature: string;
 }
 
 export interface SolidDpopBoundAccessTokenPayload
   extends SolidAccessTokenPayload {
   cnf: { jkt: string };
+}
+
+export interface SolidDpopBoundAccessToken {
+  header: SolidAccessTokenHeader;
+  payload: SolidDpopBoundAccessTokenPayload;
+  signature: string;
 }

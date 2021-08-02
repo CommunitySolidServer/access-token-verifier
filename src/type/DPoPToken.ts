@@ -4,24 +4,23 @@ import type { RequestMethod } from "./RequestMethod";
 /**
  * DPoP as defined in https://tools.ietf.org/html/draft-fett-oauth-dpop-04
  */
-/* eslint-disable no-use-before-define */
-export interface DPoPToken {
-  header: DPoPTokenHeader;
-  payload: DPoPTokenPayload;
-  signature: string;
-}
-
 export interface DPoPTokenHeader {
   alg: AsymetricCryptographicAlgorithm;
   jwk: DPoPPublicJWK;
   typ: "dpop+jwt";
 }
 
+// TODO: Phased-in ath becomes enforced
 export interface DPoPTokenPayload {
   htm: RequestMethod;
   htu: string;
   iat: number;
   jti: string;
-  // TODO: Phased-in ath becomes enforced
   ath?: string;
+}
+
+export interface DPoPToken {
+  header: DPoPTokenHeader;
+  payload: DPoPTokenPayload;
+  signature: string;
 }
