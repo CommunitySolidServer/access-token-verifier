@@ -6,11 +6,12 @@ import {
 } from "../lib/Defaults";
 import type {
   SolidAccessToken,
-  GetKeySetFunction,
+  RetrieveIssuerKeySetFunction,
   RetrieveOidcIssuersFunction,
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type";
 import { decodeBase64UrlEncodedJson } from "./decodeBase64UrlEncodedJson";
+import { retrieveAccessTokenIssuerKeySet } from "./retrieveAccessTokenIssuerKeySet";
 import { retrieveWebidTrustedOidcIssuers } from "./retrieveWebidTrustedOidcIssuers";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
@@ -30,7 +31,7 @@ import { verifySolidAccessTokenRequiredClaims } from "./verifySolidAccessTokenRe
 export async function verifySolidAccessToken(
   accessTokenValue: string,
   getIssuers?: RetrieveOidcIssuersFunction,
-  getKeySet?: GetKeySetFunction,
+  getKeySet?: RetrieveIssuerKeySetFunction,
   maxAccessTokenAge = maxAccessTokenAgeInSeconds
 ): Promise<SolidAccessToken> {
   // Decode Solid access token payload
@@ -59,7 +60,7 @@ export async function verifySolidAccessToken(
   // Check token against issuer's key set TODO: get key set
   const { payload, protectedHeader } = await jwtVerify(
     accessTokenValue,
-    await getKeySet(accessTokenPayload.iss),
+    await retrieveAccessTokenIssuerKeySet(accessTokenPayload.iss),
     {
       audience: "solid",
       algorithms: Array.from(asymetricCryptographicAlgorithm),

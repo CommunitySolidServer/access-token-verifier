@@ -1,8 +1,8 @@
 import type createRemoteJWKSet from "jose/jwks/remote";
 import LRUCache from "lru-cache";
-import type { GetKeySetFunction } from "../type";
+import { retrieveAccessTokenIssuerKeySet } from "../algorithm/retrieveAccessTokenIssuerKeySet";
+import type { RetrieveIssuerKeySetFunction } from "../type";
 import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
-import { keySet } from "./Issuer";
 
 export class IssuerKeySetCache extends LRUCache<
   string,
@@ -12,10 +12,12 @@ export class IssuerKeySetCache extends LRUCache<
     super({ max: maxRequestsPerSecond, maxAge: maxAgeInMilliseconds });
   }
 
-  public async getKeySet(iss: URL): ReturnType<GetKeySetFunction> {
+  public async getKeySet(
+    iss: string
+  ): ReturnType<RetrieveIssuerKeySetFunction> {
     const cachedValue = this.get(iss.toString());
     if (cachedValue === undefined) {
-      const keySetValue = await keySet(iss);
+      const keySetValue = await retrieveAccessTokenIssuerKeySet(iss);
       this.set(iss.toString(), keySetValue);
       return keySetValue;
     }

@@ -1,31 +1,60 @@
-import { DataFactory, Store } from "n3";
-import rdfDereferencer from "rdf-dereference";
-import type { Quad } from "rdf-js";
-import type { RetrieveOidcIssuersFunction } from "../type";
+import { fetch as crossFetch } from "cross-fetch";
+import createRemoteJWKSet from "jose/jwks/remote";
+import { isString } from "ts-guards/dist/primitive-type";
+import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
+import type { RetrieveIssuerKeySetFunction } from "../type";
 
-export async function retrieveAccessTokenIssuerKeySet(
-  webid: string,
-  getKeySet?: RetrieveOidcIssuersFunction
-): Promise<Array<string>> {
-  if (typeof getIssuers !== "undefined" && typeof getIssuers !== null) {
-    return getIssuers(webid);
+function configUrl(iss: string): string {
+  return iss.replace(/\/$/, "").concat("/.well-known/openid-configuration");
+}
+
+async function config(iss: URL): Promise<JSON> {
+  /* eslint-disable @typescript-eslint/naming-convention */
+  const response = await crossFetch(configUrl(iss.toString()), {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  /* eslint-enable @typescript-eslint/naming-convention */
+
+  if (response.ok) {
+    return (await response.json()) as JSON;
   }
 
-  const { quads: quadStream } = await rdfDereferencer.dereference(webid);
-  const store = new Store();
-  const issuer: string[] = [];
+  throw new Error(
+    `SolidIdentityHTTPError Failed fetching identity issuer configuration at URL ${iss.toString()}, got HTTP status code ${
+      response.status
+    }`
+  );
+}
 
-  return new Promise((resolve) => {
-    store.import(quadStream).on("end", () => {
-      store
-        .match(
-          DataFactory.namedNode(webid.toString()),
-          DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer")
-        )
-        .on("data", (quad: Quad) => {
-          issuer.push(quad.object.value);
-        })
-        .on("end", () => resolve(issuer));
-    });
-  });
+async function jwksUri(iss: URL): Promise<URL> {
+  const issuerConfig = await config(iss);
+
+  if (
+    isObjectPropertyOf(issuerConfig, "jwks_uri") &&
+    isString(issuerConfig.jwks_uri)
+  ) {
+    try {
+      return new URL(issuerConfig.jwks_uri);
+    } catch (_) {
+      throw new Error(
+        `SolidIdentityIssuerConfigError Failed parsing jwks_uri from identity issuer configuration at URL ${iss.toString()} as a URL`
+      );
+    }
+  }
+
+  throw new Error(
+    `SolidIdentityIssuerConfigError Failed extracting jwks_uri from identity issuer configuration at URL ${iss.toString()}`
+  );
+}
+
+export async function retrieveAccessTokenIssuerKeySet(
+  iss: string,
+  getKeySet?: RetrieveIssuerKeySetFunction
+): ReturnType<RetrieveIssuerKeySetFunction> {
+  if (typeof getKeySet !== "undefined" && getKeySet !== null) {
+    return getKeySet(iss);
+  }
+
+  return createRemoteJWKSet(await jwksUri(new URL(iss)));
 }

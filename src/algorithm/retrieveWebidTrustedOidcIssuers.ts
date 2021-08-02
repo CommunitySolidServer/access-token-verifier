@@ -6,8 +6,8 @@ import type { RetrieveOidcIssuersFunction } from "../type";
 export async function retrieveWebidTrustedOidcIssuers(
   webid: string,
   getIssuers?: RetrieveOidcIssuersFunction
-): Promise<Array<string>> {
-  if (typeof getIssuers !== "undefined" && typeof getIssuers !== null) {
+): ReturnType<RetrieveOidcIssuersFunction> {
+  if (typeof getIssuers !== "undefined" && getIssuers !== null) {
     return getIssuers(webid);
   }
 
