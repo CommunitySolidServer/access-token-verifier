@@ -1,7 +1,7 @@
 import LRUCache from "lru-cache";
 import { retrieveWebidTrustedOidcIssuers } from "../algorithm";
+import { maxAgeInMilliseconds, maxRequestsPerSecond } from "../config";
 import type { RetrieveOidcIssuersFunction } from "../type";
-import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class WebIDIssuersCache extends LRUCache<string, Array<string>> {
   public constructor() {

@@ -1,8 +1,8 @@
 import type createRemoteJWKSet from "jose/jwks/remote";
 import LRUCache from "lru-cache";
 import { retrieveAccessTokenIssuerKeySet } from "../algorithm/retrieveAccessTokenIssuerKeySet";
+import { maxAgeInMilliseconds, maxRequestsPerSecond } from "../config";
 import type { RetrieveIssuerKeySetFunction } from "../type";
-import { maxAgeInMilliseconds, maxRequestsPerSecond } from "./Defaults";
 
 export class IssuerKeySetCache extends LRUCache<
   string,

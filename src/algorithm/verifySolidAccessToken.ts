@@ -3,7 +3,7 @@ import { isSolidAccessToken } from "../guard";
 import {
   clockToleranceInSeconds,
   maxAccessTokenAgeInSeconds,
-} from "../lib/Defaults";
+} from "../config";
 import type {
   SolidAccessToken,
   RetrieveIssuerKeySetFunction,

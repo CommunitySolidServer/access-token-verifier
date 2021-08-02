@@ -1,5 +1,5 @@
 export { verifySolidAccessToken as verifyAccessToken } from "../algorithm/verifySolidAccessToken";
-export * from "./Defaults";
+export * from "../config";
 export * from "../algorithm/verifyDpopProof";
 export * from "./DPoPJTICache";
 export * from "./Issuer";
