@@ -1,4 +1,5 @@
 import { RequiredClaimVerificationError } from "../error";
+import { isObjectPropertyOf } from "../guard";
 import type { SolidAccessTokenPayload } from "../type";
 
 /**
@@ -25,19 +26,19 @@ export function verifySolidAccessTokenRequiredClaims(
   if (payload === null) {
     throw new RequiredClaimVerificationError("null", "Not null");
   }
-  if (!("webid" in payload)) {
+  if (!isObjectPropertyOf(payload, "webid")) {
     throw new RequiredClaimVerificationError(JSON.stringify(payload), "webid");
   }
-  if (!("iss" in payload)) {
+  if (!isObjectPropertyOf(payload, "iss")) {
     throw new RequiredClaimVerificationError(JSON.stringify(payload), "iss");
   }
-  if (!("aud" in payload)) {
+  if (!isObjectPropertyOf(payload, "aud")) {
     throw new RequiredClaimVerificationError(JSON.stringify(payload), "aud");
   }
-  if (!("iat" in payload)) {
+  if (!isObjectPropertyOf(payload, "iat")) {
     throw new RequiredClaimVerificationError(JSON.stringify(payload), "iat");
   }
-  if (!("exp" in payload)) {
+  if (!isObjectPropertyOf(payload, "exp")) {
     throw new RequiredClaimVerificationError(JSON.stringify(payload), "exp");
   }
   // TODO: Enforce client_id and cnf claims when widespread enough
