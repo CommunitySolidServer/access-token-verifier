@@ -34,7 +34,7 @@ export async function verifyDpopProof(
   accessToken: SolidAccessToken,
   httpMethod: RequestMethod,
   uri: string,
-  isDuplicateJTI: JTICheckFunction
+  isDuplicateJTI?: JTICheckFunction
 ): Promise<DPoPToken> {
   const { payload, protectedHeader } = await jwtVerify(
     dpopHeader,
@@ -67,7 +67,7 @@ export async function verifyDpopProof(
 
   verifyDpopProofHttpUri(uri, dpop.payload.htu);
 
-  verifyDpopProofJwtIdentifier(isDuplicateJTI, dpop.payload.jti);
+  verifyDpopProofJwtIdentifier(dpop.payload.jti, isDuplicateJTI);
 
   // TODO: Phased-in ath becomes enforced
   if (typeof dpop.payload.ath === "string" && dpop.payload.ath) {

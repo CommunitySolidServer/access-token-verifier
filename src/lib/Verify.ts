@@ -1,5 +1,4 @@
 import { asserts } from "ts-guards";
-import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { verifyDpopProof } from "../algorithm";
 import { verifySolidAccessToken } from "../algorithm/verifySolidAccessToken";
@@ -7,9 +6,7 @@ import type {
   SolidAccessTokenPayload,
   AuthenticationOptions,
   DPoPOptions,
-  JTICheckFunction,
 } from "../type";
-import { isDuplicate } from "./JTI";
 
 /**
  * Verify the validity of Solid Identity Access Tokens
@@ -41,18 +38,13 @@ export async function verify(
         "SolidIdentityDPoPError DPoP options missing for DPoP bound access token verification"
       );
     }
-    let isDuplicateJTIFunction: JTICheckFunction;
-    if (!isNotNullOrUndefined(dpopOptions.isDuplicateJTI)) {
-      isDuplicateJTIFunction = isDuplicate;
-    } else {
-      isDuplicateJTIFunction = dpopOptions.isDuplicateJTI;
-    }
+
     await verifyDpopProof(
       dpopOptions.header,
       accessToken,
       dpopOptions.method,
       dpopOptions.url,
-      isDuplicateJTIFunction
+      dpopOptions.isDuplicateJTI
     );
   }
 

@@ -9,14 +9,18 @@ import type { JTICheckFunction } from "../type";
  *
  * Storing JTIs is not the purpose of this library, hence it requires a function to match previously used identifiers.
  *
- * @param isDuplicateJTI The function used to match previously used identifiers
  * @param jti The DPoP proof jti parameter
+ * @param isDuplicateJTI The function used to match previously used identifiers
  */
 export function verifyDpopProofJwtIdentifier(
-  isDuplicateJTI: JTICheckFunction,
-  jti: string
+  jti: string,
+  isDuplicateJTI?: JTICheckFunction
 ): void {
-  if (isDuplicateJTI(jti)) {
+  if (
+    typeof isDuplicateJTI !== "undefined" &&
+    isDuplicateJTI !== null &&
+    isDuplicateJTI(jti)
+  ) {
     throw new JwtIdentifierVerificationError(jti);
   }
 }

@@ -1,9 +1,8 @@
+import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccessTokenIssuerKeySet";
+import { retrieveWebidTrustedOidcIssuers } from "../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
 import { verifySolidAccessToken } from "../src/algorithm/verifySolidAccessToken";
-import { keySet as getKeySet } from "../src/lib/Issuer";
-import { isDuplicate as isDuplicateJTI } from "../src/lib/JTI";
 import { verify } from "../src/lib/Verify";
-import { issuers as getIssuers } from "../src/lib/WebID";
 import type { DPoPOptions } from "../src/type";
 import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
@@ -64,8 +63,8 @@ describe("Verifying Token", () => {
       await verify(
         {
           header: `DPoP ${encodeToken(dpopBoundAccessToken)}`,
-          issuers: getIssuers,
-          keySet: getKeySet,
+          issuers: retrieveWebidTrustedOidcIssuers,
+          keySet: retrieveAccessTokenIssuerKeySet,
         },
         dpopOptionsWithJTICheckFunction
       )
@@ -134,9 +133,5 @@ describe("Verifying Token", () => {
     ).rejects.toThrow("Not a valid access token");
     expect(verifySolidAccessToken).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
-  });
-
-  it("By defaults checks JTI as not duplicate", () => {
-    expect(isDuplicateJTI()).toBe(false);
   });
 });

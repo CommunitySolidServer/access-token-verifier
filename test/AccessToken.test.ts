@@ -1,7 +1,10 @@
 import jwtVerify from "jose/jwt/verify";
+import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { verifySolidAccessToken } from "../src/algorithm/verifySolidAccessToken";
-import { SecureUriClaimVerificationError } from "../src/error";
-import { keySet as getKeySet } from "../src/lib/Issuer";
+import {
+  IssuerVerificationError,
+  SecureUriClaimVerificationError,
+} from "../src/error";
 import { token as bearerToken } from "./fixture/BearerAccessToken";
 import {
   badProtocolPayload,
@@ -11,10 +14,10 @@ import {
 import { encodeToken } from "./fixture/EncodeToken";
 
 jest.mock("jose/jwt/verify");
-jest.mock("../src/lib/Issuer");
+jest.mock("../src/algorithm/retrieveAccessTokenIssuerKeySet");
 
 describe("Access Token", () => {
-  (getKeySet as jest.Mock).mockImplementation(() => true);
+  (retrieveAccessTokenIssuerKeySet as jest.Mock).mockImplementation(() => true);
 
   it("Checks DPoP bound access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
@@ -30,7 +33,7 @@ describe("Access Token", () => {
             "https://example.com/abc",
             "https://example.com/issuer",
           ]),
-        getKeySet
+        retrieveAccessTokenIssuerKeySet
       )
     ).toStrictEqual(accessToken);
   });
@@ -49,7 +52,7 @@ describe("Access Token", () => {
             "https://example.com/abc",
             "https://example.com/issuer",
           ]),
-        getKeySet
+        retrieveAccessTokenIssuerKeySet
       )
     ).toStrictEqual(tokenAudienceArray);
   });
@@ -68,7 +71,7 @@ describe("Access Token", () => {
             "https://example.com/abc",
             "https://example.com/issuer",
           ]),
-        getKeySet
+        retrieveAccessTokenIssuerKeySet
       )
     ).toStrictEqual({
       header: bearerToken.header,
@@ -88,7 +91,7 @@ describe("Access Token", () => {
       verifySolidAccessToken(
         encodeToken(wrongProtocolToken),
         () => Promise.resolve(["https://example.com/issuer"]),
-        getKeySet
+        retrieveAccessTokenIssuerKeySet
       )
     ).rejects.toThrow(SecureUriClaimVerificationError);
   });
@@ -103,10 +106,8 @@ describe("Access Token", () => {
       verifySolidAccessToken(
         encodeToken(accessToken),
         () => Promise.resolve(["https://example.com/not_the_issuer"]),
-        getKeySet
+        retrieveAccessTokenIssuerKeySet
       )
-    ).rejects.toThrow(
-      "Incorrect issuer https://example.com/issuer for WebID https://example.com/webid"
-    );
+    ).rejects.toThrow(IssuerVerificationError);
   });
 });

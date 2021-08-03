@@ -5,7 +5,7 @@ import {
   HttpMethodVerificationError,
   HttpUriVerificationError,
   JwkThumbprintVerificationError,
-  JwtTokenIdentifierVerificationError,
+  JwtIdentifierVerificationError,
 } from "../src/error";
 import type { DPoPToken, DPoPTokenPayload } from "../src/type";
 import { encodeToken } from "./fixture/EncodeToken";
@@ -247,7 +247,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => true
       )
-    ).rejects.toThrow(JwtTokenIdentifierVerificationError);
+    ).rejects.toThrow(JwtIdentifierVerificationError);
   });
 
   it("Throws on wrong confirmation claim", async () => {
