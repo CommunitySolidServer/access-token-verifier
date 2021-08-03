@@ -1,5 +1,5 @@
 import { RequiredClaimVerificationError } from "../error";
-import { isObjectPropertyOf } from "../guard";
+import { isNotNullObject, isObjectPropertyOf } from "../guard";
 import type { SolidAccessTokenPayload } from "../type";
 
 /**
@@ -20,11 +20,11 @@ import type { SolidAccessTokenPayload } from "../type";
 export function verifySolidAccessTokenRequiredClaims(
   payload: unknown
 ): asserts payload is SolidAccessTokenPayload {
-  if (typeof payload !== "object") {
-    throw new RequiredClaimVerificationError("Not an object", "An object");
-  }
-  if (payload === null) {
-    throw new RequiredClaimVerificationError("null", "Not null");
+  if (!isNotNullObject(payload)) {
+    throw new RequiredClaimVerificationError(
+      JSON.stringify(payload),
+      "Non null object"
+    );
   }
   if (!isObjectPropertyOf(payload, "webid")) {
     throw new RequiredClaimVerificationError(JSON.stringify(payload), "webid");

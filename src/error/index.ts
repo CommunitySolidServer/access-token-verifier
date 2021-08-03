@@ -7,3 +7,4 @@ export * from "./JwkThumbprintVerificationError";
 export * from "./JwtIdentifierVerificationError";
 export * from "./RequiredClaimVerificationError";
 export * from "./SecureUriClaimVerificationError";
+export * from "./WebidDereferencingError";

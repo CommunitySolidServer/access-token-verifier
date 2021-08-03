@@ -1,7 +1,16 @@
 import { DataFactory, Store } from "n3";
 import rdfDereferencer from "rdf-dereference";
-import type { Quad } from "rdf-js";
+import type { Quad, Stream } from "rdf-js";
+import { WebidDereferencingError } from "../error";
 import type { RetrieveOidcIssuersFunction } from "../type";
+
+async function dereferenceWebid(webid: string): Promise<Stream<Quad>> {
+  try {
+    return (await rdfDereferencer.dereference(webid)).quads;
+  } catch (e: unknown) {
+    throw new WebidDereferencingError(webid);
+  }
+}
 
 export async function retrieveWebidTrustedOidcIssuers(
   webid: string,
@@ -11,7 +20,7 @@ export async function retrieveWebidTrustedOidcIssuers(
     return getIssuers(webid);
   }
 
-  const { quads: quadStream } = await rdfDereferencer.dereference(webid);
+  const quadStream = await dereferenceWebid(webid);
   const store = new Store();
   const issuer: string[] = [];
 
@@ -19,7 +28,7 @@ export async function retrieveWebidTrustedOidcIssuers(
     store.import(quadStream).on("end", () => {
       store
         .match(
-          DataFactory.namedNode(webid.toString()),
+          DataFactory.namedNode(webid),
           DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer")
         )
         .on("data", (quad: Quad) => {
