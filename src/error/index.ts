@@ -2,6 +2,7 @@ export * from "./Base64UrlEncodedJsonDecodingError";
 export * from "./AccessTokenHashVerificationError";
 export * from "./HttpMethodVerificationError";
 export * from "./HttpUriVerificationError";
+export * from "./IssuerConfigurationDereferencingError";
 export * from "./IssuerVerificationError";
 export * from "./JwkThumbprintVerificationError";
 export * from "./JwtIdentifierVerificationError";

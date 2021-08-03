@@ -2,15 +2,17 @@ import { fetch as crossFetch } from "cross-fetch";
 import createRemoteJWKSet from "jose/jwks/remote";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
+import { IssuerConfigurationDereferencingError } from "../error";
 import type { RetrieveIssuerKeySetFunction } from "../type";
 
-function configUrl(iss: string): string {
+function wellKnownOpenidConfigUrl(iss: string): string {
   return iss.replace(/\/$/, "").concat("/.well-known/openid-configuration");
 }
 
-async function config(iss: URL): Promise<JSON> {
+async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
+  const configUrl = wellKnownOpenidConfigUrl(iss);
   /* eslint-disable @typescript-eslint/naming-convention */
-  const response = await crossFetch(configUrl(iss.toString()), {
+  const response = await crossFetch(configUrl, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -20,15 +22,14 @@ async function config(iss: URL): Promise<JSON> {
     return (await response.json()) as JSON;
   }
 
-  throw new Error(
-    `SolidIdentityHTTPError Failed fetching identity issuer configuration at URL ${iss.toString()}, got HTTP status code ${
-      response.status
-    }`
+  throw new IssuerConfigurationDereferencingError(
+    response.status.toString(),
+    configUrl
   );
 }
 
-async function jwksUri(iss: URL): Promise<URL> {
-  const issuerConfig = await config(iss);
+async function jwksUri(iss: string): Promise<URL> {
+  const issuerConfig = await dereferenceIssuerConfiguration(iss);
 
   if (
     isObjectPropertyOf(issuerConfig, "jwks_uri") &&
@@ -56,5 +57,5 @@ export async function retrieveAccessTokenIssuerKeySet(
     return getKeySet(iss);
   }
 
-  return createRemoteJWKSet(await jwksUri(new URL(iss)));
+  return createRemoteJWKSet(await jwksUri(iss));
 }
