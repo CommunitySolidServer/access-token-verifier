@@ -1,5 +1,5 @@
 import { retrieveWebidTrustedOidcIssuers } from "../src/algorithm/retrieveWebidTrustedOidcIssuers";
-import { WebIDIssuersCache } from "../src/lib/WebIDIssuersCache";
+import { WebIDIssuersCache } from "../src/class/WebIDIssuersCache";
 
 jest.mock("../src/algorithm/retrieveWebidTrustedOidcIssuers", () => ({
   retrieveWebidTrustedOidcIssuers: jest.fn(),

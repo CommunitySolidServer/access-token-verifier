@@ -1,4 +1,5 @@
 import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
+import { verifySolidAccessToken } from "../algorithm/verifySolidAccessToken";
 import type {
   SolidAccessTokenPayload,
   RequestMethod,
@@ -6,7 +7,6 @@ import type {
 } from "../type";
 import { DPoPJTICache } from "./DPoPJTICache";
 import { IssuerKeySetCache } from "./IssuerKeySetCache";
-import { verify as verifyToken } from "./Verify";
 import { WebIDIssuersCache } from "./WebIDIssuersCache";
 
 class SolidTokenVerifier {
@@ -37,7 +37,7 @@ class SolidTokenVerifier {
         ),
       };
     }
-    return verifyToken(
+    return verifySolidAccessToken(
       {
         header: authorizationHeader,
         issuers: this.webIDIssuersCache.getIssuers.bind(this.webIDIssuersCache),

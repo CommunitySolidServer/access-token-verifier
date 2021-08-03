@@ -1,5 +1,5 @@
 import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccessTokenIssuerKeySet";
-import { IssuerKeySetCache } from "../src/lib/IssuerKeySetCache";
+import { IssuerKeySetCache } from "../src/class/IssuerKeySetCache";
 
 jest.mock("../src/algorithm/retrieveAccessTokenIssuerKeySet", () => ({
   retrieveAccessTokenIssuerKeySet: jest.fn(),

@@ -5,7 +5,6 @@ import { clockToleranceInSeconds, maxAgeInMilliseconds } from "../config";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
 import type {
   SolidAccessToken,
-  DPoPToken,
   JTICheckFunction,
   RequestMethod,
 } from "../type";
@@ -35,7 +34,7 @@ export async function verifyDpopProof(
   httpMethod: RequestMethod,
   uri: string,
   isDuplicateJTI?: JTICheckFunction
-): Promise<DPoPToken> {
+): Promise<void> {
   const { payload, protectedHeader } = await jwtVerify(
     dpopHeader,
     EmbeddedJWK,
@@ -76,6 +75,4 @@ export async function verifyDpopProof(
       dpop.payload.ath
     );
   }
-
-  return dpop;
 }

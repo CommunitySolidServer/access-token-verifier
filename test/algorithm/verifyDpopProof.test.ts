@@ -1,18 +1,18 @@
 import jwtVerify from "jose/jwt/verify";
-import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
-import { verifyDpopProofAccessTokenHash } from "../src/algorithm/verifyDpopProofAccessTokenHash";
+import { verifyDpopProof } from "../../src/algorithm/verifyDpopProof";
+import { verifyDpopProofAccessTokenHash } from "../../src/algorithm/verifyDpopProofAccessTokenHash";
 import {
   HttpMethodVerificationError,
   HttpUriVerificationError,
   JwkThumbprintVerificationError,
   JwtIdentifierVerificationError,
-} from "../src/error";
-import type { DPoPToken, DPoPTokenPayload } from "../src/type";
-import { encodeToken } from "./fixture/EncodeToken";
+} from "../../src/error";
+import type { DPoPToken, DPoPTokenPayload } from "../../src/type";
+import { encodeToken } from "../fixture/EncodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock("jose/jwt/verify");
-jest.mock("../src/algorithm/verifyDpopProofAccessTokenHash");
+jest.mock("../../src/algorithm/verifyDpopProofAccessTokenHash");
 
 const dpop: DPoPToken = {
   header: {
@@ -80,8 +80,8 @@ describe("DPoP proof", () => {
       protectedHeader: dpop.header,
     });
 
-    expect(
-      await verifyDpopProof(
+    await expect(
+      verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -92,7 +92,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => false
       )
-    ).toStrictEqual(dpop);
+    ).resolves.not.toThrow();
   });
 
   it("Checks conforming proof with EC Key and ath claim", async () => {
@@ -102,8 +102,8 @@ describe("DPoP proof", () => {
     });
     (verifyDpopProofAccessTokenHash as jest.Mock).mockReturnValueOnce(true);
 
-    expect(
-      await verifyDpopProof(
+    await expect(
+      verifyDpopProof(
         encodeToken(dpop),
         {
           payload: {
@@ -114,11 +114,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => false
       )
-    ).toStrictEqual({
-      header: dpop.header,
-      payload: dpopPayloadWithAth,
-      signature: dpop.signature,
-    });
+    ).resolves.not.toThrow();
   });
 
   it("Throws on invalid ath claim", async () => {
@@ -151,8 +147,8 @@ describe("DPoP proof", () => {
       protectedHeader: dpopRSA.header,
     });
 
-    expect(
-      await verifyDpopProof(
+    await expect(
+      verifyDpopProof(
         encodeToken(dpopRSA),
         {
           payload: {
@@ -163,7 +159,7 @@ describe("DPoP proof", () => {
         "https://resource.example.org/protectedresource",
         () => false
       )
-    ).toStrictEqual(dpopRSA);
+    ).resolves.not.toThrow();
   });
 
   it("Fails unsupported Key type", async () => {

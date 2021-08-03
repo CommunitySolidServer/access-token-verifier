@@ -1,4 +1,4 @@
-import { DPoPJTICache } from "../src/lib/DPoPJTICache";
+import { DPoPJTICache } from "../src/class/DPoPJTICache";
 
 describe("DPoP JTI cache", () => {
   const jti = "identifier";

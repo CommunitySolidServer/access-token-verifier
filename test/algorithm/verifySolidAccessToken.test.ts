@@ -1,41 +1,41 @@
 import jwtVerify from "jose/jwt/verify";
-import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccessTokenIssuerKeySet";
-import { verifySolidAccessToken } from "../src/algorithm/verifySolidAccessToken";
+import { retrieveAccessTokenIssuerKeySet } from "../../src/algorithm/retrieveAccessTokenIssuerKeySet";
+import { verifySolidAccessToken } from "../../src/algorithm/verifySolidAccessToken";
 import {
   IssuerVerificationError,
   SecureUriClaimVerificationError,
-} from "../src/error";
-import { token as bearerToken } from "./fixture/BearerAccessToken";
+} from "../../src/error";
+import { token as bearerToken } from "../fixture/BearerAccessToken";
 import {
   badProtocolPayload,
   token as accessToken,
   tokenAudienceArray,
-} from "./fixture/DPoPBoundAccessToken";
-import { encodeToken } from "./fixture/EncodeToken";
+} from "../fixture/DPoPBoundAccessToken";
+import { encodeToken } from "../fixture/EncodeToken";
 
 jest.mock("jose/jwt/verify");
-jest.mock("../src/algorithm/retrieveAccessTokenIssuerKeySet");
+jest.mock("../../src/algorithm/retrieveAccessTokenIssuerKeySet");
 
 describe("Access Token", () => {
   (retrieveAccessTokenIssuerKeySet as jest.Mock).mockImplementation(() => true);
 
   it("Checks DPoP bound access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
-      payload: accessToken.payload,
-      protectedHeader: accessToken.header,
+      payload: bearerToken.payload,
+      protectedHeader: bearerToken.header,
     });
 
     expect(
-      await verifySolidAccessToken(
-        encodeToken(accessToken),
-        () =>
+      await verifySolidAccessToken({
+        header: encodeToken(bearerToken),
+        issuers: () =>
           Promise.resolve([
             "https://example.com/abc",
             "https://example.com/issuer",
           ]),
-        retrieveAccessTokenIssuerKeySet
-      )
-    ).toStrictEqual(accessToken);
+        keySet: retrieveAccessTokenIssuerKeySet,
+      })
+    ).toStrictEqual(bearerToken.payload);
   });
 
   it("Checks DPoP bound access token with audience array", async () => {
@@ -45,16 +45,16 @@ describe("Access Token", () => {
     });
 
     expect(
-      await verifySolidAccessToken(
-        encodeToken(tokenAudienceArray),
-        () =>
+      await verifySolidAccessToken({
+        header: encodeToken(tokenAudienceArray),
+        issuers: () =>
           Promise.resolve([
             "https://example.com/abc",
             "https://example.com/issuer",
           ]),
-        retrieveAccessTokenIssuerKeySet
-      )
-    ).toStrictEqual(tokenAudienceArray);
+        keySet: retrieveAccessTokenIssuerKeySet,
+      })
+    ).toStrictEqual(tokenAudienceArray.payload);
   });
 
   it("Checks bearer access token", async () => {
@@ -64,20 +64,16 @@ describe("Access Token", () => {
     });
 
     expect(
-      await verifySolidAccessToken(
-        encodeToken(bearerToken),
-        () =>
+      await verifySolidAccessToken({
+        header: encodeToken(bearerToken),
+        issuers: () =>
           Promise.resolve([
             "https://example.com/abc",
             "https://example.com/issuer",
           ]),
-        retrieveAccessTokenIssuerKeySet
-      )
-    ).toStrictEqual({
-      header: bearerToken.header,
-      payload: bearerToken.payload,
-      signature: bearerToken.signature,
-    });
+        keySet: retrieveAccessTokenIssuerKeySet,
+      })
+    ).toStrictEqual(bearerToken.payload);
   });
 
   it("Throws on non conforming access token", async () => {
@@ -88,11 +84,11 @@ describe("Access Token", () => {
     };
 
     await expect(
-      verifySolidAccessToken(
-        encodeToken(wrongProtocolToken),
-        () => Promise.resolve(["https://example.com/issuer"]),
-        retrieveAccessTokenIssuerKeySet
-      )
+      verifySolidAccessToken({
+        header: encodeToken(wrongProtocolToken),
+        issuers: () => Promise.resolve(["https://example.com/issuer"]),
+        keySet: retrieveAccessTokenIssuerKeySet,
+      })
     ).rejects.toThrow(SecureUriClaimVerificationError);
   });
 
@@ -103,11 +99,11 @@ describe("Access Token", () => {
     });
 
     await expect(
-      verifySolidAccessToken(
-        encodeToken(accessToken),
-        () => Promise.resolve(["https://example.com/not_the_issuer"]),
-        retrieveAccessTokenIssuerKeySet
-      )
+      verifySolidAccessToken({
+        header: encodeToken(accessToken),
+        issuers: () => Promise.resolve(["https://example.com/not_the_issuer"]),
+        keySet: retrieveAccessTokenIssuerKeySet,
+      })
     ).rejects.toThrow(IssuerVerificationError);
   });
 });

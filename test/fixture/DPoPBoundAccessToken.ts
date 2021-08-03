@@ -1,12 +1,22 @@
 import type {
   SolidAccessToken,
   SolidAccessTokenHeader,
+  SolidAccessTokenPayload,
   SolidDpopBoundAccessTokenPayload,
 } from "../../src/type";
 
 const header: SolidAccessTokenHeader = {
   alg: "RS256",
   kid: "x",
+};
+
+const bearerPayload: SolidAccessTokenPayload = {
+  aud: "solid",
+  exp: 1603386448,
+  iat: 1603386448,
+  iss: "https://example.com/issuer",
+  webid: "https://example.com/webid",
+  client_id: "https://example.com/clientid",
 };
 
 const payload: SolidDpopBoundAccessTokenPayload = {
@@ -19,14 +29,13 @@ const payload: SolidDpopBoundAccessTokenPayload = {
   cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
 };
 
-const payloadAudienceArray: SolidDpopBoundAccessTokenPayload = {
+const payloadAudienceArray: SolidAccessTokenPayload = {
   aud: ["solid"],
   exp: 1603386448,
   iat: 1603386448,
   iss: "https://example.com/issuer",
   webid: "https://example.com/webid",
   client_id: "https://example.com/clientid",
-  cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
 };
 
 export const badProtocolPayload: SolidDpopBoundAccessTokenPayload = {
@@ -42,6 +51,12 @@ export const badProtocolPayload: SolidDpopBoundAccessTokenPayload = {
 export const token: SolidAccessToken = {
   header,
   payload,
+  signature: "",
+};
+
+export const bearerToken: SolidAccessToken = {
+  header,
+  payload: bearerPayload,
   signature: "",
 };
 
