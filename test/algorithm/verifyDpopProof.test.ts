@@ -88,6 +88,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => false
@@ -110,6 +111,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => false
@@ -134,6 +136,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => false
@@ -155,6 +158,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => false
@@ -176,6 +180,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => false
@@ -197,6 +202,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
         } as any,
+        "",
         "POST",
         "https://resource.example.org/protectedresource",
         () => false
@@ -218,6 +224,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/otherresource",
         () => false
@@ -239,6 +246,7 @@ describe("DPoP proof", () => {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
         } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => true
@@ -256,6 +264,7 @@ describe("DPoP proof", () => {
       verifyDpopProof(
         encodeToken(dpop),
         { payload: { cnf: { jkt: "UNCONFIRMED_KEY_THUMBPRINT" } } } as any,
+        "",
         "GET",
         "https://resource.example.org/protectedresource",
         () => false

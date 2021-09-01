@@ -102,6 +102,7 @@ export async function verifySolidAccessToken(
     await verifyDpopProof(
       dpopOptions.header,
       accessToken,
+      accessTokenValue,
       dpopOptions.method,
       dpopOptions.url,
       dpopOptions.isDuplicateJTI
