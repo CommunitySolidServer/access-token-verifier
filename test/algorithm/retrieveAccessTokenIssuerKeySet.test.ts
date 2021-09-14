@@ -38,7 +38,7 @@ describe("Issuer key set", () => {
 
   it("Returns the createRemoteJWKSet via the RetrieveIssuerKeySetFunction function", async () => {
     expect(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/require-await
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/require-await, @typescript-eslint/no-explicit-any
       await retrieveAccessTokenIssuerKeySet(iss, async () => "" as any)
     ).toStrictEqual("");
   });
