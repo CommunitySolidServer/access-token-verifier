@@ -57,4 +57,12 @@ describe("The retrieveWebidTrustedOidcIssuers function", () => {
       await retrieveWebidTrustedOidcIssuers("x");
     }).rejects.toThrow(WebidDereferencingError);
   });
+
+  it("Throws when there is an error parsing the WebID", async () => {
+    mockRdfDereferencer("very invalid turtle");
+
+    await expect(async () => {
+      await retrieveWebidTrustedOidcIssuers("x");
+    }).rejects.toThrow('Unexpected "very" on line 1.');
+  });
 });
