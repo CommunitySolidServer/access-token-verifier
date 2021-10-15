@@ -24,17 +24,21 @@ export async function retrieveWebidTrustedOidcIssuers(
   const store = new Store();
   const issuer: string[] = [];
 
-  return new Promise((resolve) => {
-    store.import(quadStream).on("end", () => {
-      store
-        .match(
-          DataFactory.namedNode(webid),
-          DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer")
-        )
-        .on("data", (quad: Quad) => {
-          issuer.push(quad.object.value);
-        })
-        .on("end", () => resolve(issuer));
-    });
+  return new Promise((resolve, reject) => {
+    store
+      .import(quadStream)
+      .on("end", () => {
+        store
+          .match(
+            DataFactory.namedNode(webid),
+            DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer")
+          )
+          .on("data", (quad: Quad) => {
+            issuer.push(quad.object.value);
+          })
+          .on("error", reject)
+          .on("end", () => resolve(issuer));
+      })
+      .on("error", reject);
   });
 }
