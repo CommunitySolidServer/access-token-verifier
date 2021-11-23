@@ -11,7 +11,7 @@ jest.mock("rdf-dereference", () => ({
 const mockRdfDereferencer = (rdf: string) => {
   return (rdfDereferencer.dereference as jest.Mock).mockImplementationOnce(
     () => {
-      const streamParser = new StreamParser();
+      const streamParser = new StreamParser({ format: "application/trig" });
       const rdfStream = Readable.from(`${rdf}`);
       return Promise.resolve({ quads: rdfStream.pipe(streamParser) });
     }
@@ -39,6 +39,14 @@ describe("The retrieveWebidTrustedOidcIssuers function", () => {
       "https://example.issuer.com/",
       "https://example.other.issuer.com/",
     ]);
+  });
+
+  it("Ignores issuers in a non-default graph", async () => {
+    mockRdfDereferencer(
+      `<#g> { <${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> . }`
+    );
+
+    expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([]);
   });
 
   it("Returns the trusted OIDC issuer via the RetrieveOidcIssuersFunction function", async () => {

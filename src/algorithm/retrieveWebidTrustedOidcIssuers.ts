@@ -1,8 +1,13 @@
-import { DataFactory, Store } from "n3";
+import { DataFactory } from "n3";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad, Stream } from "rdf-js";
 import { WebidDereferencingError } from "../error";
 import type { RetrieveOidcIssuersFunction } from "../type";
+
+const defaultGraph = DataFactory.defaultGraph();
+const oidcIssuer = DataFactory.namedNode(
+  "http://www.w3.org/ns/solid/terms#oidcIssuer"
+);
 
 async function dereferenceWebid(webid: string): Promise<Stream<Quad>> {
   try {
@@ -20,25 +25,23 @@ export async function retrieveWebidTrustedOidcIssuers(
     return getIssuers(webid);
   }
 
+  const issuers: string[] = [];
+  const webidNode = DataFactory.namedNode(webid);
   const quadStream = await dereferenceWebid(webid);
-  const store = new Store();
-  const issuer: string[] = [];
 
   return new Promise((resolve, reject) => {
-    store
-      .import(quadStream)
-      .on("end", () => {
-        store
-          .match(
-            DataFactory.namedNode(webid),
-            DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer")
-          )
-          .on("data", (quad: Quad) => {
-            issuer.push(quad.object.value);
-          })
-          .on("error", reject)
-          .on("end", () => resolve(issuer));
+    quadStream
+      .on("data", ({ subject, predicate, object, graph }: Quad) => {
+        if (
+          defaultGraph.equals(graph) &&
+          object.termType === "NamedNode" &&
+          oidcIssuer.equals(predicate) &&
+          webidNode.equals(subject)
+        ) {
+          issuers.push(object.value);
+        }
       })
+      .on("end", () => resolve(issuers))
       .on("error", reject);
   });
 }
