@@ -19,8 +19,8 @@ const mockRdfDereferencer = (rdf: string) => {
 };
 const webid = "https://example.com/webid#";
 
-describe("The retrieveWebidTrustedOidcIssuers function", () => {
-  it("Returns the trusted OIDC issuer of a WebID", async () => {
+describe("retrieveWebidTrustedOidcIssuers()", () => {
+  it("returns the trusted OIDC issuer of a WebID", async () => {
     mockRdfDereferencer(
       `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> .`
     );
@@ -30,7 +30,7 @@ describe("The retrieveWebidTrustedOidcIssuers function", () => {
     ]);
   });
 
-  it("Returns all trusted OIDC issuers of a WebID", async () => {
+  it("returns all trusted OIDC issuers of a WebID", async () => {
     mockRdfDereferencer(
       `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/>, <https://example.other.issuer.com/> .`
     );
@@ -41,7 +41,7 @@ describe("The retrieveWebidTrustedOidcIssuers function", () => {
     ]);
   });
 
-  it("Ignores issuers in a non-default graph", async () => {
+  it("ignores issuers in a non-default graph", async () => {
     mockRdfDereferencer(
       `<#g> { <${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> . }`
     );
@@ -49,14 +49,14 @@ describe("The retrieveWebidTrustedOidcIssuers function", () => {
     expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([]);
   });
 
-  it("Returns the trusted OIDC issuer via the RetrieveOidcIssuersFunction function", async () => {
+  it("returns the trusted OIDC issuer via the RetrieveOidcIssuersFunction function", async () => {
     expect(
       // eslint-disable-next-line @typescript-eslint/require-await
       await retrieveWebidTrustedOidcIssuers(webid, async () => [""])
     ).toStrictEqual([""]);
   });
 
-  it("Throws when the WebID cannot be dereferenced", async () => {
+  it("throws when the WebID cannot be dereferenced", async () => {
     (rdfDereferencer.dereference as jest.Mock).mockImplementationOnce(() =>
       Promise.reject(new Error("No resource"))
     );
@@ -66,7 +66,7 @@ describe("The retrieveWebidTrustedOidcIssuers function", () => {
     }).rejects.toThrow(WebidDereferencingError);
   });
 
-  it("Throws when there is an error parsing the WebID", async () => {
+  it("throws when there is an error parsing the WebID", async () => {
     mockRdfDereferencer("very invalid turtle");
 
     await expect(async () => {

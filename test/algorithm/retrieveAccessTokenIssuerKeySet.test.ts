@@ -7,11 +7,11 @@ jest.mock("cross-fetch");
 jest.mock("jose/jwks/remote");
 
 /* eslint-disable @typescript-eslint/naming-convention */
-describe("Issuer key set", () => {
+describe("retrieveAccessTokenIssuerKeySet()", () => {
   const iss = "https://example-issuer.com/";
   const jwksUri = "https://example.com/JWKS_URI";
 
-  it("Returns a function", async () => {
+  it("returns a function", async () => {
     (crossFetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: () => ({ jwks_uri: jwksUri }),
@@ -36,14 +36,14 @@ describe("Issuer key set", () => {
     expect(createRemoteJWKSet).toHaveBeenCalledWith(new URL(jwksUri));
   });
 
-  it("Returns the createRemoteJWKSet via the RetrieveIssuerKeySetFunction function", async () => {
+  it("returns the createRemoteJWKSet via the RetrieveIssuerKeySetFunction function", async () => {
     expect(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/require-await, @typescript-eslint/no-explicit-any
       await retrieveAccessTokenIssuerKeySet(iss, async () => "" as any)
-    ).toStrictEqual("");
+    ).toBe("");
   });
 
-  it("Throws when Issuer's JWKS URI is missing", async () => {
+  it("throws when Issuer's JWKS URI is missing", async () => {
     (crossFetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: () => ({}),
@@ -54,7 +54,7 @@ describe("Issuer key set", () => {
     );
   });
 
-  it("Throws when Issuer's JWKS URI is not a URL", async () => {
+  it("throws when Issuer's JWKS URI is not a URL", async () => {
     (crossFetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: () => ({ jwks_uri: "not_a_URI" }),
@@ -65,7 +65,7 @@ describe("Issuer key set", () => {
     );
   });
 
-  it("Throws when Issuer config fetch fails", async () => {
+  it("throws when Issuer config fetch fails", async () => {
     (crossFetch as jest.Mock).mockResolvedValueOnce({
       status: 400,
       json: () => ({}),

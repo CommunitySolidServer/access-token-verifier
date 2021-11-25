@@ -16,10 +16,10 @@ import { encodeToken } from "../fixture/EncodeToken";
 jest.mock("jose/jwt/verify");
 jest.mock("../../src/algorithm/retrieveAccessTokenIssuerKeySet");
 
-describe("Access Token", () => {
+describe("verifySolidAccessToken()", () => {
   (retrieveAccessTokenIssuerKeySet as jest.Mock).mockImplementation(() => true);
 
-  it("Checks DPoP bound access token", async () => {
+  it("checks DPoP bound access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: bearerToken.payload,
       protectedHeader: bearerToken.header,
@@ -38,7 +38,7 @@ describe("Access Token", () => {
     ).toStrictEqual(bearerToken.payload);
   });
 
-  it("Checks DPoP bound access token with audience array", async () => {
+  it("checks DPoP bound access token with audience array", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: tokenAudienceArray.payload,
       protectedHeader: tokenAudienceArray.header,
@@ -57,7 +57,7 @@ describe("Access Token", () => {
     ).toStrictEqual(tokenAudienceArray.payload);
   });
 
-  it("Checks bearer access token", async () => {
+  it("checks bearer access token", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: bearerToken.payload,
       protectedHeader: accessToken.header,
@@ -76,7 +76,7 @@ describe("Access Token", () => {
     ).toStrictEqual(bearerToken.payload);
   });
 
-  it("Throws on non conforming access token", async () => {
+  it("throws on non conforming access token", async () => {
     const wrongProtocolToken = {
       header: accessToken.header,
       payload: badProtocolPayload,
@@ -92,7 +92,7 @@ describe("Access Token", () => {
     ).rejects.toThrow(SecureUriClaimVerificationError);
   });
 
-  it("Throws when issuer doesn't match", async () => {
+  it("throws when issuer doesn't match", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: accessToken.payload,
       protectedHeader: accessToken.header,

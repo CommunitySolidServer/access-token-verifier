@@ -1,8 +1,8 @@
 import { verifySolidAccessTokenRequiredClaims } from "../../src/algorithm/verifySolidAccessTokenRequiredClaims";
 import { RequiredClaimVerificationError } from "../../src/error";
 
-describe("The verifySolidAccessTokenIssuer function", () => {
-  it("Doesn't throw when the JSON object contains all required claims", () => {
+describe("verifySolidAccessTokenIssuer()", () => {
+  it("doesn't throw when the JSON object contains all required claims", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
         webid: "",
@@ -16,19 +16,19 @@ describe("The verifySolidAccessTokenIssuer function", () => {
     }).not.toThrow();
   });
 
-  it("Throws when not passed an object", () => {
+  it("throws when not passed an object", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims("");
     }).toThrow(RequiredClaimVerificationError);
   });
 
-  it("Throws when passed the null value", () => {
+  it("throws when passed the null value", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims(null);
     }).toThrow(RequiredClaimVerificationError);
   });
 
-  it("Throws when the webid claim is missing", () => {
+  it("throws when the webid claim is missing", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
         iss: "",
@@ -41,7 +41,7 @@ describe("The verifySolidAccessTokenIssuer function", () => {
     }).toThrow(RequiredClaimVerificationError);
   });
 
-  it("Throws when the iss claim is missing", () => {
+  it("throws when the iss claim is missing", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
         webid: "",
@@ -54,7 +54,7 @@ describe("The verifySolidAccessTokenIssuer function", () => {
     }).toThrow(RequiredClaimVerificationError);
   });
 
-  it("Throws when the aud claim is missing", () => {
+  it("throws when the aud claim is missing", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
         webid: "",
@@ -67,7 +67,7 @@ describe("The verifySolidAccessTokenIssuer function", () => {
     }).toThrow(RequiredClaimVerificationError);
   });
 
-  it("Throws when the iat claim is missing", () => {
+  it("throws when the iat claim is missing", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
         webid: "",
@@ -80,7 +80,7 @@ describe("The verifySolidAccessTokenIssuer function", () => {
     }).toThrow(RequiredClaimVerificationError);
   });
 
-  it("Throws when the exp claim is missing", () => {
+  it("throws when the exp claim is missing", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
         webid: "",

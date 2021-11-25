@@ -17,7 +17,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Verifying Token", () => {
+describe("verifySolidAccessToken()", () => {
   const dpopOptions: DPoPOptions = { header: "", method: "GET", url: "" };
   const dpopOptionsWithJTICheckFunction: DPoPOptions = {
     header: "",
@@ -26,7 +26,7 @@ describe("Verifying Token", () => {
     isDuplicateJTI: () => false,
   };
 
-  it("Verifies DPoP bound token based on cnf claim", async () => {
+  it("verifies DPoP bound token based on cnf claim", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockResolvedValueOnce([
       dpopBoundAccessToken.payload.iss,
     ]);
@@ -46,7 +46,7 @@ describe("Verifying Token", () => {
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
   });
 
-  it("Verifies DPoP bound token based on prefix", async () => {
+  it("verifies DPoP bound token based on prefix", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockResolvedValueOnce([
       bearerAccessToken.payload.iss,
     ]);
@@ -65,7 +65,7 @@ describe("Verifying Token", () => {
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
   });
 
-  it("Verifies DPoP bound token with custom GetIssuersFunction, GetKeySetFunction and JTICheckFunction", async () => {
+  it("verifies DPoP bound token with custom GetIssuersFunction, GetKeySetFunction and JTICheckFunction", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopBoundAccessToken.payload,
       protectedHeader: dpopBoundAccessToken.header,
@@ -91,7 +91,7 @@ describe("Verifying Token", () => {
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
   });
 
-  it("Throws when DPoP bound token DPoP validation fails", async () => {
+  it("throws when DPoP bound token DPoP validation fails", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopBoundAccessToken.payload,
       protectedHeader: dpopBoundAccessToken.header,
@@ -114,7 +114,7 @@ describe("Verifying Token", () => {
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
   });
 
-  it("Throws when DPoP options are missing", async () => {
+  it("throws when DPoP options are missing", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopBoundAccessToken.payload,
       protectedHeader: dpopBoundAccessToken.header,
@@ -135,7 +135,7 @@ describe("Verifying Token", () => {
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
   });
 
-  it("Verifies Bearer token", async () => {
+  it("verifies Bearer token", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockResolvedValueOnce([
       bearerAccessToken.payload.iss,
     ]);
@@ -152,7 +152,7 @@ describe("Verifying Token", () => {
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
   });
 
-  it("Throws when verification fails", async () => {
+  it("throws when verification fails", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockResolvedValueOnce([
       bearerAccessToken.payload.iss,
     ]);

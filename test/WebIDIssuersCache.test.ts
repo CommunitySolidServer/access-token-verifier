@@ -5,11 +5,11 @@ jest.mock("../src/algorithm/retrieveWebidTrustedOidcIssuers", () => ({
   retrieveWebidTrustedOidcIssuers: jest.fn(),
 }));
 
-describe("WebID Issuers cache", () => {
+describe("WebIDIssuersCache()", () => {
   const webid = "https://example.com/#me";
   const cache = new WebIDIssuersCache();
 
-  it("Retrieves WebIDs", async () => {
+  it("retrieves WebIDs", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockImplementationOnce(() =>
       Promise.resolve(["https://example-issuer.com/"])
     );
@@ -19,18 +19,18 @@ describe("WebID Issuers cache", () => {
     expect(retrieveWebidTrustedOidcIssuers).toHaveBeenCalledTimes(1);
   });
 
-  it("Caches WebIDs", async () => {
+  it("caches WebIDs", async () => {
     expect((await cache.getIssuers(webid))[0]).toBe(
       "https://example-issuer.com/"
     );
     expect(retrieveWebidTrustedOidcIssuers).toHaveBeenCalledTimes(1);
   });
 
-  it("Returns undefined for non-existant keys", () => {
+  it("returns undefined for non-existant keys", () => {
     expect(cache.get("non-existant")).toBeUndefined();
   });
 
-  it("Throws when failing to retrieve WebID", async () => {
+  it("throws when failing to retrieve WebID", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockImplementationOnce(() =>
       Promise.reject(new Error("No resource"))
     );

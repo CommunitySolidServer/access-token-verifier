@@ -7,7 +7,11 @@ import {
   JwkThumbprintVerificationError,
   JwtIdentifierVerificationError,
 } from "../../src/error";
-import type { DPoPToken, DPoPTokenPayload } from "../../src/type";
+import type {
+  DPoPToken,
+  DPoPTokenPayload,
+  SolidAccessToken,
+} from "../../src/type";
 import { encodeToken } from "../fixture/EncodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -73,8 +77,8 @@ const dpopWrongKeyType: DPoPToken = {
   signature: "",
 };
 
-describe("DPoP proof", () => {
-  it("Checks conforming proof with EC Key", async () => {
+describe("verifyDpopProof()", () => {
+  it("checks conforming proof with EC Key", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpop.payload,
       protectedHeader: dpop.header,
@@ -87,7 +91,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -96,7 +100,7 @@ describe("DPoP proof", () => {
     ).resolves.not.toThrow();
   });
 
-  it("Checks conforming proof with EC Key and ath claim", async () => {
+  it("checks conforming proof with EC Key and ath claim", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
@@ -110,7 +114,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -119,7 +123,7 @@ describe("DPoP proof", () => {
     ).resolves.not.toThrow();
   });
 
-  it("Throws on invalid ath claim", async () => {
+  it("throws on invalid ath claim", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopPayloadWithAth,
       protectedHeader: dpop.header,
@@ -135,7 +139,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -144,7 +148,7 @@ describe("DPoP proof", () => {
     ).rejects.toThrow();
   });
 
-  it("Checks conforming proof with RSA Key", async () => {
+  it("checks conforming proof with RSA Key", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopRSA.payload,
       protectedHeader: dpopRSA.header,
@@ -157,7 +161,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -166,7 +170,7 @@ describe("DPoP proof", () => {
     ).resolves.not.toThrow();
   });
 
-  it("Fails unsupported Key type", async () => {
+  it("fails unsupported Key type", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopWrongKeyType.payload,
       protectedHeader: dpopWrongKeyType.header,
@@ -179,7 +183,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -188,7 +192,7 @@ describe("DPoP proof", () => {
     ).rejects.toThrow("Expected EC or RSA, got:\nUNSUPPORTED_KEY_TYPE");
   });
 
-  it("Throws on wrong method", async () => {
+  it("throws on wrong method", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpop.payload,
       protectedHeader: dpop.header,
@@ -201,7 +205,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "POST",
         "https://resource.example.org/protectedresource",
@@ -210,7 +214,7 @@ describe("DPoP proof", () => {
     ).rejects.toThrow(HttpMethodVerificationError);
   });
 
-  it("Throws on wrong url", async () => {
+  it("throws on wrong url", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpop.payload,
       protectedHeader: dpop.header,
@@ -223,7 +227,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/otherresource",
@@ -232,7 +236,7 @@ describe("DPoP proof", () => {
     ).rejects.toThrow(HttpUriVerificationError);
   });
 
-  it("Throws on duplicate JTI", async () => {
+  it("throws on duplicate JTI", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpop.payload,
       protectedHeader: dpop.header,
@@ -245,7 +249,7 @@ describe("DPoP proof", () => {
           payload: {
             cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
           },
-        } as any,
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -254,7 +258,7 @@ describe("DPoP proof", () => {
     ).rejects.toThrow(JwtIdentifierVerificationError);
   });
 
-  it("Throws on wrong confirmation claim", async () => {
+  it("throws on wrong confirmation claim", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpop.payload,
       protectedHeader: dpop.header,
@@ -263,7 +267,9 @@ describe("DPoP proof", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        { payload: { cnf: { jkt: "UNCONFIRMED_KEY_THUMBPRINT" } } } as any,
+        {
+          payload: { cnf: { jkt: "UNCONFIRMED_KEY_THUMBPRINT" } },
+        } as any as SolidAccessToken,
         "",
         "GET",
         "https://resource.example.org/protectedresource",

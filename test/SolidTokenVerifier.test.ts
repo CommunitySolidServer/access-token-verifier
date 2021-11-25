@@ -7,19 +7,19 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Solid Token Verifier", () => {
+describe("createSolidTokenVerifier()", () => {
   (verifySolidAccessToken as jest.Mock).mockResolvedValue(true);
   const solidTokenVerifier = createSolidTokenVerifier();
 
-  it("Calls the verification function with DPoP options", async () => {
+  it("calls the verification function with DPoP options", async () => {
     expect(
       await solidTokenVerifier("", { header: "", method: "GET", url: "" })
-    ).toStrictEqual(true);
+    ).toBe(true);
     expect(verifySolidAccessToken).toHaveBeenCalledTimes(1);
   });
 
-  it("Calls the verification function with authorization header", async () => {
-    expect(await solidTokenVerifier("")).toStrictEqual(true);
+  it("calls the verification function with authorization header", async () => {
+    expect(await solidTokenVerifier("")).toBe(true);
     expect(verifySolidAccessToken).toHaveBeenCalledTimes(1);
   });
 });

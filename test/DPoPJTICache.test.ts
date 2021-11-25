@@ -1,18 +1,18 @@
 import { DPoPJTICache } from "../src/class/DPoPJTICache";
 
-describe("DPoP JTI cache", () => {
+describe("DPoPJTICache", () => {
   const jti = "identifier";
   const cache = new DPoPJTICache();
 
-  it("Checks JTI", () => {
+  it("checks JTI", () => {
     expect(cache.isDuplicateJTI(jti)).toBe(false);
   });
 
-  it("Caches JTI", () => {
+  it("caches JTI", () => {
     expect(cache.isDuplicateJTI(jti)).toBe(true);
   });
 
-  it("Returns undefined for non-existant keys", () => {
+  it("returns undefined for non-existant keys", () => {
     expect(cache.get("non-existant")).toBeUndefined();
   });
 });
