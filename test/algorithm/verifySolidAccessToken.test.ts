@@ -76,6 +76,20 @@ describe("verifySolidAccessToken()", () => {
     ).toStrictEqual(bearerToken.payload);
   });
 
+  it("throws on invalid header", async () => {
+    await expect(
+      verifySolidAccessToken({
+        header: "invalid",
+        issuers: () =>
+          Promise.resolve([
+            "https://example.com/abc",
+            "https://example.com/issuer",
+          ]),
+        keySet: retrieveAccessTokenIssuerKeySet,
+      })
+    ).rejects.toThrow();
+  });
+
   it("throws on non conforming access token", async () => {
     const wrongProtocolToken = {
       header: accessToken.header,

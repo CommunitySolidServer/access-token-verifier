@@ -30,10 +30,11 @@ export async function verifySolidAccessToken(
 ): Promise<SolidAccessTokenPayload> {
   // Extract access token value from authorization header
   const accessTokenValue = authorization.header.replace(/^(DPoP|Bearer) /, "");
+  const accessTokenParts = accessTokenValue.split(".");
 
   // Decode Solid access token payload
   const accessTokenPayload: unknown = decodeBase64UrlEncodedJson(
-    accessTokenValue.split(".")[1]
+    accessTokenParts[1]
   );
 
   // Verify the Solid access token includes all required claims
@@ -82,7 +83,7 @@ export async function verifySolidAccessToken(
   const accessToken = {
     header: protectedHeader,
     payload,
-    signature: accessTokenValue.split(".")[2],
+    signature: accessTokenParts[2],
   };
 
   isSolidAccessToken(accessToken);

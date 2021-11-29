@@ -123,6 +123,23 @@ describe("verifyDpopProof()", () => {
     ).resolves.not.toThrow();
   });
 
+  it("throws on invalid DPoP header", async () => {
+    await expect(
+      verifyDpopProof(
+        "invalid",
+        {
+          payload: {
+            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
+          },
+        } as any as SolidAccessToken,
+        "",
+        "GET",
+        "https://resource.example.org/protectedresource",
+        () => false
+      )
+    ).rejects.toThrow();
+  });
+
   it("throws on invalid ath claim", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpopPayloadWithAth,
