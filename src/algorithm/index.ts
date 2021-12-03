@@ -1,4 +1,5 @@
 export * from "./decodeBase64UrlEncodedJson";
+export * from "./parseSolidAuthorizationHeader";
 export * from "./retrieveAccessTokenIssuerKeySet";
 export * from "./retrieveWebidTrustedOidcIssuers";
 export * from "./verifyAuthenticationScheme";

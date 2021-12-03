@@ -6,4 +6,6 @@ export * from "./RequestMethod";
 export * from "./RetrieveIssuerKeySetFunction";
 export * from "./RetrieveOidcIssuersFunction";
 export * from "./SolidAccessToken";
+export * from "./SolidAuthenticationScheme";
+export * from "./SolidJwt";
 export * from "./SolidTokenVerifier";

@@ -7,6 +7,7 @@ export * from "./IssuerConfigurationDereferencingError";
 export * from "./IssuerVerificationError";
 export * from "./JwkThumbprintVerificationError";
 export * from "./JwtIdentifierVerificationError";
+export * from "./JwtStructureError";
 export * from "./RequiredClaimVerificationError";
 export * from "./SecureUriClaimVerificationError";
 export * from "./WebidDereferencingError";
