@@ -1,4 +1,5 @@
 import { verifyAuthenticationScheme } from "../../src/algorithm/verifyAuthenticationScheme";
+import { AuthenticationSchemeVerificationError } from "../../src/error";
 
 describe("verifyAuthenticationScheme()", () => {
   it("doesn't throw when the authentication scheme is supported", () => {
@@ -16,6 +17,6 @@ describe("verifyAuthenticationScheme()", () => {
       verifyAuthenticationScheme("BeArer");
       verifyAuthenticationScheme("DPoP\t    ");
       verifyAuthenticationScheme("bearere             ");
-    }).toThrow();
+    }).toThrow(AuthenticationSchemeVerificationError);
   });
 });
