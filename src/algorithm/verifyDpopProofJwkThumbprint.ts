@@ -1,4 +1,4 @@
-import calculateThumbprint from "jose/jwk/thumbprint";
+import { calculateJwkThumbprint } from "jose";
 import { JwkThumbprintVerificationError } from "../error/JwkThumbprintVerificationError";
 import type { DPoPPublicJWK } from "../type";
 
@@ -15,7 +15,9 @@ export async function verifyDpopProofJwkThumbprint(
   jwk: DPoPPublicJWK,
   jkt: string
 ): Promise<void> {
-  const actual = await calculateThumbprint(jwk);
+  // TODO find out what the unsafe assignment is about
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const actual = await calculateJwkThumbprint(jwk);
   if (actual !== jkt) {
     throw new JwkThumbprintVerificationError(actual, jkt);
   }

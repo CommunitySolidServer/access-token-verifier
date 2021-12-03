@@ -1,4 +1,4 @@
-import type { JWK } from "jose/types";
+import type { JWK } from "jose";
 
 /**
  * Digital Signature Asymetric Cryptographic Algorithm

@@ -1,4 +1,5 @@
-import jwtVerify from "jose/jwt/verify";
+import type * as Jose from "jose";
+import { jwtVerify } from "jose";
 import { retrieveAccessTokenIssuerKeySet } from "../../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { verifySolidAccessToken } from "../../src/algorithm/verifySolidAccessToken";
 import {
@@ -13,7 +14,12 @@ import {
 } from "../fixture/DPoPBoundAccessToken";
 import { encodeToken } from "../util/encodeToken";
 
-jest.mock("jose/jwt/verify");
+jest.mock("jose", () => {
+  return {
+    ...jest.requireActual("jose"),
+    jwtVerify: jest.fn(),
+  } as typeof Jose;
+});
 jest.mock("../../src/algorithm/retrieveAccessTokenIssuerKeySet");
 jest.mock("../../src/algorithm/verifyDpopProof");
 

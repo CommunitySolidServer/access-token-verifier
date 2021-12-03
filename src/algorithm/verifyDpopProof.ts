@@ -1,5 +1,4 @@
-import EmbeddedJWK from "jose/jwk/embedded";
-import jwtVerify from "jose/jwt/verify";
+import { EmbeddedJWK, jwtVerify } from "jose";
 import { asserts } from "ts-guards";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "../config";
 import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";

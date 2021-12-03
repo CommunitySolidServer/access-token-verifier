@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { encode as base64UrlEncode } from "jose/util/base64url";
+import { base64url } from "jose";
 import { AccessTokenHashVerificationError } from "../error/AccessTokenHashVerificationError";
 
 /**
@@ -15,7 +15,7 @@ export function verifyDpopProofAccessTokenHash(
   accessToken: string,
   ath: string
 ): void {
-  const actual = base64UrlEncode(
+  const actual = base64url.encode(
     createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest()
   );
   if (actual !== ath) {

@@ -1,4 +1,4 @@
-import type createRemoteJWKSet from "jose/jwks/remote";
+import type { createRemoteJWKSet } from "jose";
 import LRUCache from "lru-cache";
 import { retrieveAccessTokenIssuerKeySet } from "../algorithm/retrieveAccessTokenIssuerKeySet";
 import { maxAgeInMilliseconds, maxRequestsPerSecond } from "../config";

@@ -1,10 +1,16 @@
 import { fetch as crossFetch } from "cross-fetch";
-import createRemoteJWKSet from "jose/jwks/remote";
+import type * as Jose from "jose";
+import { createRemoteJWKSet } from "jose";
 import { retrieveAccessTokenIssuerKeySet } from "../../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { IssuerConfigurationDereferencingError } from "../../src/error";
 
 jest.mock("cross-fetch");
-jest.mock("jose/jwks/remote");
+jest.mock("jose", () => {
+  return {
+    ...jest.requireActual("jose"),
+    createRemoteJWKSet: jest.fn(),
+  } as typeof Jose;
+});
 
 /* eslint-disable @typescript-eslint/naming-convention */
 describe("retrieveAccessTokenIssuerKeySet()", () => {
