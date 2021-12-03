@@ -17,7 +17,7 @@ import { AuthenticationSchemeVerificationError } from "../error";
  * @param authorizationHeader The authorization header used for the request.
  */
 export function verifyAuthenticationScheme(authorizationHeader: string): void {
-  if (!/^(DPoP|Bearer) +/i.test(authorizationHeader)) {
+  if (!/^(DPoP|Bearer) /i.test(authorizationHeader)) {
     throw new AuthenticationSchemeVerificationError(authorizationHeader);
   }
 }
