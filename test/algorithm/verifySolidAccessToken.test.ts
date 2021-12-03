@@ -15,6 +15,7 @@ import { encodeToken } from "../fixture/EncodeToken";
 
 jest.mock("jose/jwt/verify");
 jest.mock("../../src/algorithm/retrieveAccessTokenIssuerKeySet");
+jest.mock("../../src/algorithm/verifyDpopProof");
 
 describe("verifySolidAccessToken()", () => {
   (retrieveAccessTokenIssuerKeySet as jest.Mock).mockImplementation(() => true);
@@ -26,15 +27,23 @@ describe("verifySolidAccessToken()", () => {
     });
 
     expect(
-      await verifySolidAccessToken({
-        header: encodeToken(bearerToken),
-        issuers: () =>
-          Promise.resolve([
-            "https://example.com/abc",
-            "https://example.com/issuer",
-          ]),
-        keySet: retrieveAccessTokenIssuerKeySet,
-      })
+      await verifySolidAccessToken(
+        {
+          header: `DPoP ${encodeToken(bearerToken)}`,
+          issuers: () =>
+            Promise.resolve([
+              "https://example.com/abc",
+              "https://example.com/issuer",
+            ]),
+          keySet: retrieveAccessTokenIssuerKeySet,
+        },
+        {
+          header: "x.y.z",
+          method: "GET",
+          url: "https://example.org",
+          isDuplicateJTI: () => false,
+        }
+      )
     ).toStrictEqual(bearerToken.payload);
   });
 
@@ -45,15 +54,23 @@ describe("verifySolidAccessToken()", () => {
     });
 
     expect(
-      await verifySolidAccessToken({
-        header: encodeToken(tokenAudienceArray),
-        issuers: () =>
-          Promise.resolve([
-            "https://example.com/abc",
-            "https://example.com/issuer",
-          ]),
-        keySet: retrieveAccessTokenIssuerKeySet,
-      })
+      await verifySolidAccessToken(
+        {
+          header: `DPoP ${encodeToken(tokenAudienceArray)}`,
+          issuers: () =>
+            Promise.resolve([
+              "https://example.com/abc",
+              "https://example.com/issuer",
+            ]),
+          keySet: retrieveAccessTokenIssuerKeySet,
+        },
+        {
+          header: "x.y.z",
+          method: "GET",
+          url: "https://example.org",
+          isDuplicateJTI: () => false,
+        }
+      )
     ).toStrictEqual(tokenAudienceArray.payload);
   });
 
@@ -65,7 +82,7 @@ describe("verifySolidAccessToken()", () => {
 
     expect(
       await verifySolidAccessToken({
-        header: encodeToken(bearerToken),
+        header: `Bearer ${encodeToken(bearerToken)}`,
         issuers: () =>
           Promise.resolve([
             "https://example.com/abc",
@@ -99,7 +116,7 @@ describe("verifySolidAccessToken()", () => {
 
     await expect(
       verifySolidAccessToken({
-        header: encodeToken(wrongProtocolToken),
+        header: `Bearer ${encodeToken(wrongProtocolToken)}`,
         issuers: () => Promise.resolve(["https://example.com/issuer"]),
         keySet: retrieveAccessTokenIssuerKeySet,
       })
@@ -114,7 +131,7 @@ describe("verifySolidAccessToken()", () => {
 
     await expect(
       verifySolidAccessToken({
-        header: encodeToken(accessToken),
+        header: `Bearer ${encodeToken(accessToken)}`,
         issuers: () => Promise.resolve(["https://example.com/not_the_issuer"]),
         keySet: retrieveAccessTokenIssuerKeySet,
       })

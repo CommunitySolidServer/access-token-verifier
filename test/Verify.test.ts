@@ -3,6 +3,7 @@ import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccess
 import { retrieveWebidTrustedOidcIssuers } from "../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
 import { verifySolidAccessToken } from "../src/algorithm/verifySolidAccessToken";
+import { AuthenticationSchemeVerificationError } from "../src/error";
 import type { DPoPOptions } from "../src/type";
 import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
@@ -39,7 +40,7 @@ describe("verifySolidAccessToken()", () => {
 
     expect(
       await verifySolidAccessToken(
-        { header: encodeToken(dpopBoundAccessToken) },
+        { header: `dpop ${encodeToken(dpopBoundAccessToken)}` },
         dpopOptions
       )
     ).toStrictEqual(dpopBoundAccessToken.payload);
@@ -146,7 +147,9 @@ describe("verifySolidAccessToken()", () => {
     });
 
     expect(
-      await verifySolidAccessToken({ header: encodeToken(bearerAccessToken) })
+      await verifySolidAccessToken({
+        header: `bearer ${encodeToken(bearerAccessToken)}`,
+      })
     ).toStrictEqual(bearerAccessToken.payload);
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
@@ -169,5 +172,14 @@ describe("verifySolidAccessToken()", () => {
     ).rejects.toThrow("Not a valid access token");
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
+  });
+
+  it("throws when authentication scheme is not supported", async () => {
+    await expect(
+      verifySolidAccessToken(
+        { header: `OtherScheme ${encodeToken(dpopBoundAccessToken)}` },
+        dpopOptions
+      )
+    ).rejects.toThrow(AuthenticationSchemeVerificationError);
   });
 });

@@ -1,5 +1,6 @@
-export * from "./Base64UrlEncodedJsonDecodingError";
 export * from "./AccessTokenHashVerificationError";
+export * from "./AuthenticationSchemeVerificationError";
+export * from "./Base64UrlEncodedJsonDecodingError";
 export * from "./HttpMethodVerificationError";
 export * from "./HttpUriVerificationError";
 export * from "./IssuerConfigurationDereferencingError";

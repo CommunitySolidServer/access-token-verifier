@@ -1,6 +1,7 @@
 export * from "./decodeBase64UrlEncodedJson";
 export * from "./retrieveAccessTokenIssuerKeySet";
 export * from "./retrieveWebidTrustedOidcIssuers";
+export * from "./verifyAuthenticationScheme";
 export * from "./verifyDpopProof";
 export * from "./verifyDpopProofAccessTokenHash";
 export * from "./verifyDpopProofHttpMethod";
