@@ -12,6 +12,7 @@ import { asymetricCryptographicAlgorithm } from "../type/Crypto";
 import { decodeBase64UrlEncodedJson } from "./decodeBase64UrlEncodedJson";
 import { retrieveAccessTokenIssuerKeySet } from "./retrieveAccessTokenIssuerKeySet";
 import { retrieveWebidTrustedOidcIssuers } from "./retrieveWebidTrustedOidcIssuers";
+import { verifyAuthenticationScheme } from "./verifyAuthenticationScheme";
 import { verifyDpopProof } from "./verifyDpopProof";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
@@ -28,6 +29,9 @@ export async function verifySolidAccessToken(
   authorization: AuthenticationOptions,
   dpopOptions?: DPoPOptions
 ): Promise<SolidAccessTokenPayload> {
+  // Verify the authentication scheme is supported
+  verifyAuthenticationScheme(authorization.header);
+
   // Extract access token value from authorization header
   const accessTokenValue = authorization.header.replace(/^(DPoP|Bearer) /, "");
   const accessTokenParts = accessTokenValue.split(".");
