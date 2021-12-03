@@ -10,8 +10,8 @@ import { HttpUriVerificationError } from "../error";
  * @param htu The DPoP proof htu parameter
  */
 export function verifyDpopProofHttpUri(uri: string, htu: string): void {
-  const actual = uri.split("?")[0].split("#")[0];
-  if (actual !== htu) {
-    throw new HttpUriVerificationError(actual, htu);
+  const rawUri = uri.replace(/[?#].*/, "");
+  if (htu !== rawUri) {
+    throw new HttpUriVerificationError(rawUri, htu);
   }
 }
