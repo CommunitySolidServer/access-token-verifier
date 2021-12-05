@@ -5,4 +5,5 @@ export interface SolidJwt {
   joseHeader: string;
   jwsPayload: string;
   jwsSignature: string;
+  value: string;
 }

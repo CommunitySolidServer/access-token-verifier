@@ -32,5 +32,6 @@ export function parseSolidAuthorizationHeader(
     joseHeader,
     jwsPayload,
     jwsSignature,
+    value: `${joseHeader}.${jwsPayload}.${jwsSignature}`,
   };
 }

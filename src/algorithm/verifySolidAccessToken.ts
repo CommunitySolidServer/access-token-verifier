@@ -65,7 +65,7 @@ export async function verifySolidAccessToken(
    *    - 'iat' is not in the future
    */
   const { payload, protectedHeader } = await jwtVerify(
-    `${solidJwt.joseHeader}.${solidJwt.jwsPayload}.${solidJwt.jwsSignature}`,
+    solidJwt.value,
     await retrieveAccessTokenIssuerKeySet(
       accessTokenPayload.iss,
       authorization.keySet
@@ -102,7 +102,7 @@ export async function verifySolidAccessToken(
     await verifyDpopProof(
       dpopOptions.header,
       accessToken,
-      `${solidJwt.joseHeader}.${solidJwt.jwsPayload}.${solidJwt.jwsSignature}`,
+      solidJwt.value,
       dpopOptions.method,
       dpopOptions.url,
       dpopOptions.isDuplicateJTI

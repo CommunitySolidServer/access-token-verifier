@@ -5,13 +5,14 @@ import {
   SolidAuthorizationHeaderParsingError,
 } from "../../src/error";
 
-describe("verifyAuthenticationScheme()", () => {
+describe("parseSolidAuthorizationHeader()", () => {
   it("doesn't throw when the authentication scheme is supported", () => {
     expect(parseSolidAuthorizationHeader("dpop x.y.z")).toStrictEqual({
       authenticationScheme: "DPoP",
       joseHeader: "x",
       jwsPayload: "y",
       jwsSignature: "z",
+      value: "x.y.z",
     });
   });
 

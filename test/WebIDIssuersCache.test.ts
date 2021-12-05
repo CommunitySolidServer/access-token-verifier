@@ -5,7 +5,7 @@ jest.mock("../src/algorithm/retrieveWebidTrustedOidcIssuers", () => ({
   retrieveWebidTrustedOidcIssuers: jest.fn(),
 }));
 
-describe("WebIDIssuersCache()", () => {
+describe("WebIDIssuersCache", () => {
   const webid = "https://example.com/#me";
   const cache = new WebIDIssuersCache();
 

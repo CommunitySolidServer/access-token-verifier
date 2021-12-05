@@ -5,7 +5,7 @@ jest.mock("../src/algorithm/retrieveAccessTokenIssuerKeySet", () => ({
   retrieveAccessTokenIssuerKeySet: jest.fn(),
 }));
 
-describe("IssuerKeySetCache()", () => {
+describe("IssuerKeySetCache", () => {
   const issuer = "https://example-issuer.com/";
   const cache = new IssuerKeySetCache();
 
