@@ -10,9 +10,9 @@ import type {
 } from "../type";
 import { asymetricCryptographicAlgorithm } from "../type/Crypto";
 import { decodeBase64UrlEncodedJson } from "./decodeBase64UrlEncodedJson";
+import { parseSolidAuthorizationHeader } from "./parseSolidAuthorizationHeader";
 import { retrieveAccessTokenIssuerKeySet } from "./retrieveAccessTokenIssuerKeySet";
 import { retrieveWebidTrustedOidcIssuers } from "./retrieveWebidTrustedOidcIssuers";
-import { verifyAuthenticationScheme } from "./verifyAuthenticationScheme";
 import { verifyDpopProof } from "./verifyDpopProof";
 import { verifySecureUriClaim } from "./verifySecureUriClaim";
 import { verifySolidAccessTokenIssuer } from "./verifySolidAccessTokenIssuer";
@@ -29,16 +29,11 @@ export async function verifySolidAccessToken(
   authorization: AuthenticationOptions,
   dpopOptions?: DPoPOptions
 ): Promise<SolidAccessTokenPayload> {
-  // Verify the authentication scheme is supported
-  verifyAuthenticationScheme(authorization.header);
-
-  // Extract access token value from authorization header
-  const accessTokenValue = authorization.header.replace(/^(DPoP|Bearer) /, "");
-  const accessTokenParts = accessTokenValue.split(".");
+  const solidJwt = parseSolidAuthorizationHeader(authorization.header);
 
   // Decode Solid access token payload
   const accessTokenPayload: unknown = decodeBase64UrlEncodedJson(
-    accessTokenParts[1]
+    solidJwt.jwsPayload
   );
 
   // Verify the Solid access token includes all required claims
@@ -70,7 +65,7 @@ export async function verifySolidAccessToken(
    *    - 'iat' is not in the future
    */
   const { payload, protectedHeader } = await jwtVerify(
-    accessTokenValue,
+    solidJwt.value,
     await retrieveAccessTokenIssuerKeySet(
       accessTokenPayload.iss,
       authorization.keySet
@@ -87,13 +82,13 @@ export async function verifySolidAccessToken(
   const accessToken = {
     header: protectedHeader,
     payload,
-    signature: accessTokenParts[2],
+    signature: solidJwt.jwsSignature,
   };
 
   isSolidAccessToken(accessToken);
 
   if (
-    authorization.header.startsWith("DPoP ") ||
+    solidJwt.authenticationScheme === "DPoP" ||
     isObjectPropertyOf(accessToken.payload, "cnf")
   ) {
     try {
@@ -107,7 +102,7 @@ export async function verifySolidAccessToken(
     await verifyDpopProof(
       dpopOptions.header,
       accessToken,
-      accessTokenValue,
+      solidJwt.value,
       dpopOptions.method,
       dpopOptions.url,
       dpopOptions.isDuplicateJTI

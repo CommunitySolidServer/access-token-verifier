@@ -11,7 +11,7 @@ import {
   token as accessToken,
   tokenAudienceArray,
 } from "../fixture/DPoPBoundAccessToken";
-import { encodeToken } from "../fixture/EncodeToken";
+import { encodeToken } from "../util/encodeToken";
 
 jest.mock("jose/jwt/verify");
 jest.mock("../../src/algorithm/retrieveAccessTokenIssuerKeySet");

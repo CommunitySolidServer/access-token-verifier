@@ -1,4 +1,5 @@
 export * from "./decodeBase64UrlEncodedJson";
+export * from "./parseSolidAuthorizationHeader";
 export * from "./retrieveAccessTokenIssuerKeySet";
 export * from "./retrieveWebidTrustedOidcIssuers";
 export * from "./verifyAuthenticationScheme";
@@ -8,6 +9,7 @@ export * from "./verifyDpopProofHttpMethod";
 export * from "./verifyDpopProofHttpUri";
 export * from "./verifyDpopProofJwkThumbprint";
 export * from "./verifyDpopProofJwtIdentifier";
+export * from "./verifyJwtSegments";
 export * from "./verifySecureUriClaim";
 export * from "./verifySolidAccessToken";
 export * from "./verifySolidAccessTokenIssuer";

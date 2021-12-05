@@ -1,7 +1,7 @@
 import { verifySolidAccessTokenRequiredClaims } from "../../src/algorithm/verifySolidAccessTokenRequiredClaims";
 import { RequiredClaimVerificationError } from "../../src/error";
 
-describe("verifySolidAccessTokenIssuer()", () => {
+describe("verifySolidAccessTokenRequiredClaims()", () => {
   it("doesn't throw when the JSON object contains all required claims", () => {
     expect(() => {
       verifySolidAccessTokenRequiredClaims({
