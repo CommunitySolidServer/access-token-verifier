@@ -21,5 +21,5 @@ const payload: SolidAccessTokenPayload = {
 export const token: SolidAccessToken = {
   header,
   payload,
-  signature: "",
+  signature: "x",
 };

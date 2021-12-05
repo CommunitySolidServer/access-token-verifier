@@ -9,6 +9,7 @@ export * from "./verifyDpopProofHttpMethod";
 export * from "./verifyDpopProofHttpUri";
 export * from "./verifyDpopProofJwkThumbprint";
 export * from "./verifyDpopProofJwtIdentifier";
+export * from "./verifyJwtSegments";
 export * from "./verifySecureUriClaim";
 export * from "./verifySolidAccessToken";
 export * from "./verifySolidAccessTokenIssuer";

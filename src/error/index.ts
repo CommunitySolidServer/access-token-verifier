@@ -10,4 +10,5 @@ export * from "./JwtIdentifierVerificationError";
 export * from "./JwtStructureError";
 export * from "./RequiredClaimVerificationError";
 export * from "./SecureUriClaimVerificationError";
+export * from "./SolidAuthorizationHeaderParsingError";
 export * from "./WebidDereferencingError";

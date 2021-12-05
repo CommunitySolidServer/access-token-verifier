@@ -7,7 +7,7 @@ import { AuthenticationSchemeVerificationError } from "../src/error";
 import type { DPoPOptions } from "../src/type";
 import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
-import { encodeToken } from "./fixture/EncodeToken";
+import { encodeToken } from "./util/encodeToken";
 
 jest.mock("jose/jwt/verify");
 jest.mock("../src/algorithm/retrieveAccessTokenIssuerKeySet");

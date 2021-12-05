@@ -12,7 +12,7 @@ import type {
   DPoPTokenPayload,
   SolidAccessToken,
 } from "../../src/type";
-import { encodeToken } from "../fixture/EncodeToken";
+import { encodeToken } from "../util/encodeToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock("jose/jwt/verify");

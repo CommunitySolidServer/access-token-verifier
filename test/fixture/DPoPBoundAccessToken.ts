@@ -51,17 +51,17 @@ export const badProtocolPayload: SolidDpopBoundAccessTokenPayload = {
 export const token: SolidAccessToken = {
   header,
   payload,
-  signature: "",
+  signature: "x",
 };
 
 export const bearerToken: SolidAccessToken = {
   header,
   payload: bearerPayload,
-  signature: "",
+  signature: "x",
 };
 
 export const tokenAudienceArray: SolidAccessToken = {
   header,
   payload: payloadAudienceArray,
-  signature: "",
+  signature: "x",
 };

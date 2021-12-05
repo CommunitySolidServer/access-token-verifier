@@ -37,5 +37,5 @@ const dpopTokenPayload: DPoPTokenPayload = {
 export const dpopTokenEC: DPoPToken = {
   header: dpopTokenHeaderEC,
   payload: dpopTokenPayload,
-  signature: "",
+  signature: "x",
 };
