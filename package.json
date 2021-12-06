@@ -1,6 +1,6 @@
 {
   "name": "@solid/access-token-verifier",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Verifies Solid OIDC access tokens via their webid claim, and thus asserts ownership of a WebID.",
   "license": "MIT",
   "keywords": [
@@ -14,7 +14,8 @@
     "OAuth"
   ],
   "contributors": [
-    "Matthieu Bosquet <matthieu@cognithive.com> (https://github.com/matthieubosquet/)"
+    "Matthieu Bosquet <matthieu@cognithive.com> (https://github.com/matthieubosquet/)",
+    "Ruben Verborgh <ruben@verborgh.org> (https://github.com/RubenVerborgh)"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
