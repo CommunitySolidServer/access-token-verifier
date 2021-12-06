@@ -1,4 +1,4 @@
-import jwtVerify from "jose/jwt/verify";
+import { jwtVerify } from "jose";
 import { asserts } from "ts-guards";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { clockToleranceInSeconds, maxAccessTokenAgeInSeconds } from "../config";

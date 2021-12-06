@@ -1,16 +1,16 @@
 import { fetch as crossFetch } from "cross-fetch";
-import createRemoteJWKSet from "jose/jwks/remote";
+import { createRemoteJWKSet } from "jose";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { IssuerConfigurationDereferencingError } from "../error";
 import type { RetrieveIssuerKeySetFunction } from "../type";
 
-function wellKnownOpenidConfigUrl(iss: string): string {
+function getWellKnownOpenidConfigurationUrl(iss: string): string {
   return iss.replace(/\/$/, "").concat("/.well-known/openid-configuration");
 }
 
 async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
-  const configUrl = wellKnownOpenidConfigUrl(iss);
+  const configUrl = getWellKnownOpenidConfigurationUrl(iss);
   /* eslint-disable @typescript-eslint/naming-convention */
   const response = await crossFetch(configUrl, {
     method: "GET",
@@ -28,7 +28,7 @@ async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
   );
 }
 
-async function jwksUri(iss: string): Promise<URL> {
+async function getJwksUri(iss: string): Promise<URL> {
   const issuerConfig = await dereferenceIssuerConfiguration(iss);
 
   if (
@@ -57,5 +57,5 @@ export async function retrieveAccessTokenIssuerKeySet(
     return getKeySet(iss);
   }
 
-  return createRemoteJWKSet(await jwksUri(iss));
+  return createRemoteJWKSet(await getJwksUri(iss));
 }

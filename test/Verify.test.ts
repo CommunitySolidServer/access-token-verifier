@@ -1,4 +1,5 @@
-import jwtVerify from "jose/jwt/verify";
+import type * as Jose from "jose";
+import { jwtVerify } from "jose";
 import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { retrieveWebidTrustedOidcIssuers } from "../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
@@ -9,7 +10,12 @@ import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";
 import { encodeToken } from "./util/encodeToken";
 
-jest.mock("jose/jwt/verify");
+jest.mock("jose", () => {
+  return {
+    ...jest.requireActual("jose"),
+    jwtVerify: jest.fn(),
+  } as typeof Jose;
+});
 jest.mock("../src/algorithm/retrieveAccessTokenIssuerKeySet");
 jest.mock("../src/algorithm/retrieveWebidTrustedOidcIssuers");
 jest.mock("../src/algorithm/verifyDpopProof");
