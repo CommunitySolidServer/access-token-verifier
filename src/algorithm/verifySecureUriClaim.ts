@@ -1,4 +1,4 @@
-import { SecureUriClaimVerificationError } from "../error";
+import { SecureUriClaimVerificationError } from "../error/SecureUriClaimVerificationError";
 
 /**
  * Verifies a URI claim is secured over TLS

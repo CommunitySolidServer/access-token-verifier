@@ -1,4 +1,4 @@
-import { IssuerVerificationError } from "../error";
+import { IssuerVerificationError } from "../error/IssuerVerificationError";
 
 /**
  * Verifies the Solid access token issuer is trusted

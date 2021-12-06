@@ -1,13 +1,14 @@
 import { EmbeddedJWK, jwtVerify } from "jose";
 import { asserts } from "ts-guards";
 import { clockToleranceInSeconds, maxAgeInMilliseconds } from "../config";
-import { isSolidDPoPBoundAccessTokenPayload, isDPoPToken } from "../guard";
+import { ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM } from "../constant/ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM";
+import { isDPoPToken } from "../guard/isDPoPToken";
+import { isSolidDPoPBoundAccessTokenPayload } from "../guard/isSolidDPoPBoundAccessTokenPayload";
 import type {
   SolidAccessToken,
   JTICheckFunction,
   RequestMethod,
 } from "../type";
-import { asymetricCryptographicAlgorithm } from "../type";
 import { verifyDpopProofAccessTokenHash } from "./verifyDpopProofAccessTokenHash";
 import { verifyDpopProofHttpMethod } from "./verifyDpopProofHttpMethod";
 import { verifyDpopProofHttpUri } from "./verifyDpopProofHttpUri";
@@ -40,7 +41,7 @@ export async function verifyDpopProof(
     EmbeddedJWK,
     {
       typ: "dpop+jwt",
-      algorithms: Array.from(asymetricCryptographicAlgorithm),
+      algorithms: Array.from(ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM),
       maxTokenAge: `${maxAgeInMilliseconds / 1000}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }

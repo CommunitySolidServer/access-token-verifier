@@ -1,4 +1,4 @@
-import { HttpUriVerificationError } from "../error";
+import { HttpUriVerificationError } from "../error/HttpUriVerificationError";
 
 /**
  * Verifies the DPoP proof HTTP URI

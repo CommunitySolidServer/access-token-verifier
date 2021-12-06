@@ -1,4 +1,4 @@
-import { AuthenticationSchemeVerificationError } from "../error";
+import { AuthenticationSchemeVerificationError } from "../error/AuthenticationSchemeVerificationError";
 
 /**
  * Verify the authentication scheme

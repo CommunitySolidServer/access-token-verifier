@@ -1,4 +1,4 @@
-import { JwtIdentifierVerificationError } from "../error";
+import { JwtIdentifierVerificationError } from "../error/JwtIdentifierVerificationError";
 import type { JTICheckFunction } from "../type";
 
 /**

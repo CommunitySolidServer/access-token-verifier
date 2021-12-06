@@ -1,7 +1,7 @@
 import { DataFactory } from "n3";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad, Stream } from "rdf-js";
-import { WebidDereferencingError } from "../error";
+import { WebidDereferencingError } from "../error/WebidDereferencingError";
 import type { RetrieveOidcIssuersFunction } from "../type";
 
 const defaultGraph = DataFactory.defaultGraph();

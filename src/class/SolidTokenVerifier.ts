@@ -1,15 +1,11 @@
 import { isNotNullOrUndefined } from "ts-guards/dist/primitive-type";
 import { verifySolidAccessToken } from "../algorithm/verifySolidAccessToken";
-import type {
-  SolidAccessTokenPayload,
-  RequestMethod,
-  SolidTokenVerifierFunction,
-} from "../type";
+import type { SolidAccessTokenPayload, RequestMethod } from "../type";
 import { DPoPJTICache } from "./DPoPJTICache";
 import { IssuerKeySetCache } from "./IssuerKeySetCache";
 import { WebIDIssuersCache } from "./WebIDIssuersCache";
 
-class SolidTokenVerifier {
+export class SolidTokenVerifier {
   private dpopJtiCache: DPoPJTICache;
 
   private issuerKeySetCache: IssuerKeySetCache;
@@ -46,9 +42,4 @@ class SolidTokenVerifier {
       dpopArgs
     );
   }
-}
-
-export function createSolidTokenVerifier(): SolidTokenVerifierFunction {
-  const cache = new SolidTokenVerifier();
-  return cache.verify.bind(cache);
 }

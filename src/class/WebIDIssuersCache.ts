@@ -1,5 +1,5 @@
 import LRUCache from "lru-cache";
-import { retrieveWebidTrustedOidcIssuers } from "../algorithm";
+import { retrieveWebidTrustedOidcIssuers } from "../algorithm/retrieveWebidTrustedOidcIssuers";
 import { maxAgeInMilliseconds, maxRequestsPerSecond } from "../config";
 import type { RetrieveOidcIssuersFunction } from "../type";
 

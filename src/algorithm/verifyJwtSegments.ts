@@ -1,4 +1,4 @@
-import { JwtStructureError } from "../error";
+import { JwtStructureError } from "../error/JwtStructureError";
 
 /**
  * Verify the number of JWT segments

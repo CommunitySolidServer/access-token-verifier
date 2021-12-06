@@ -2,7 +2,7 @@ import { fetch as crossFetch } from "cross-fetch";
 import { createRemoteJWKSet } from "jose";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
-import { IssuerConfigurationDereferencingError } from "../error";
+import { IssuerConfigurationDereferencingError } from "../error/IssuerConfigurationDereferencingError";
 import type { RetrieveIssuerKeySetFunction } from "../type";
 
 function getWellKnownOpenidConfigurationUrl(iss: string): string {

@@ -1,4 +1,4 @@
-import { SolidAuthorizationHeaderParsingError } from "../error";
+import { SolidAuthorizationHeaderParsingError } from "../error/SolidAuthorizationHeaderParsingError";
 import type { SolidJwt } from "../type";
 import { verifyAuthenticationScheme } from "./verifyAuthenticationScheme";
 import { verifyJwtSegments } from "./verifyJwtSegments";

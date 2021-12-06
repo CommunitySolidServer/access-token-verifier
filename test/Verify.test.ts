@@ -4,7 +4,7 @@ import { retrieveAccessTokenIssuerKeySet } from "../src/algorithm/retrieveAccess
 import { retrieveWebidTrustedOidcIssuers } from "../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { verifyDpopProof } from "../src/algorithm/verifyDpopProof";
 import { verifySolidAccessToken } from "../src/algorithm/verifySolidAccessToken";
-import { AuthenticationSchemeVerificationError } from "../src/error";
+import { AuthenticationSchemeVerificationError } from "../src/error/AuthenticationSchemeVerificationError";
 import type { DPoPOptions } from "../src/type";
 import { token as bearerAccessToken } from "./fixture/BearerAccessToken";
 import { token as dpopBoundAccessToken } from "./fixture/DPoPBoundAccessToken";

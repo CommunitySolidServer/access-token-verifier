@@ -1,5 +1,6 @@
-import { RequiredClaimVerificationError } from "../error";
-import { isNotNullObject, isObjectPropertyOf } from "../guard";
+import { RequiredClaimVerificationError } from "../error/RequiredClaimVerificationError";
+import { isNotNullObject } from "../guard/isNotNullObject";
+import { isObjectPropertyOf } from "../guard/isObjectPropertyOf";
 import type { SolidAccessTokenPayload } from "../type";
 
 /**

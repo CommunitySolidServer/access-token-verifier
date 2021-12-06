@@ -1,4 +1,4 @@
-import { HttpMethodVerificationError } from "../error";
+import { HttpMethodVerificationError } from "../error/HttpMethodVerificationError";
 
 /**
  * Verifies the DPoP proof HTTP method

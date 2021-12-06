@@ -2,13 +2,13 @@ import { jwtVerify } from "jose";
 import { asserts } from "ts-guards";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { clockToleranceInSeconds, maxAccessTokenAgeInSeconds } from "../config";
-import { isSolidAccessToken } from "../guard/SolidAccessTokenGuard";
+import { ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM } from "../constant/ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM";
+import { isSolidAccessToken } from "../guard/isSolidAccessToken";
 import type {
   SolidAccessTokenPayload,
   AuthenticationOptions,
   DPoPOptions,
 } from "../type";
-import { asymetricCryptographicAlgorithm } from "../type/Crypto";
 import { decodeBase64UrlEncodedJson } from "./decodeBase64UrlEncodedJson";
 import { parseSolidAuthorizationHeader } from "./parseSolidAuthorizationHeader";
 import { retrieveAccessTokenIssuerKeySet } from "./retrieveAccessTokenIssuerKeySet";
@@ -72,7 +72,7 @@ export async function verifySolidAccessToken(
     ),
     {
       audience: "solid",
-      algorithms: Array.from(asymetricCryptographicAlgorithm),
+      algorithms: Array.from(ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM),
       maxTokenAge: `${maxAccessTokenAgeInSeconds}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
     }
