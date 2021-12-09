@@ -3,6 +3,7 @@ import { StreamParser } from "n3";
 import rdfDereferencer from "rdf-dereference";
 import { retrieveWebidTrustedOidcIssuers } from "../../../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { WebidDereferencingError } from "../../../src/error/WebidDereferencingError";
+import { WebidParsingError } from "../../../src/error/WebidParsingError";
 
 jest.mock("rdf-dereference", () => ({
   dereference: jest.fn(),
@@ -71,6 +72,6 @@ describe("retrieveWebidTrustedOidcIssuers()", () => {
 
     await expect(async () => {
       await retrieveWebidTrustedOidcIssuers("x");
-    }).rejects.toThrow('Unexpected "very" on line 1.');
+    }).rejects.toThrow(WebidParsingError);
   });
 });

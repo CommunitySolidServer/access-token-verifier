@@ -2,6 +2,7 @@ import { DataFactory } from "n3";
 import rdfDereferencer from "rdf-dereference";
 import type { Quad, Stream } from "rdf-js";
 import { WebidDereferencingError } from "../error/WebidDereferencingError";
+import { WebidParsingError } from "../error/WebidParsingError";
 import type { RetrieveOidcIssuersFunction } from "../type";
 
 const defaultGraph = DataFactory.defaultGraph();
@@ -42,6 +43,6 @@ export async function retrieveWebidTrustedOidcIssuers(
         }
       })
       .on("end", () => resolve(issuers))
-      .on("error", reject);
+      .on("error", () => reject(new WebidParsingError()));
   });
 }

@@ -15,6 +15,7 @@
   ],
   "contributors": [
     "Matthieu Bosquet <matthieu@cognithive.com> (https://github.com/matthieubosquet/)",
+    "Joachim Van Herwegen <joachim.vanherwegen@ugent.be> (https://github.com/joachimvh)",
     "Ruben Verborgh <ruben@verborgh.org> (https://github.com/RubenVerborgh)"
   ],
   "main": "dist/index.js",
