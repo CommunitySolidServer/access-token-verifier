@@ -1,10 +1,10 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  testRegex: "/test/.*\\.test\\.ts$",
+  testRegex: ".*\\.test\\.ts$",
   testRunner: "jest-circus/runner",
-  coverageDirectory: "./coverage/",
   collectCoverage: true,
+  coverageReporters: ["text"],
   coverageThreshold: {
     global: {
       branches: 100,
