@@ -3,7 +3,6 @@ module.exports = {
   testEnvironment: "node",
   testRegex: "/test/.*\\.test\\.ts$",
   testRunner: "jest-circus/runner",
-  testTimeout: 1000,
   coverageDirectory: "./coverage/",
   collectCoverage: true,
   coverageThreshold: {
@@ -13,8 +12,5 @@ module.exports = {
       lines: 100,
       statements: 100,
     },
-  },
-  moduleNameMapper: {
-    "^jose/(.*)$": "<rootDir>/node_modules/jose/dist/node/cjs/$1",
   },
 };

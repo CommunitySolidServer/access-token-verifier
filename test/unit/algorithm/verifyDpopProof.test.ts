@@ -6,11 +6,8 @@ import { HttpMethodVerificationError } from "../../../src/error/HttpMethodVerifi
 import { HttpUriVerificationError } from "../../../src/error/HttpUriVerificationError";
 import { JwkThumbprintVerificationError } from "../../../src/error/JwkThumbprintVerificationError";
 import { JwtIdentifierVerificationError } from "../../../src/error/JwtIdentifierVerificationError";
-import type {
-  DPoPToken,
-  DPoPTokenPayload,
-  SolidAccessToken,
-} from "../../../src/type";
+import type { DPoPToken, DPoPTokenPayload } from "../../../src/type";
+import { SOLID_ACCESS_TOKEN_X } from "../../fixture/SOLID_ACCESS_TOKEN_X";
 import { encodeToken } from "../../util/encodeToken";
 
 jest.mock("jose", () => {
@@ -80,6 +77,30 @@ const dpopWrongKeyType: DPoPToken = {
   signature: "",
 };
 
+const SOLID_ACCESS_TOKEN_DPOP_EC = {
+  ...SOLID_ACCESS_TOKEN_X,
+  payload: {
+    ...SOLID_ACCESS_TOKEN_X.payload,
+    cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
+  },
+};
+
+const SOLID_ACCESS_TOKEN_DPOP_RSA = {
+  ...SOLID_ACCESS_TOKEN_X,
+  payload: {
+    ...SOLID_ACCESS_TOKEN_X.payload,
+    cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
+  },
+};
+
+const SOLID_ACCESS_TOKEN_DPOP_BAD_THUMBPRINT = {
+  ...SOLID_ACCESS_TOKEN_X,
+  payload: {
+    ...SOLID_ACCESS_TOKEN_X.payload,
+    cnf: { jkt: "UNCONFIRMED_KEY_THUMBPRINT" },
+  },
+};
+
 describe("verifyDpopProof()", () => {
   it("checks conforming proof with EC Key", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
@@ -90,11 +111,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -113,11 +130,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -130,11 +143,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         "invalid",
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -155,11 +164,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -177,11 +182,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpopRSA),
-        {
-          payload: {
-            cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_RSA,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -199,11 +200,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpopRSA),
-        {
-          payload: {
-            cnf: { jkt: "cbaZgHZazjgQq0Q2-Hy_o2-OCDpPu02S30lNhTsNU1Q" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_RSA,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -221,11 +218,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "POST",
         "https://resource.example.org/protectedresource",
@@ -243,11 +236,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "GET",
         "https://resource.example.org/otherresource",
@@ -265,11 +254,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: {
-            cnf: { jkt: "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I" },
-          },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_EC,
         "",
         "GET",
         "https://resource.example.org/protectedresource",
@@ -287,9 +272,7 @@ describe("verifyDpopProof()", () => {
     await expect(
       verifyDpopProof(
         encodeToken(dpop),
-        {
-          payload: { cnf: { jkt: "UNCONFIRMED_KEY_THUMBPRINT" } },
-        } as any as SolidAccessToken,
+        SOLID_ACCESS_TOKEN_DPOP_BAD_THUMBPRINT,
         "",
         "GET",
         "https://resource.example.org/protectedresource",

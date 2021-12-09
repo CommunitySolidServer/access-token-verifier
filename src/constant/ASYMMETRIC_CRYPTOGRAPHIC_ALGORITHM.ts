@@ -7,5 +7,5 @@ export const ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM = new Set([
   "PS256",
   "PS384",
   "PS512",
-  ...RSA_ALGORITHM,
+  ...Array.from(RSA_ALGORITHM),
 ] as const);
