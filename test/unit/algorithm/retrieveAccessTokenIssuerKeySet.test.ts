@@ -3,6 +3,7 @@ import type * as Jose from "jose";
 import { createRemoteJWKSet } from "jose";
 import { retrieveAccessTokenIssuerKeySet } from "../../../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { IssuerConfigurationDereferencingError } from "../../../src/error/IssuerConfigurationDereferencingError";
+import { SolidOidcIssuerJwksUriParsingError } from "../../../src/error/SolidOidcIssuerJwksUriParsingError";
 
 jest.mock("cross-fetch");
 jest.mock("jose", () => {
@@ -12,7 +13,6 @@ jest.mock("jose", () => {
   } as typeof Jose;
 });
 
-/* eslint-disable @typescript-eslint/naming-convention */
 describe("retrieveAccessTokenIssuerKeySet()", () => {
   const iss = "https://example-issuer.com/";
   const jwksUri = "https://example.com/JWKS_URI";
@@ -35,6 +35,7 @@ describe("retrieveAccessTokenIssuerKeySet()", () => {
       `${iss.toString()}.well-known/openid-configuration`,
       {
         method: "GET",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         headers: { "Content-Type": "application/json" },
       }
     );
@@ -56,7 +57,18 @@ describe("retrieveAccessTokenIssuerKeySet()", () => {
     });
 
     await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
-      "Failed extracting jwks_uri from identity issuer configuration at URL https://example-issuer.com/"
+      SolidOidcIssuerJwksUriParsingError
+    );
+  });
+
+  it("throws when Issuer's JWKS URI is not a string", async () => {
+    (crossFetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => ({ jwks_uri: 1 }),
+    });
+
+    await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
+      SolidOidcIssuerJwksUriParsingError
     );
   });
 
@@ -67,7 +79,7 @@ describe("retrieveAccessTokenIssuerKeySet()", () => {
     });
 
     await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
-      "Failed parsing jwks_uri from identity issuer configuration at URL https://example-issuer.com/ as a URL"
+      SolidOidcIssuerJwksUriParsingError
     );
   });
 
@@ -82,4 +94,3 @@ describe("retrieveAccessTokenIssuerKeySet()", () => {
     );
   });
 });
-/* eslint-enable @typescript-eslint/naming-convention */

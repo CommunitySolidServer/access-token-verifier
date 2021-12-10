@@ -3,6 +3,7 @@ import { createRemoteJWKSet } from "jose";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { IssuerConfigurationDereferencingError } from "../error/IssuerConfigurationDereferencingError";
+import { SolidOidcIssuerJwksUriParsingError } from "../error/SolidOidcIssuerJwksUriParsingError";
 import type { RetrieveIssuerKeySetFunction } from "../type";
 
 function getWellKnownOpenidConfigurationUrl(iss: string): string {
@@ -11,12 +12,11 @@ function getWellKnownOpenidConfigurationUrl(iss: string): string {
 
 async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
   const configUrl = getWellKnownOpenidConfigurationUrl(iss);
-  /* eslint-disable @typescript-eslint/naming-convention */
   const response = await crossFetch(configUrl, {
     method: "GET",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     headers: { "Content-Type": "application/json" },
   });
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   if (response.ok) {
     return (await response.json()) as JSON;
@@ -31,22 +31,25 @@ async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
 async function getJwksUri(iss: string): Promise<URL> {
   const issuerConfig = await dereferenceIssuerConfiguration(iss);
 
-  if (
-    isObjectPropertyOf(issuerConfig, "jwks_uri") &&
-    isString(issuerConfig.jwks_uri)
-  ) {
-    try {
-      return new URL(issuerConfig.jwks_uri);
-    } catch (_) {
-      throw new Error(
-        `SolidIdentityIssuerConfigError Failed parsing jwks_uri from identity issuer configuration at URL ${iss.toString()} as a URL`
-      );
-    }
+  if (!isObjectPropertyOf(issuerConfig, "jwks_uri")) {
+    throw new SolidOidcIssuerJwksUriParsingError(
+      `JWKS URI field missing in issuer configuration at ${iss.toString()}`
+    );
   }
 
-  throw new Error(
-    `SolidIdentityIssuerConfigError Failed extracting jwks_uri from identity issuer configuration at URL ${iss.toString()}`
-  );
+  if (!isString(issuerConfig.jwks_uri)) {
+    throw new SolidOidcIssuerJwksUriParsingError(
+      `JWKS URI field is not a string in issuer configuration at ${iss.toString()}`
+    );
+  }
+
+  try {
+    return new URL(issuerConfig.jwks_uri);
+  } catch (_) {
+    throw new SolidOidcIssuerJwksUriParsingError(
+      `JWKS URI field could not be parsed as a valid URL in issuer configuration at ${iss.toString()}`
+    );
+  }
 }
 
 export async function retrieveAccessTokenIssuerKeySet(
