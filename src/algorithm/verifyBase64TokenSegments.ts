@@ -15,7 +15,7 @@ export function verifyBase64TokenSegments(authorizationHeader: string): void {
 
   segments.forEach((x, key) => {
     // Last segments can end with 0 or more "="
-    if (Object.is(segments.length - 1, key)) {
+    if (key === segments.length - 1) {
       if (!/^[\w\-~+/]+(=+)?$/.test(x)) {
         throw new Base64TokenSegmentError(x);
       }
