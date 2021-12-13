@@ -1,11 +1,18 @@
 import { parseSolidAuthorizationHeader } from "../../../src/algorithm/parseSolidAuthorizationHeader";
 import { AuthenticationSchemeVerificationError } from "../../../src/error/AuthenticationSchemeVerificationError";
+import { Base64TokenSegmentError } from "../../../src/error/Base64TokenSegmentError";
 import { JwtStructureError } from "../../../src/error/JwtStructureError";
-import { SolidAuthorizationHeaderParsingError } from "../../../src/error/SolidAuthorizationHeaderParsingError";
 
 describe("parseSolidAuthorizationHeader()", () => {
   it("doesn't throw when the authentication scheme is supported", () => {
     expect(parseSolidAuthorizationHeader("dpop x.y.z")).toStrictEqual({
+      authenticationScheme: "DPoP",
+      joseHeader: "x",
+      jwsPayload: "y",
+      jwsSignature: "z",
+      value: "x.y.z",
+    });
+    expect(parseSolidAuthorizationHeader("dpop x.y.z===")).toStrictEqual({
       authenticationScheme: "DPoP",
       joseHeader: "x",
       jwsPayload: "y",
@@ -26,9 +33,9 @@ describe("parseSolidAuthorizationHeader()", () => {
     }).toThrow(JwtStructureError);
   });
 
-  it("throws when the JWT contains unsafe characters", () => {
+  it("throws when the base 64 segments contain illegal characters", () => {
     expect(() => {
-      parseSolidAuthorizationHeader("dpop x.y.z§");
-    }).toThrow(SolidAuthorizationHeaderParsingError);
+      parseSolidAuthorizationHeader("dpop x.y.z$==");
+    }).toThrow(Base64TokenSegmentError);
   });
 });

@@ -1,6 +1,6 @@
-import { SolidAuthorizationHeaderParsingError } from "../error/SolidAuthorizationHeaderParsingError";
 import type { SolidJwt } from "../type";
 import { verifyAuthenticationScheme } from "./verifyAuthenticationScheme";
+import { verifyBase64TokenSegments } from "./verifyBase64TokenSegments";
 import { verifyJwtSegments } from "./verifyJwtSegments";
 
 /**
@@ -13,7 +13,9 @@ export function parseSolidAuthorizationHeader(
   authorizationHeader: string
 ): SolidJwt {
   const [match, joseHeader, jwsPayload, jwsSignature] =
-    /^(?:DPoP|Bearer) +(\w+)\.(\w+)\.(\w+)$/i.exec(authorizationHeader) ?? [];
+    /^(?:DPoP|Bearer) +([\w\-~+/]+)\.([\w\-~+/]+)\.([\w\-~+/]+)(?:=+)?$/i.exec(
+      authorizationHeader
+    ) ?? [];
 
   if (!match) {
     // Verify the authentication scheme is supported
@@ -22,7 +24,8 @@ export function parseSolidAuthorizationHeader(
     // Verify the token is composed of the right number of segments
     verifyJwtSegments(authorizationHeader);
 
-    throw new SolidAuthorizationHeaderParsingError(authorizationHeader);
+    // Verify each segment is a Base 64 encoded token
+    verifyBase64TokenSegments(authorizationHeader);
   }
 
   return {
