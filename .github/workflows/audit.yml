@@ -1,9 +1,13 @@
-name: audit
+name: Audit
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "37 7 * * *"
+
 jobs:
   audit:
     runs-on: ubuntu-latest
