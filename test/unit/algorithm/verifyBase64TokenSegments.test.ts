@@ -1,7 +1,7 @@
 import { verifyBase64TokenSegments } from "../../../src/algorithm/verifyBase64TokenSegments";
 import { Base64TokenSegmentError } from "../../../src/error/Base64TokenSegmentError";
 
-describe("verifyBase64TokenSegments()", () => {
+describe("verifyBase64TokenSegments", () => {
   it("doesn't throw on base 64 token segments", () => {
     expect(() => verifyBase64TokenSegments("dpop  x.y.z")).not.toThrow();
     expect(() => verifyBase64TokenSegments("dpop  x/.y./z==")).not.toThrow();

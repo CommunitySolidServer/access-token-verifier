@@ -1,7 +1,7 @@
 import { verifyJwtSegments } from "../../../src/algorithm/verifyJwtSegments";
 import { JwtStructureError } from "../../../src/error/JwtStructureError";
 
-describe("verifyJwtSegments()", () => {
+describe("verifyJwtSegments", () => {
   it("doesn't throw when the correct number of JWT segments are present", () => {
     expect(() => verifyJwtSegments("dpop x.y.z")).not.toThrow();
   });

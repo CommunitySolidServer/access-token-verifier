@@ -1,7 +1,7 @@
 import { verifyDpopProofHttpUri } from "../../../src/algorithm/verifyDpopProofHttpUri";
 import { HttpUriVerificationError } from "../../../src/error/HttpUriVerificationError";
 
-describe("verifyDpopProofHttpUri()", () => {
+describe("verifyDpopProofHttpUri", () => {
   it("doesn't throw when the HTTP URI matches", () => {
     expect(() => {
       verifyDpopProofHttpUri("https://example.com/x", "https://example.com/x");

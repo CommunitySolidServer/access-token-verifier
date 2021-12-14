@@ -1,7 +1,7 @@
 import { verifyAuthenticationScheme } from "../../../src/algorithm/verifyAuthenticationScheme";
 import { AuthenticationSchemeVerificationError } from "../../../src/error/AuthenticationSchemeVerificationError";
 
-describe("verifyAuthenticationScheme()", () => {
+describe("verifyAuthenticationScheme", () => {
   it("doesn't throw when the authentication scheme is supported", () => {
     expect(() => verifyAuthenticationScheme("dpop ")).not.toThrow();
     expect(() => verifyAuthenticationScheme("BeArer ")).not.toThrow();

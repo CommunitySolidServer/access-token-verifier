@@ -21,7 +21,7 @@ jest.mock("jose", () => {
 jest.mock("../../../src/algorithm/retrieveAccessTokenIssuerKeySet");
 jest.mock("../../../src/algorithm/verifyDpopProof");
 
-describe("verifySolidAccessToken()", () => {
+describe("verifySolidAccessToken", () => {
   (retrieveAccessTokenIssuerKeySet as jest.Mock).mockImplementation(() => true);
 
   it("checks DPoP bound access token", async () => {

@@ -3,7 +3,7 @@ import { AuthenticationSchemeVerificationError } from "../../../src/error/Authen
 import { Base64TokenSegmentError } from "../../../src/error/Base64TokenSegmentError";
 import { JwtStructureError } from "../../../src/error/JwtStructureError";
 
-describe("parseSolidAuthorizationHeader()", () => {
+describe("parseSolidAuthorizationHeader", () => {
   it("doesn't throw when the authentication scheme is supported", () => {
     expect(parseSolidAuthorizationHeader("dpop x.y.z")).toStrictEqual({
       authenticationScheme: "DPoP",

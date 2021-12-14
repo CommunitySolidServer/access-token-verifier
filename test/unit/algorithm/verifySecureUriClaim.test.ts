@@ -1,7 +1,7 @@
 import { verifySecureUriClaim } from "../../../src/algorithm/verifySecureUriClaim";
 import { SecureUriClaimVerificationError } from "../../../src/error/SecureUriClaimVerificationError";
 
-describe("verifySecureUriClaim()", () => {
+describe("verifySecureUriClaim", () => {
   it("doesn't throw when the URI is secure", () => {
     expect(() => {
       verifySecureUriClaim("https://example.com", "");

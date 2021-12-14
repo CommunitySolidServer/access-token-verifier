@@ -2,7 +2,7 @@ import { verifyDpopProofAccessTokenHash } from "../../../src/algorithm/verifyDpo
 import { AccessTokenHashVerificationError } from "../../../src/error/AccessTokenHashVerificationError";
 
 // Test data extracted from https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-7.1
-describe("verifyDpopProofAccessTokenHash()", () => {
+describe("verifyDpopProofAccessTokenHash", () => {
   it("doesn't throw when the access token hash is matched", () => {
     expect(() => {
       verifyDpopProofAccessTokenHash(

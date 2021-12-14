@@ -3,7 +3,7 @@ import { JwtIdentifierVerificationError } from "../../../src/error/JwtIdentifier
 
 const isDuplicateJTI = (jti: string) => ["x"].includes(jti);
 
-describe("verifyDpopProofJwtIdentifier()", () => {
+describe("verifyDpopProofJwtIdentifier", () => {
   it("doesn't throw when the DPoP proof identifier is unique", () => {
     expect(() => {
       verifyDpopProofJwtIdentifier("y", isDuplicateJTI);

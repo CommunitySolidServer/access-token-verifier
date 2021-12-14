@@ -2,7 +2,7 @@ import { decodeBase64UrlEncodedJson } from "../../../src/algorithm/decodeBase64U
 import { Base64UrlEncodedJsonDecodingError } from "../../../src/error/Base64UrlEncodedJsonDecodingError";
 
 // Test data extracted from https://datatracker.ietf.org/doc/html/rfc7519#section-3.1
-describe("decodeBase64UrlEncodedJson()", () => {
+describe("decodeBase64UrlEncodedJson", () => {
   it("doesn't throw when the access token hash is matched", () => {
     expect(() => {
       decodeBase64UrlEncodedJson("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9");

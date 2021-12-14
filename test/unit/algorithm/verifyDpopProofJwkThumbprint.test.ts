@@ -2,7 +2,7 @@ import { verifyDpopProofJwkThumbprint } from "../../../src/algorithm/verifyDpopP
 import { JwkThumbprintVerificationError } from "../../../src/error/JwkThumbprintVerificationError";
 
 // Test data extracted from https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-6.1
-describe("verifyDpopProofJwkThumbprint()", () => {
+describe("verifyDpopProofJwkThumbprint", () => {
   it("doesn't throw when the JWK thumbprint matches", async () => {
     await expect(
       verifyDpopProofJwkThumbprint(

@@ -1,7 +1,7 @@
 import { verifySolidAccessTokenIssuer } from "../../../src/algorithm/verifySolidAccessTokenIssuer";
 import { IssuerVerificationError } from "../../../src/error/IssuerVerificationError";
 
-describe("verifySolidAccessTokenIssuer()", () => {
+describe("verifySolidAccessTokenIssuer", () => {
   it("doesn't throw when the issuer is listed", () => {
     expect(() => {
       verifySolidAccessTokenIssuer(

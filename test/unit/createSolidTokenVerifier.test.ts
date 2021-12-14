@@ -7,7 +7,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("createSolidTokenVerifier()", () => {
+describe("createSolidTokenVerifier", () => {
   (verifySolidAccessToken as jest.Mock).mockResolvedValue(true);
   const solidTokenVerifier = createSolidTokenVerifier();
 

@@ -13,7 +13,7 @@ jest.mock("jose", () => {
   } as typeof Jose;
 });
 
-describe("retrieveAccessTokenIssuerKeySet()", () => {
+describe("retrieveAccessTokenIssuerKeySet", () => {
   const iss = "https://example-issuer.com/";
   const jwksUri = "https://example.com/JWKS_URI";
 

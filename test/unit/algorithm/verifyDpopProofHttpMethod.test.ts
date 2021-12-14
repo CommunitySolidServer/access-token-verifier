@@ -1,7 +1,7 @@
 import { verifyDpopProofHttpMethod } from "../../../src/algorithm/verifyDpopProofHttpMethod";
 import { HttpMethodVerificationError } from "../../../src/error/HttpMethodVerificationError";
 
-describe("verifyDpopProofHttpMethod()", () => {
+describe("verifyDpopProofHttpMethod", () => {
   it("doesn't throw when the HTTP request method matches", () => {
     expect(() => {
       verifyDpopProofHttpMethod("GET", "GET");

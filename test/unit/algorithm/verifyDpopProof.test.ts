@@ -101,7 +101,7 @@ const SOLID_ACCESS_TOKEN_DPOP_BAD_THUMBPRINT = {
   },
 };
 
-describe("verifyDpopProof()", () => {
+describe("verifyDpopProof", () => {
   it("checks conforming proof with EC Key", async () => {
     (jwtVerify as jest.Mock).mockResolvedValueOnce({
       payload: dpop.payload,

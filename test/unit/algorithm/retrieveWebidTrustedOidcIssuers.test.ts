@@ -20,7 +20,7 @@ const mockRdfDereferencer = (rdf: string) => {
 };
 const webid = "https://example.com/webid#";
 
-describe("retrieveWebidTrustedOidcIssuers()", () => {
+describe("retrieveWebidTrustedOidcIssuers", () => {
   it("returns the trusted OIDC issuer of a WebID", async () => {
     mockRdfDereferencer(
       `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> .`
