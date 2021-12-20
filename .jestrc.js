@@ -1,7 +1,6 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  testRegex: ".*\\.test\\.ts$",
   testRunner: "jest-circus/runner",
   collectCoverage: true,
   coverageReporters: ["text"],
