@@ -30,7 +30,8 @@
     "lint:eslint": "eslint --cache --fix --ignore-path .gitignore .",
     "lint:prettier": "prettier --write --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'",
     "start": "npm run build -- --watch",
-    "test": "jest --config .jestrc.js",
+    "test": "npm run test:unit",
+    "test:unit": "jest --config .jestrc.js",
     "prepare": "git config --local core.hooksPath .githooks/",
     "prepublishOnly": "npm run audit && npm ci --ignore-scripts && npm run build && npm run test"
   },
