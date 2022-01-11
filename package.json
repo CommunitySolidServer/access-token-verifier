@@ -3,6 +3,9 @@
   "version": "1.1.2",
   "description": "Verifies Solid OIDC access tokens via their webid claim, and thus asserts ownership of a WebID.",
   "license": "MIT",
+  "repository": "https://github.com/solid/access-token-verifier",
+  "bugs": "https://github.com/solid/access-token-verifier/issues",
+  "homepage": "https://github.com/solid/access-token-verifier#readme",
   "keywords": [
     "Solid",
     "OIDC",
@@ -26,20 +29,18 @@
   "scripts": {
     "audit": "npm audit --production --audit-level=high",
     "build": "tsc",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:eslint": "eslint --cache --fix --ignore-path .gitignore .",
-    "lint:prettier": "prettier --write --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'",
+    "lint": "npm run lint:eslint -- --cache --fix && npm run lint:prettier -- --write",
+    "lint:ci": "npm run lint:eslint && npm run lint:prettier",
+    "lint:eslint": "eslint --ignore-path .gitignore .",
+    "lint:prettier": "prettier --ignore-path .gitignore '**/*.{css,html,json,md,mdx,yml}'",
+    "prepublishOnly": "npm run audit && npm ci --ignore-scripts && npm run build && npm run test",
     "start": "npm run build -- --watch",
     "test": "npm run test:unit",
-    "test:unit": "jest --config .jestrc.js",
-    "prepublishOnly": "npm run audit && npm ci --ignore-scripts && npm run build && npm run test"
+    "test:unit": "jest --config .jestrc.js"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "repository": "https://github.com/solid/access-token-verifier",
-  "bugs": "https://github.com/solid/access-token-verifier/issues",
-  "homepage": "https://github.com/solid/access-token-verifier#readme",
   "devDependencies": {
     "@solid/eslint-config-base": "^0.4.0",
     "@tsconfig/node12": "*",
