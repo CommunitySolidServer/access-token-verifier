@@ -9,7 +9,7 @@
     "outDir": "dist",
     "preserveConstEnums": true,
     "sourceMap": true,
-    "stripInternal": true
+    "stripInternal": true,
   },
   "include": ["src/index.ts"]
 }

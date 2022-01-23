@@ -1,20 +1,32 @@
-import { DataFactory } from "n3";
-import rdfDereferencer from "rdf-dereference";
-import type { Quad, Stream } from "rdf-js";
+import type { Quad } from "@rdfjs/types";
+import { DataFactory, Parser, Store } from "n3";
+// eslint-disable-next-line no-shadow
+import fetch from "node-fetch";
 import { WebidDereferencingError } from "../error/WebidDereferencingError";
 import { WebidParsingError } from "../error/WebidParsingError";
 import type { RetrieveOidcIssuersFunction } from "../type";
 
-const defaultGraph = DataFactory.defaultGraph();
-const oidcIssuer = DataFactory.namedNode(
-  "http://www.w3.org/ns/solid/terms#oidcIssuer"
-);
-
-async function dereferenceWebid(webid: string): Promise<Stream<Quad>> {
+async function dereferenceWebid(webid: string): Promise<string> {
   try {
-    return (await rdfDereferencer.dereference(webid)).quads;
+    const response = await fetch(webid, {
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Accept: "text/turtle",
+      },
+    });
+    return await response.text();
   } catch (e: unknown) {
     throw new WebidDereferencingError(webid);
+  }
+}
+
+function parseRdf(rdf: string): Store<Quad> {
+  try {
+    const store = new Store();
+    store.addQuads(new Parser().parse(rdf));
+    return store;
+  } catch (e: unknown) {
+    throw new WebidParsingError();
   }
 }
 
@@ -26,23 +38,12 @@ export async function retrieveWebidTrustedOidcIssuers(
     return getIssuers(webid);
   }
 
-  const issuers: string[] = [];
-  const webidNode = DataFactory.namedNode(webid);
-  const quadStream = await dereferenceWebid(webid);
-
-  return new Promise((resolve, reject) => {
-    quadStream
-      .on("data", ({ subject, predicate, object, graph }: Quad) => {
-        if (
-          defaultGraph.equals(graph) &&
-          object.termType === "NamedNode" &&
-          oidcIssuer.equals(predicate) &&
-          webidNode.equals(subject)
-        ) {
-          issuers.push(object.value);
-        }
-      })
-      .on("end", () => resolve(issuers))
-      .on("error", () => reject(new WebidParsingError()));
-  });
+  return parseRdf(await dereferenceWebid(webid))
+    .getQuads(
+      DataFactory.namedNode(webid),
+      DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer"),
+      null,
+      DataFactory.defaultGraph()
+    )
+    .map((x) => x.object.value);
 }
