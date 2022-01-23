@@ -31,6 +31,8 @@ function isSolidAccessTokenPayload(
   asserts.isNumber(x.iat);
   asserts.isString(x.iss);
   asserts.isString(x.webid);
+  // TODO: Increase coverage
+  /* istanbul ignore next */
   if (isObjectPropertyOf(x, "cnf")) {
     asserts.isObjectPropertyOf(x.cnf, "jkt");
     asserts.isString(x.cnf.jkt);

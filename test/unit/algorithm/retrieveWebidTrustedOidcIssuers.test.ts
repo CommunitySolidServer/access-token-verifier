@@ -2,6 +2,7 @@
 import fetch from "node-fetch";
 import { retrieveWebidTrustedOidcIssuers } from "../../../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { WebidDereferencingError } from "../../../src/error/WebidDereferencingError";
+import { WebidIriError } from "../../../src/error/WebidIriError";
 import { WebidParsingError } from "../../../src/error/WebidParsingError";
 
 jest.mock("node-fetch", () => jest.fn());
@@ -66,8 +67,14 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
     );
 
     await expect(async () => {
-      await retrieveWebidTrustedOidcIssuers("x");
+      await retrieveWebidTrustedOidcIssuers("http://example.com");
     }).rejects.toThrow(WebidDereferencingError);
+  });
+
+  it("throws when the WebID is not a URL", async () => {
+    await expect(async () => {
+      await retrieveWebidTrustedOidcIssuers("x");
+    }).rejects.toThrow(WebidIriError);
   });
 
   it("throws when there is an error parsing the WebID", async () => {
@@ -81,7 +88,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
     );
 
     await expect(async () => {
-      await retrieveWebidTrustedOidcIssuers("x");
+      await retrieveWebidTrustedOidcIssuers("http://example.com");
     }).rejects.toThrow(WebidParsingError);
   });
 });

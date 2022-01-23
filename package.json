@@ -36,7 +36,8 @@
     "prepublishOnly": "npm run audit && npm ci --ignore-scripts && npm run build && npm run test",
     "start": "npm run build -- --watch",
     "test": "npm run test:unit",
-    "test:unit": "jest --config .jestrc.js"
+    "test:e2e": "jest --config .jestrc.js --testPathPattern='e2e'",
+    "test:unit": "jest --config .jestrc.js --testPathPattern='unit'"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

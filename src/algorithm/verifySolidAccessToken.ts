@@ -94,6 +94,8 @@ export async function verifySolidAccessToken(
     try {
       asserts.isNotNullOrUndefined(dpopOptions);
     } catch (_) {
+      // TODO: Increase test coverage
+      /* istanbul ignore next */
       throw new Error(
         "SolidIdentityDPoPError DPoP options missing for DPoP bound access token verification"
       );
