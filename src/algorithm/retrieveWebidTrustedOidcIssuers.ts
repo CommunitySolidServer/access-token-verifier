@@ -12,8 +12,7 @@ async function dereferenceWebid(webid: string): Promise<string> {
   try {
     const response = await fetch(webid, {
       headers: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Accept: "text/turtle",
+        accept: "text/turtle",
       },
     });
     return await response.text();
@@ -36,25 +35,26 @@ export async function retrieveWebidTrustedOidcIssuers(
   webid: string,
   getIssuers?: RetrieveOidcIssuersFunction
 ): ReturnType<RetrieveOidcIssuersFunction> {
-  let webidUrl: URL;
   try {
-    webidUrl = new URL(webid);
+    // eslint-disable-next-line no-new
+    new URL(webid);
   } catch (e: unknown) {
     throw new WebidIriError(webid);
   }
   if (typeof getIssuers !== "undefined" && getIssuers !== null) {
     return getIssuers(webid);
   }
+
   const store = parseRdf(
     await dereferenceWebid(webid),
-    webidUrl.toString().substring(0, webid.indexOf("#"))
-  );
-  const quads = store.getQuads(
-    DataFactory.namedNode(webid),
-    DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer"),
-    null,
-    DataFactory.defaultGraph()
+    Object.assign(new URL(webid), { hash: "" }).href
   );
 
-  return quads.map((x) => x.object.value);
+  return store
+    .getObjects(
+      DataFactory.namedNode(webid),
+      DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer"),
+      DataFactory.defaultGraph()
+    )
+    .map((x) => x.value);
 }
