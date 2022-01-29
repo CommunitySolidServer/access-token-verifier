@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-shadow
 import fetch from "node-fetch";
 import { retrieveWebidTrustedOidcIssuers } from "../../../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { WebidDereferencingError } from "../../../src/error/WebidDereferencingError";

@@ -2,7 +2,6 @@
 import { URL } from "url";
 import type * as Jose from "jose";
 import { createRemoteJWKSet } from "jose";
-// eslint-disable-next-line no-shadow
 import fetch from "node-fetch";
 import { retrieveAccessTokenIssuerKeySet } from "../../../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { IssuerConfigurationDereferencingError } from "../../../src/error/IssuerConfigurationDereferencingError";

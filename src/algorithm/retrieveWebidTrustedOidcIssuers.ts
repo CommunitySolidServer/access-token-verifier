@@ -2,7 +2,6 @@
 import { URL } from "url";
 import type { Quad } from "@rdfjs/types";
 import { DataFactory, Parser, Store } from "n3";
-// eslint-disable-next-line no-shadow
 import fetch from "node-fetch";
 import { WebidDereferencingError } from "../error/WebidDereferencingError";
 import { WebidIriError } from "../error/WebidIriError";

@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-shadow
 import { URL } from "url";
 import { createRemoteJWKSet } from "jose";
-// eslint-disable-next-line no-shadow
 import fetch from "node-fetch";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
