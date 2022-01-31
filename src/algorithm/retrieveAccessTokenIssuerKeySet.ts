@@ -1,5 +1,7 @@
-import { fetch as crossFetch } from "cross-fetch";
+// eslint-disable-next-line no-shadow
+import { URL } from "url";
 import { createRemoteJWKSet } from "jose";
+import fetch from "node-fetch";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { IssuerConfigurationDereferencingError } from "../error/IssuerConfigurationDereferencingError";
@@ -12,12 +14,11 @@ function getWellKnownOpenidConfigurationUrl(iss: string): string {
 
 async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
   const configUrl = getWellKnownOpenidConfigurationUrl(iss);
-  const response = await crossFetch(configUrl, {
+  const response = await fetch(configUrl, {
     method: "GET",
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    headers: { "Content-Type": "application/json" },
+    headers: { Accept: "application/json" },
   });
-
   if (response.ok) {
     return (await response.json()) as JSON;
   }

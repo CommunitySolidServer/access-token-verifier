@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-shadow
+import { TextDecoder } from "util";
 import { base64url } from "jose";
 import { Base64UrlEncodedJsonDecodingError } from "../error/Base64UrlEncodedJsonDecodingError";
 

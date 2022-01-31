@@ -1,20 +1,33 @@
-import { DataFactory } from "n3";
-import rdfDereferencer from "rdf-dereference";
-import type { Quad, Stream } from "rdf-js";
+// eslint-disable-next-line no-shadow
+import { URL } from "url";
+import type { Quad } from "@rdfjs/types";
+import { DataFactory, Parser, Store } from "n3";
+import fetch from "node-fetch";
 import { WebidDereferencingError } from "../error/WebidDereferencingError";
+import { WebidIriError } from "../error/WebidIriError";
 import { WebidParsingError } from "../error/WebidParsingError";
 import type { RetrieveOidcIssuersFunction } from "../type";
 
-const defaultGraph = DataFactory.defaultGraph();
-const oidcIssuer = DataFactory.namedNode(
-  "http://www.w3.org/ns/solid/terms#oidcIssuer"
-);
-
-async function dereferenceWebid(webid: string): Promise<Stream<Quad>> {
+async function dereferenceWebid(webid: string): Promise<string> {
   try {
-    return (await rdfDereferencer.dereference(webid)).quads;
+    const response = await fetch(webid, {
+      headers: {
+        accept: "text/turtle",
+      },
+    });
+    return await response.text();
   } catch (e: unknown) {
     throw new WebidDereferencingError(webid);
+  }
+}
+
+function parseRdf(rdf: string, baseIRI: string): Store<Quad> {
+  try {
+    const store = new Store();
+    store.addQuads(new Parser({ baseIRI }).parse(rdf));
+    return store;
+  } catch (e: unknown) {
+    throw new WebidParsingError();
   }
 }
 
@@ -22,27 +35,26 @@ export async function retrieveWebidTrustedOidcIssuers(
   webid: string,
   getIssuers?: RetrieveOidcIssuersFunction
 ): ReturnType<RetrieveOidcIssuersFunction> {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(webid);
+  } catch (e: unknown) {
+    throw new WebidIriError(webid);
+  }
   if (typeof getIssuers !== "undefined" && getIssuers !== null) {
     return getIssuers(webid);
   }
 
-  const issuers: string[] = [];
-  const webidNode = DataFactory.namedNode(webid);
-  const quadStream = await dereferenceWebid(webid);
+  const store = parseRdf(
+    await dereferenceWebid(webid),
+    Object.assign(new URL(webid), { hash: "" }).href
+  );
 
-  return new Promise((resolve, reject) => {
-    quadStream
-      .on("data", ({ subject, predicate, object, graph }: Quad) => {
-        if (
-          defaultGraph.equals(graph) &&
-          object.termType === "NamedNode" &&
-          oidcIssuer.equals(predicate) &&
-          webidNode.equals(subject)
-        ) {
-          issuers.push(object.value);
-        }
-      })
-      .on("end", () => resolve(issuers))
-      .on("error", () => reject(new WebidParsingError()));
-  });
+  return store
+    .getObjects(
+      DataFactory.namedNode(webid),
+      DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer"),
+      DataFactory.defaultGraph()
+    )
+    .map((x) => x.value);
 }
