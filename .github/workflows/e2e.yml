@@ -9,17 +9,13 @@ on:
     - cron: "37 7 * * *"
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [16.x]
+  e2e:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Runs on ${{ matrix.os }} with Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "16"
+          cache: "npm"
       - run: npm ci --ignore-scripts
       - run: npm run test:e2e
