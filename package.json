@@ -50,7 +50,7 @@
     "@types/jest": "^27.4.0",
     "@types/lru-cache": "^5.1.1",
     "@types/n3": "^1.10.4",
-    "@types/node": "^12.20.42",
+    "@types/node": "^15.14.9",
     "@types/node-fetch": "^2.5.12",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
