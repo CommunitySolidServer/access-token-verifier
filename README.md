@@ -6,9 +6,9 @@
 
 This library verifies Solid OIDC access tokens via their `webid` claim, and thus asserts ownership of a [WebID](https://www.w3.org/2005/Incubator/webid/spec/).
 
-It conforms to the [Solid OIDC specification](https://solid.github.io/authentication-panel/solid-oidc/).
+It conforms to the [Solid OIDC specification](https://solid.github.io/solid-oidc/).
 
-See also: [Solid OIDC Primer Request Flow](https://solid.github.io/authentication-panel/solid-oidc-primer/#request-flow)
+See also: [Solid OIDC Primer Request Flow](https://solid.github.io/solid-oidc/primer/#request-flow)
 
 ## Supports
 
