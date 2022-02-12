@@ -1,7 +1,7 @@
 # Solid OIDC Access Token Verifier
 
 [![Project Solid](https://img.shields.io/badge/Project-Solid-7C4DFF.svg)](https://solidproject.org/)
-[![Test workflow](https://github.com/solid/access-token-verifier/workflows/Test/badge.svg?branch=main)](https://github.com/solid/access-token-verifier/actions/workflows/test.yml?query=workflow%3Atest+branch%3Amain)
+[![Test workflow](https://github.com/solid/access-token-verifier/workflows/Unit%20Tests/badge.svg?branch=main)](https://github.com/solid/access-token-verifier/actions/workflows/test-unit.yml?query=workflow%3Atest+branch%3Amain)
 [![npm package](https://img.shields.io/npm/v/@solid/access-token-verifier)](https://www.npmjs.com/package/@solid/access-token-verifier)
 
 This library verifies Solid OIDC access tokens via their `webid` claim, and thus asserts ownership of a [WebID](https://www.w3.org/2005/Incubator/webid/spec/).
