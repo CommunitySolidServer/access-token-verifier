@@ -27,7 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "audit": "npm audit --production --audit-level=high",
+    "audit": "npm audit --production --audit-level=moderate",
     "build": "tsc",
     "lint": "npm run lint:eslint -- --cache --fix && npm run lint:licenses && npm run lint:prettier -- --write",
     "lint:ci": "npm run lint:eslint && npm run lint:licenses && npm run lint:prettier -- --check",
