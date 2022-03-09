@@ -5,7 +5,18 @@ updates:
     schedule:
       interval: "daily"
       time: "05:00"
+    allow:
+      - dependency-type: "development"
+    target-branch: "dependabot-dev"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "05:00"
+    allow:
+      - dependency-type: "production"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+      time: "05:00"
