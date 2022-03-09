@@ -11,7 +11,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
         node: ["12", "14", "16"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Runs on ${{ matrix.os }} with Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
