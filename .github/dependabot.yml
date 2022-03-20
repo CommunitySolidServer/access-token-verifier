@@ -6,9 +6,7 @@ updates:
     schedule:
       interval: "daily"
       time: "05:00"
-    target-branch: "dependabot"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-      time: "05:00"
+      interval: "weekly"
