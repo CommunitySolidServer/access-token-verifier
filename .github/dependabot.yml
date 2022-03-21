@@ -3,6 +3,7 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
+    target-branch: "dependabot-updates"
     schedule:
       interval: "daily"
       time: "05:00"
