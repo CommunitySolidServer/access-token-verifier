@@ -1,0 +1,15 @@
+name: Unit Tests
+
+on:
+  push:
+
+jobs:
+  audit:
+    uses: matthieubosquet/workflows/node-audit.yml@v0.1.0
+  codeql:
+    uses: matthieubosquet/workflows/ts-codeql.yml@v0.1.0
+  lint:
+    uses: matthieubosquet/workflows/node-lint.yml@v0.1.0
+  unit-tests:
+    needs: [audit, codeql, lint]
+    uses: matthieubosquet/workflows/node-test-unit.yml@v0.1.0
