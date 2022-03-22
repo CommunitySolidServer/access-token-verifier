@@ -4,12 +4,5 @@ on:
   push:
 
 jobs:
-  audit:
-    uses: matthieubosquet/workflows/.github/workflows/node-audit.yml@v0.1.1
-  codeql:
-    uses: matthieubosquet/workflows/.github/workflows/ts-codeql.yml@v0.1.1
-  lint:
-    uses: matthieubosquet/workflows/.github/workflows/node-lint.yml@v0.1.1
-  unit-tests:
-    needs: [audit, codeql, lint]
-    uses: matthieubosquet/workflows/.github/workflows/node-test-unit.yml@v0.1.1
+  ci:
+    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.2.0
