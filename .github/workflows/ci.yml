@@ -1,0 +1,8 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  ci:
+    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.3.0
