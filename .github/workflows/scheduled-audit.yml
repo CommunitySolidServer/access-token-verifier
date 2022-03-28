@@ -1,4 +1,3 @@
-
 name: Audit
 
 on:
@@ -6,5 +5,5 @@ on:
     - cron: "37 7 * * *"
 
 jobs:
-  audit:
+  scheduled-audit:
     uses: matthieubosquet/workflows/.github/workflows/node-audit.yml@v0.3.0
