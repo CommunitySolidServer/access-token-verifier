@@ -5,4 +5,4 @@ on:
 
 jobs:
   ci:
-    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.3.0
+    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.4.0
