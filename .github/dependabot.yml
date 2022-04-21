@@ -9,7 +9,7 @@ updates:
       time: "05:00"
     ignore:
       - dependency-name: "@types/node"
-        versions: ["13", "14", "15", "16", "17"]
+        versions: ["15", "16", "17", "18"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

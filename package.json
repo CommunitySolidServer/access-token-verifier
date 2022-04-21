@@ -44,13 +44,13 @@
     "registry": "https://registry.npmjs.org"
   },
   "devDependencies": {
-    "@rdfjs/types": "^1.0.1",
+    "@rdfjs/types": "^1.1.0",
     "@solid/eslint-config-base": "^0.5.0",
     "@tsconfig/node14": "^1.0.1",
     "@types/jest": "^27.4.0",
     "@types/lru-cache": "^5.1.1",
     "@types/n3": "^1.10.4",
-    "@types/node": "^12.20.42",
+    "@types/node": "^14.18.13",
     "@types/node-fetch": "^2.5.12",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
