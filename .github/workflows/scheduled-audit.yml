@@ -6,4 +6,4 @@ on:
 
 jobs:
   scheduled-audit:
-    uses: matthieubosquet/workflows/.github/workflows/node-audit.yml@v0.5.0
+    uses: matthieubosquet/workflows/.github/workflows/node-audit.yml@v0.6.0
