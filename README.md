@@ -65,5 +65,6 @@ The `solidOidcAccessTokenVerifier` function takes an authorization header which 
 - Improve default caching? Assess other libraries that might be used.
 - Evolve the type guards and the type guard library.
 - Allow http over tls on all WebIDs instead of enforcing https as per: https://github.com/solid/authentication-panel/issues/114.
-- Enforce client ID when support is wide enough as per: https://solid.github.io/solid-oidc/#tokens-access
-- Enforce DPoP ath claim when support is wide enough as per: https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-03#section-4.2
+- ~~Enforce client ID when support is wide enough as per: https://solid.github.io/solid-oidc/#tokens-access~~
+- Enforce `azp` claim in the next library which should target ID tokens as opposed to Access tokens as per the [updated Solid-OIDC spec](https://solid.github.io/solid-oidc/#tokens-id)
+- Enforce DPoP ath claim when support is wide enough as per: https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-04#section-4.2
