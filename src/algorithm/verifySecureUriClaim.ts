@@ -9,7 +9,7 @@ import { SecureUriClaimVerificationError } from "../error/SecureUriClaimVerifica
  * See also: https://solid.github.io/solid-oidc/#security-tls & https://github.com/solid/authentication-panel/issues/114#issuecomment-751867437
  */
 export function verifySecureUriClaim(uri: string, claim: string): void {
-  if (!uri.startsWith("https://") && !uri.startsWith("http://localhost:")) {
+  if (!uri.startsWith("https://") && !/^http:\/\/(?:([^/]+)\.)?localhost:/u.test(uri)) {
     throw new SecureUriClaimVerificationError(uri, claim);
   }
 }

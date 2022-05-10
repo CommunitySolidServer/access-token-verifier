@@ -14,6 +14,12 @@ describe("verifySecureUriClaim", () => {
     }).not.toThrow();
   });
 
+  it("doesn't throw when the URI is a localhost subdomain", () => {
+    expect(() => {
+      verifySecureUriClaim("http://id.localhost:8080/", "");
+    }).not.toThrow();
+  });
+
   it("throws when the URI is not secure", () => {
     expect(() => {
       verifySecureUriClaim("http://example.com", "");
