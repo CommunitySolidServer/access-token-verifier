@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-shadow
-import { URL } from "url";
 import type { Quad } from "@rdfjs/types";
 import { DataFactory, Parser, Store } from "n3";
 import fetch from "node-fetch";
