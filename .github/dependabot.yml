@@ -10,6 +10,8 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         versions: ["15", "16", "17", "18"]
+      - dependency-name: "node-fetch"
+        versions: ["3"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
