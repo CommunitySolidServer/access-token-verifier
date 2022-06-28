@@ -1,5 +1,6 @@
 import type { SolidAccessToken } from "../../src/type/SolidAccessToken";
 
+/* eslint-disable camelcase */
 export const SOLID_ACCESS_TOKEN_X: SolidAccessToken = {
   header: {
     alg: "ES256",
