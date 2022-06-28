@@ -10,6 +10,7 @@ const header: SolidAccessTokenHeader = {
   kid: "x",
 };
 
+/* eslint-disable camelcase */
 const bearerPayload: SolidAccessTokenPayload = {
   aud: "solid",
   exp: 1603386448,
