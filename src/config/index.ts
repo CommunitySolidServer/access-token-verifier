@@ -12,7 +12,7 @@
 export const clockToleranceInSeconds = 120;
 // Limit Access Token Age to 24 Hours, it should probably have an exp claim much shorter than that
 export const maxAccessTokenAgeInSeconds = 86400;
-// Default max age to 60 seconds for everything else
+// Default max age to 120 seconds for everything else
 export const maxAgeInMilliseconds = 120000;
 // An estimate of 100 rps for most small to medium projects
 export const maxRequestsPerSecond = 100;
