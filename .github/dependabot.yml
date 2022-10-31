@@ -8,7 +8,8 @@ updates:
       time: "05:00"
     ignore:
       - dependency-name: "*"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+        update-types:
+          ["version-update:semver-minor", "version-update:semver-patch"]
       - dependency-name: "lru-cache"
     labels:
       - "⚙️ dependencies"
