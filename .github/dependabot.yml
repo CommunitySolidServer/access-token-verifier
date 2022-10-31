@@ -2,17 +2,20 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/"
-    target-branch: "dependabot-updates"
+    directory: /
     schedule:
       interval: "daily"
       time: "05:00"
     ignore:
-      - dependency-name: "@types/node"
-        versions: ["15", "16", "17", "18"]
-      - dependency-name: "node-fetch"
-        versions: ["3"]
+      - dependency-name: "*"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+      - dependency-name: "lru-cache"
+    labels:
+      - "⚙️ dependencies"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      time: "05:07"
+    labels:
+      - "⚙️ dependencies"
