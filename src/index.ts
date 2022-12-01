@@ -1,9 +1,20 @@
+import type { DPoPJTICache } from "./class/DPoPJTICache";
+import type { IssuerKeySetCache } from "./class/IssuerKeySetCache";
 import { SolidTokenVerifier } from "./class/SolidTokenVerifier";
+import type { WebIDIssuersCache } from "./class/WebIDIssuersCache";
 import type { SolidTokenVerifierFunction } from "./type/SolidTokenVerifierFunction";
 
 // Functions
-export function createSolidTokenVerifier(): SolidTokenVerifierFunction {
-  const cache = new SolidTokenVerifier();
+export function createSolidTokenVerifier(
+  dpopJtiCache?: DPoPJTICache,
+  issuerKeySetCache?: IssuerKeySetCache,
+  webIDIssuersCache?: WebIDIssuersCache
+): SolidTokenVerifierFunction {
+  const cache = new SolidTokenVerifier(
+    dpopJtiCache,
+    issuerKeySetCache,
+    webIDIssuersCache
+  );
   return cache.verify.bind(cache);
 }
 
