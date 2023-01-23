@@ -7,4 +7,4 @@ on:
 
 jobs:
   ci:
-    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.8.0
+    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.9.10
