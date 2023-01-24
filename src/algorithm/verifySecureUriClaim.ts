@@ -12,7 +12,7 @@ export function verifySecureUriClaim(uri: string, claim: string): void {
   const url = new URL(uri);
   if (
     url.protocol !== "https:" &&
-    url.hostname.split(".").pop() !== "localhost"
+    !(url.protocol === "http:" && url.hostname.split(".").pop() === "localhost")
   ) {
     throw new SecureUriClaimVerificationError(uri, claim);
   }
