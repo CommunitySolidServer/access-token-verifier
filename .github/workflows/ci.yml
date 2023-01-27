@@ -4,7 +4,73 @@ on:
   push:
     branches:
       - "**"
+    inputs:
+      node-support:
+        description: Lowest LTS version supported
+        required: false
+        type: number
+        default: 14
 
 jobs:
-  ci:
-    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.9.10
+  code-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript, typescript]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: github/codeql-action/init@v2
+      - uses: github/codeql-action/analyze@v2
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm run audit
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run lint:ci
+  test-unit:
+    needs: [audit, lint]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        node-version: [14, 16, 18]
+    steps:
+      - if: matrix.node-version >= inputs.node-support
+        uses: actions/checkout@v3
+      - if: matrix.node-version >= inputs.node-support
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - if: matrix.node-version >= inputs.node-support
+        run: npm ci --ignore-scripts
+      - if: matrix.node-version >= inputs.node-support
+        run: npm run build
+      - if: matrix.node-version >= inputs.node-support
+        run: npm run test:unit
+  test-e2e:
+    needs: test-unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run test:e2e
