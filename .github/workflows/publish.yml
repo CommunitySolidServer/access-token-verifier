@@ -6,9 +6,9 @@ on:
 
 jobs:
   ci:
-    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.8.0
+    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.9.10
   publish:
-    uses: matthieubosquet/workflows/.github/workflows/node-npm-publish.yml@v0.8.0
+    uses: matthieubosquet/workflows/.github/workflows/node-npm-publish.yml@v0.9.10
     needs: [ci]
     secrets:
       npm-token: ${{ secrets.NPM_TOKEN }}
