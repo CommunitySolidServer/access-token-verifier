@@ -5,10 +5,14 @@ on:
     types: [created]
 
 jobs:
-  ci:
-    uses: matthieubosquet/workflows/.github/workflows/node-ci.yml@v0.9.10
-  publish:
-    uses: matthieubosquet/workflows/.github/workflows/node-npm-publish.yml@v0.9.10
-    needs: [ci]
-    secrets:
-      npm-token: ${{ secrets.NPM_TOKEN }}
+  npm-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm-token }}
