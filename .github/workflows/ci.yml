@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - "**"
-    inputs:
-      node-support:
-        description: Lowest LTS version supported
-        required: false
-        type: number
-        default: 14
 
 jobs:
   code-analysis:
@@ -50,19 +44,14 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
         node-version: [14, 16, 18]
     steps:
-      - if: matrix.node-version >= inputs.node-support
-        uses: actions/checkout@v3
-      - if: matrix.node-version >= inputs.node-support
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - if: matrix.node-version >= inputs.node-support
-        run: npm ci --ignore-scripts
-      - if: matrix.node-version >= inputs.node-support
-        run: npm run build
-      - if: matrix.node-version >= inputs.node-support
-        run: npm run test:unit
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run test:unit
   test-e2e:
     needs: test-unit
     runs-on: ubuntu-latest
@@ -74,3 +63,11 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm run test:e2e
+  check:
+    if: always()
+    needs: [code-analysis, audit, lint, test-unit, test-e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
