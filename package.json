@@ -52,7 +52,7 @@
     "@types/n3": "^1.10.4",
     "@types/node": "^16.11.66",
     "@types/node-fetch": "^2.6.2",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^5.49.0",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
