@@ -6,7 +6,7 @@ describe("verifySolidAccessTokenIssuer", () => {
     expect(() => {
       verifySolidAccessTokenIssuer(
         ["https://example.issuer.com"],
-        "https://example.issuer.com"
+        "https://example.issuer.com",
       );
     }).not.toThrow();
   });
@@ -19,7 +19,7 @@ describe("verifySolidAccessTokenIssuer", () => {
           "https://example.issuer.com",
           "https://example.issuer.org",
         ],
-        "https://example.issuer.com"
+        "https://example.issuer.com",
       );
     }).not.toThrow();
   });
@@ -28,7 +28,7 @@ describe("verifySolidAccessTokenIssuer", () => {
     expect(() => {
       verifySolidAccessTokenIssuer(
         ["http://example.issuer.com"],
-        "https://example.unlisted.issuer.com"
+        "https://example.unlisted.issuer.com",
       );
     }).toThrow(IssuerVerificationError);
   });

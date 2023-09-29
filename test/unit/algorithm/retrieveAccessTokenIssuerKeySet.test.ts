@@ -23,14 +23,14 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
         ok: true,
         // eslint-disable-next-line camelcase
         json: () => ({ jwks_uri: jwksUri }),
-      })
+      }),
     );
     (createRemoteJWKSet as jest.Mock).mockReturnValueOnce(() => true);
 
     expect(
       await (
         await retrieveAccessTokenIssuerKeySet(iss)
-      )({}, { payload: "", signature: "" })
+      )({}, { payload: "", signature: "" }),
     ).toBe(true);
 
     expect(fetch).toHaveBeenCalledTimes(1);
@@ -40,7 +40,7 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
         method: "GET",
         // eslint-disable-next-line @typescript-eslint/naming-convention
         headers: { Accept: "application/json" },
-      }
+      },
     );
     expect(createRemoteJWKSet).toHaveBeenCalledTimes(1);
     expect(createRemoteJWKSet).toHaveBeenCalledWith(new URL(jwksUri));
@@ -49,7 +49,7 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
   it("returns the createRemoteJWKSet via the RetrieveIssuerKeySetFunction function", async () => {
     expect(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/require-await, @typescript-eslint/no-explicit-any
-      await retrieveAccessTokenIssuerKeySet(iss, async () => "" as any)
+      await retrieveAccessTokenIssuerKeySet(iss, async () => "" as any),
     ).toBe("");
   });
 
@@ -58,11 +58,11 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
       Promise.resolve({
         ok: true,
         json: () => ({}),
-      })
+      }),
     );
 
     await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
-      SolidOidcIssuerJwksUriParsingError
+      SolidOidcIssuerJwksUriParsingError,
     );
   });
 
@@ -72,11 +72,11 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
         ok: true,
         // eslint-disable-next-line camelcase
         json: () => ({ jwks_uri: 1 }),
-      })
+      }),
     );
 
     await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
-      SolidOidcIssuerJwksUriParsingError
+      SolidOidcIssuerJwksUriParsingError,
     );
   });
 
@@ -86,11 +86,11 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
         ok: true,
         // eslint-disable-next-line camelcase
         json: () => ({ jwks_uri: "not_a_URI" }),
-      })
+      }),
     );
 
     await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
-      SolidOidcIssuerJwksUriParsingError
+      SolidOidcIssuerJwksUriParsingError,
     );
   });
 
@@ -99,11 +99,11 @@ describe("retrieveAccessTokenIssuerKeySet", () => {
       Promise.resolve({
         status: 400,
         json: () => ({}),
-      })
+      }),
     );
 
     await expect(retrieveAccessTokenIssuerKeySet(iss)).rejects.toThrow(
-      IssuerConfigurationDereferencingError
+      IssuerConfigurationDereferencingError,
     );
   });
 });

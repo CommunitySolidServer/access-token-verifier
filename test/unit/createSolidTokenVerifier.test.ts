@@ -13,7 +13,7 @@ describe("createSolidTokenVerifier", () => {
 
   it("instantiates a function that calls the verification function with DPoP options", async () => {
     expect(
-      await solidTokenVerifier("", { header: "", method: "GET", url: "" })
+      await solidTokenVerifier("", { header: "", method: "GET", url: "" }),
     ).toBe(true);
     expect(verifySolidAccessToken).toHaveBeenCalledTimes(1);
   });

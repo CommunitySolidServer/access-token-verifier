@@ -17,7 +17,7 @@ describe("SolidTokenVerifier", () => {
         header: "",
         method: "GET",
         url: "",
-      })
+      }),
     ).toBe(true);
     expect(verifySolidAccessToken).toHaveBeenCalledTimes(1);
   });

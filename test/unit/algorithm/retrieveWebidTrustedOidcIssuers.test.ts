@@ -16,7 +16,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> .`;
         },
-      })
+      }),
     );
 
     expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([
@@ -31,7 +31,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/>, <https://example.other.issuer.com/> .`;
         },
-      })
+      }),
     );
 
     expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([
@@ -47,7 +47,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return `<#g> { <${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> . }`;
         },
-      })
+      }),
     );
 
     expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([]);
@@ -56,13 +56,13 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
   it("returns the trusted OIDC issuer via the RetrieveOidcIssuersFunction function", async () => {
     expect(
       // eslint-disable-next-line @typescript-eslint/require-await
-      await retrieveWebidTrustedOidcIssuers(webid, async () => [""])
+      await retrieveWebidTrustedOidcIssuers(webid, async () => [""]),
     ).toStrictEqual([""]);
   });
 
   it("throws when the WebID cannot be dereferenced", async () => {
     (fetch as unknown as jest.Mock).mockImplementationOnce(() =>
-      Promise.reject(new Error("No resource"))
+      Promise.reject(new Error("No resource")),
     );
 
     await expect(async () => {
@@ -83,7 +83,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return "very invalid turtle";
         },
-      })
+      }),
     );
 
     await expect(async () => {

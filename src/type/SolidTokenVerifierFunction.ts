@@ -4,6 +4,6 @@ import type { SolidAccessTokenPayload } from "./SolidAccessTokenPayload";
 export interface SolidTokenVerifierFunction {
   (
     authorizationHeader: string,
-    dpop?: DPoPOptions
+    dpop?: DPoPOptions,
   ): Promise<SolidAccessTokenPayload>;
 }

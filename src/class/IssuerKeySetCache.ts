@@ -13,7 +13,7 @@ export class IssuerKeySetCache extends LRUCache<
   }
 
   public async getKeySet(
-    iss: string
+    iss: string,
   ): ReturnType<RetrieveIssuerKeySetFunction> {
     const cachedValue = this.get(iss.toString());
     if (cachedValue === undefined) {

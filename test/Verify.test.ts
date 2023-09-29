@@ -47,8 +47,8 @@ describe("verifySolidAccessToken()", () => {
     expect(
       await verifySolidAccessToken(
         { header: `dpop ${encodeToken(dpopBoundAccessToken)}` },
-        dpopOptions
-      )
+        dpopOptions,
+      ),
     ).toStrictEqual(dpopBoundAccessToken.payload);
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
   });
@@ -66,8 +66,8 @@ describe("verifySolidAccessToken()", () => {
     expect(
       await verifySolidAccessToken(
         { header: `DPoP ${encodeToken(dpopBoundAccessToken)}` },
-        dpopOptions
-      )
+        dpopOptions,
+      ),
     ).toStrictEqual(dpopBoundAccessToken.payload);
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
   });
@@ -91,8 +91,8 @@ describe("verifySolidAccessToken()", () => {
           issuers: retrieveWebidTrustedOidcIssuers,
           keySet: retrieveAccessTokenIssuerKeySet,
         },
-        dpopOptionsWithJTICheckFunction
-      )
+        dpopOptionsWithJTICheckFunction,
+      ),
     ).toStrictEqual(dpopBoundAccessToken.payload);
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
@@ -108,14 +108,14 @@ describe("verifySolidAccessToken()", () => {
     ]);
     (retrieveAccessTokenIssuerKeySet as jest.Mock).mockResolvedValueOnce(null);
     (verifyDpopProof as jest.Mock).mockRejectedValueOnce(
-      new Error("Not a proof")
+      new Error("Not a proof"),
     );
 
     await expect(
       verifySolidAccessToken(
         { header: `DPoP ${encodeToken(dpopBoundAccessToken)}` },
-        dpopOptions
-      )
+        dpopOptions,
+      ),
     ).rejects.toThrow("Not a proof");
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(1);
@@ -134,9 +134,9 @@ describe("verifySolidAccessToken()", () => {
     await expect(
       verifySolidAccessToken({
         header: `DPoP ${encodeToken(dpopBoundAccessToken)}`,
-      })
+      }),
     ).rejects.toThrow(
-      "DPoP options missing for DPoP bound access token verification"
+      "DPoP options missing for DPoP bound access token verification",
     );
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
@@ -155,7 +155,7 @@ describe("verifySolidAccessToken()", () => {
     expect(
       await verifySolidAccessToken({
         header: `bearer ${encodeToken(bearerAccessToken)}`,
-      })
+      }),
     ).toStrictEqual(bearerAccessToken.payload);
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
@@ -167,14 +167,14 @@ describe("verifySolidAccessToken()", () => {
     ]);
     (retrieveAccessTokenIssuerKeySet as jest.Mock).mockResolvedValueOnce(null);
     (jwtVerify as jest.Mock).mockRejectedValueOnce(
-      new Error("Not a valid access token")
+      new Error("Not a valid access token"),
     );
 
     await expect(
       verifySolidAccessToken(
         { header: `DPoP ${encodeToken(dpopBoundAccessToken)}` },
-        dpopOptions
-      )
+        dpopOptions,
+      ),
     ).rejects.toThrow("Not a valid access token");
     expect(jwtVerify).toHaveBeenCalledTimes(1);
     expect(verifyDpopProof).toHaveBeenCalledTimes(0);
@@ -184,8 +184,8 @@ describe("verifySolidAccessToken()", () => {
     await expect(
       verifySolidAccessToken(
         { header: `OtherScheme ${encodeToken(dpopBoundAccessToken)}` },
-        dpopOptions
-      )
+        dpopOptions,
+      ),
     ).rejects.toThrow(AuthenticationSchemeVerificationError);
   });
 });

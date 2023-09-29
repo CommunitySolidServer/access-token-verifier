@@ -31,7 +31,7 @@ function parseRdf(rdf: string, baseIRI: string): Store<Quad> {
 
 export async function retrieveWebidTrustedOidcIssuers(
   webid: string,
-  getIssuers?: RetrieveOidcIssuersFunction
+  getIssuers?: RetrieveOidcIssuersFunction,
 ): ReturnType<RetrieveOidcIssuersFunction> {
   try {
     // eslint-disable-next-line no-new
@@ -45,14 +45,14 @@ export async function retrieveWebidTrustedOidcIssuers(
 
   const store = parseRdf(
     await dereferenceWebid(webid),
-    Object.assign(new URL(webid), { hash: "" }).href
+    Object.assign(new URL(webid), { hash: "" }).href,
   );
 
   return store
     .getObjects(
       DataFactory.namedNode(webid),
       DataFactory.namedNode("http://www.w3.org/ns/solid/terms#oidcIssuer"),
-      DataFactory.defaultGraph()
+      DataFactory.defaultGraph(),
     )
     .map((x) => x.value);
 }

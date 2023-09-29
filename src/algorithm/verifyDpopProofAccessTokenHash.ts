@@ -13,10 +13,10 @@ import { AccessTokenHashVerificationError } from "../error/AccessTokenHashVerifi
  */
 export function verifyDpopProofAccessTokenHash(
   accessToken: string,
-  ath: string
+  ath: string,
 ): void {
   const actual = base64url.encode(
-    createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest()
+    createHash("sha256").update(Buffer.from(accessToken, "ascii")).digest(),
   );
   if (actual !== ath) {
     throw new AccessTokenHashVerificationError(actual, ath);

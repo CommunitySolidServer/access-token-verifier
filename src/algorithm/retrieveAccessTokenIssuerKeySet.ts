@@ -23,7 +23,7 @@ async function dereferenceIssuerConfiguration(iss: string): Promise<JSON> {
 
   throw new IssuerConfigurationDereferencingError(
     response.status.toString(),
-    configUrl
+    configUrl,
   );
 }
 
@@ -32,13 +32,13 @@ async function getJwksUri(iss: string): Promise<URL> {
 
   if (!isObjectPropertyOf(issuerConfig, "jwks_uri")) {
     throw new SolidOidcIssuerJwksUriParsingError(
-      `JWKS URI field missing in issuer configuration at ${iss.toString()}`
+      `JWKS URI field missing in issuer configuration at ${iss.toString()}`,
     );
   }
 
   if (!isString(issuerConfig.jwks_uri)) {
     throw new SolidOidcIssuerJwksUriParsingError(
-      `JWKS URI field is not a string in issuer configuration at ${iss.toString()}`
+      `JWKS URI field is not a string in issuer configuration at ${iss.toString()}`,
     );
   }
 
@@ -46,14 +46,14 @@ async function getJwksUri(iss: string): Promise<URL> {
     return new URL(issuerConfig.jwks_uri);
   } catch (_) {
     throw new SolidOidcIssuerJwksUriParsingError(
-      `JWKS URI field could not be parsed as a valid URL in issuer configuration at ${iss.toString()}`
+      `JWKS URI field could not be parsed as a valid URL in issuer configuration at ${iss.toString()}`,
     );
   }
 }
 
 export async function retrieveAccessTokenIssuerKeySet(
   iss: string,
-  getKeySet?: RetrieveIssuerKeySetFunction
+  getKeySet?: RetrieveIssuerKeySetFunction,
 ): ReturnType<RetrieveIssuerKeySetFunction> {
   if (typeof getKeySet !== "undefined" && getKeySet !== null) {
     return getKeySet(iss);

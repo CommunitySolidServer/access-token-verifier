@@ -46,8 +46,8 @@ describe("verifySolidAccessToken", () => {
           method: "GET",
           url: "https://example.org",
           isDuplicateJTI: () => false,
-        }
-      )
+        },
+      ),
     ).toStrictEqual(bearerToken.payload);
   });
 
@@ -73,8 +73,8 @@ describe("verifySolidAccessToken", () => {
           method: "GET",
           url: "https://example.org",
           isDuplicateJTI: () => false,
-        }
-      )
+        },
+      ),
     ).toStrictEqual(tokenAudienceArray.payload);
   });
 
@@ -93,7 +93,7 @@ describe("verifySolidAccessToken", () => {
             "https://example.com/issuer",
           ]),
         keySet: retrieveAccessTokenIssuerKeySet,
-      })
+      }),
     ).toStrictEqual(bearerToken.payload);
   });
 
@@ -107,7 +107,7 @@ describe("verifySolidAccessToken", () => {
             "https://example.com/issuer",
           ]),
         keySet: retrieveAccessTokenIssuerKeySet,
-      })
+      }),
     ).rejects.toThrow();
   });
 
@@ -123,7 +123,7 @@ describe("verifySolidAccessToken", () => {
         header: `Bearer ${encodeToken(wrongProtocolToken)}`,
         issuers: () => Promise.resolve(["https://example.com/issuer"]),
         keySet: retrieveAccessTokenIssuerKeySet,
-      })
+      }),
     ).rejects.toThrow(SecureUriClaimVerificationError);
   });
 
@@ -138,7 +138,7 @@ describe("verifySolidAccessToken", () => {
         header: `Bearer ${encodeToken(accessToken)}`,
         issuers: () => Promise.resolve(["https://example.com/not_the_issuer"]),
         keySet: retrieveAccessTokenIssuerKeySet,
-      })
+      }),
     ).rejects.toThrow(IssuerVerificationError);
   });
 });

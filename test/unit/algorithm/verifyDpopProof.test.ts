@@ -115,8 +115,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).resolves.not.toThrow();
   });
 
@@ -134,8 +134,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).resolves.not.toThrow();
   });
 
@@ -147,8 +147,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).rejects.toThrow();
   });
 
@@ -168,8 +168,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).rejects.toThrow();
   });
 
@@ -186,8 +186,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).resolves.not.toThrow();
   });
 
@@ -204,8 +204,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).rejects.toThrow("Expected EC or RSA, got:\nUNSUPPORTED_KEY_TYPE");
   });
 
@@ -222,8 +222,8 @@ describe("verifyDpopProof", () => {
         "",
         "POST",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).rejects.toThrow(HttpMethodVerificationError);
   });
 
@@ -240,8 +240,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/otherresource",
-        () => false
-      )
+        () => false,
+      ),
     ).rejects.toThrow(HttpUriVerificationError);
   });
 
@@ -258,8 +258,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => true
-      )
+        () => true,
+      ),
     ).rejects.toThrow(JwtIdentifierVerificationError);
   });
 
@@ -276,8 +276,8 @@ describe("verifyDpopProof", () => {
         "",
         "GET",
         "https://resource.example.org/protectedresource",
-        () => false
-      )
+        () => false,
+      ),
     ).rejects.toThrow(JwkThumbprintVerificationError);
   });
 });

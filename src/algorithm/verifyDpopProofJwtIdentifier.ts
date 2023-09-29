@@ -14,7 +14,7 @@ import type { JTICheckFunction } from "../type";
  */
 export function verifyDpopProofJwtIdentifier(
   jti: string,
-  isDuplicateJTI?: JTICheckFunction
+  isDuplicateJTI?: JTICheckFunction,
 ): void {
   if (
     typeof isDuplicateJTI !== "undefined" &&
