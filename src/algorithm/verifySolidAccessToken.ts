@@ -27,13 +27,13 @@ import { verifySolidAccessTokenRequiredClaims } from "./verifySolidAccessTokenRe
  */
 export async function verifySolidAccessToken(
   authorization: AuthenticationOptions,
-  dpopOptions?: DPoPOptions
+  dpopOptions?: DPoPOptions,
 ): Promise<SolidAccessTokenPayload> {
   const solidJwt = parseSolidAuthorizationHeader(authorization.header);
 
   // Decode Solid access token payload
   const accessTokenPayload: unknown = decodeBase64UrlEncodedJson(
-    solidJwt.jwsPayload
+    solidJwt.jwsPayload,
   );
 
   // Verify the Solid access token includes all required claims
@@ -48,7 +48,7 @@ export async function verifySolidAccessToken(
   // Retrieve the issuers listed in the WebID
   const issuers = await retrieveWebidTrustedOidcIssuers(
     accessTokenPayload.webid,
-    authorization.issuers
+    authorization.issuers,
   );
 
   // Check the issuer claim matches one of the WebID's trusted issuers
@@ -68,14 +68,14 @@ export async function verifySolidAccessToken(
     solidJwt.value,
     await retrieveAccessTokenIssuerKeySet(
       accessTokenPayload.iss,
-      authorization.keySet
+      authorization.keySet,
     ),
     {
       audience: "solid",
       algorithms: Array.from(ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM),
       maxTokenAge: `${maxAccessTokenAgeInSeconds}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
-    }
+    },
   );
 
   // Get JWT value for either DPoP or Bearer tokens
@@ -97,7 +97,7 @@ export async function verifySolidAccessToken(
       // TODO: Increase test coverage
       /* istanbul ignore next */
       throw new Error(
-        "SolidIdentityDPoPError DPoP options missing for DPoP bound access token verification"
+        "SolidIdentityDPoPError DPoP options missing for DPoP bound access token verification",
       );
     }
 
@@ -107,7 +107,7 @@ export async function verifySolidAccessToken(
       solidJwt.value,
       dpopOptions.method,
       dpopOptions.url,
-      dpopOptions.isDuplicateJTI
+      dpopOptions.isDuplicateJTI,
     );
   }
 

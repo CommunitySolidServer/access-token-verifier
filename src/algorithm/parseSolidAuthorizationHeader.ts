@@ -10,11 +10,11 @@ import { verifyJwtSegments } from "./verifyJwtSegments";
  * @return {SolidJwt} A representation of the authorization header.
  */
 export function parseSolidAuthorizationHeader(
-  authorizationHeader: string
+  authorizationHeader: string,
 ): SolidJwt {
   const [match, joseHeader, jwsPayload, jwsSignature] =
     /^(?:DPoP|Bearer) +([\w\-~+/]+)\.([\w\-~+/]+)\.([\w\-~+/]+)(?:=+)?$/i.exec(
-      authorizationHeader
+      authorizationHeader,
     ) ?? [];
 
   if (!match) {

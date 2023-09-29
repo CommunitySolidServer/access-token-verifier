@@ -11,7 +11,7 @@ import type {
  * Check valid Access Token
  */
 function isSolidAccessTokenHeader(
-  x: unknown
+  x: unknown,
 ): asserts x is SolidAccessTokenHeader {
   asserts.areObjectPropertiesOf(x, ["alg", "kid"]);
   asserts.isLiteralType(x.alg, ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM);
@@ -19,13 +19,13 @@ function isSolidAccessTokenHeader(
 }
 
 function isSolidAccessTokenPayload(
-  x: unknown
+  x: unknown,
 ): asserts x is SolidAccessTokenPayload {
   asserts.areObjectPropertiesOf(x, ["aud", "exp", "iat", "iss", "webid"]);
   asserts.isLiteral(
     literalType.isLiteral(x.aud, "solid" as const) ||
       (standardObject.isArray(x.aud) && x.aud.includes("solid")),
-    true
+    true,
   );
   asserts.isNumber(x.exp);
   asserts.isNumber(x.iat);

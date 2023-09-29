@@ -12,7 +12,7 @@ describe("verifyDpopProofHttpUri", () => {
     expect(() => {
       verifyDpopProofHttpUri(
         "https://example.com/x?a",
-        "https://example.com/x"
+        "https://example.com/x",
       );
     }).not.toThrow();
   });
@@ -21,7 +21,7 @@ describe("verifyDpopProofHttpUri", () => {
     expect(() => {
       verifyDpopProofHttpUri(
         "https://example.com/x#a",
-        "https://example.com/x"
+        "https://example.com/x",
       );
     }).not.toThrow();
   });
@@ -30,7 +30,7 @@ describe("verifyDpopProofHttpUri", () => {
     expect(() => {
       verifyDpopProofHttpUri(
         "https://example.com/x#a",
-        "https://example.com/x#a"
+        "https://example.com/x#a",
       );
     }).toThrow(HttpUriVerificationError);
   });
@@ -39,7 +39,7 @@ describe("verifyDpopProofHttpUri", () => {
     expect(() => {
       verifyDpopProofHttpUri(
         "https://example.com/x?a",
-        "https://example.com/x?a"
+        "https://example.com/x?a",
       );
     }).toThrow(HttpUriVerificationError);
   });

@@ -7,7 +7,7 @@ describe("verifyDpopProofAccessTokenHash", () => {
     expect(() => {
       verifyDpopProofAccessTokenHash(
         "Kz~8mXK1EalYznwH-LC-1fBAo.4Ljp~zsPE_NeO.gxU",
-        "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo"
+        "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo",
       );
     }).not.toThrow();
   });
@@ -16,7 +16,7 @@ describe("verifyDpopProofAccessTokenHash", () => {
     expect(() => {
       verifyDpopProofAccessTokenHash(
         "Kz~8mXK1EalYznwH-LC-1fBAo.4Ljp~zsPE_NeO.gxU",
-        "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo "
+        "fUHyO2r2Z3DZ53EsNrWBb0xWXoaNy59IiKCAqksmQEo ",
       );
     }).toThrow(AccessTokenHashVerificationError);
   });

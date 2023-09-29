@@ -8,12 +8,12 @@ import type { SolidTokenVerifierFunction } from "./type/SolidTokenVerifierFuncti
 export function createSolidTokenVerifier(
   dpopJtiCache?: DPoPJTICache,
   issuerKeySetCache?: IssuerKeySetCache,
-  webIDIssuersCache?: WebIDIssuersCache
+  webIDIssuersCache?: WebIDIssuersCache,
 ): SolidTokenVerifierFunction {
   const cache = new SolidTokenVerifier(
     dpopJtiCache,
     issuerKeySetCache,
-    webIDIssuersCache
+    webIDIssuersCache,
   );
   return cache.verify.bind(cache);
 }

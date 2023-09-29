@@ -13,7 +13,7 @@ import type { DPoPPublicJWK } from "../type";
  */
 export async function verifyDpopProofJwkThumbprint(
   jwk: DPoPPublicJWK,
-  jkt: string
+  jkt: string,
 ): Promise<void> {
   // TODO find out what the unsafe assignment is about
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call

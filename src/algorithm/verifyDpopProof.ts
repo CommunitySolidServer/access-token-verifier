@@ -34,7 +34,7 @@ export async function verifyDpopProof(
   accessTokenValue: string,
   httpMethod: RequestMethod,
   uri: string,
-  isDuplicateJTI?: JTICheckFunction
+  isDuplicateJTI?: JTICheckFunction,
 ): Promise<void> {
   const { payload, protectedHeader } = await jwtVerify(
     dpopHeader,
@@ -44,7 +44,7 @@ export async function verifyDpopProof(
       algorithms: Array.from(ASYMMETRIC_CRYPTOGRAPHIC_ALGORITHM),
       maxTokenAge: `${maxAgeInMilliseconds / 1000}s`,
       clockTolerance: `${clockToleranceInSeconds}s`,
-    }
+    },
   );
 
   const dpop = {
@@ -60,7 +60,7 @@ export async function verifyDpopProof(
 
   await verifyDpopProofJwkThumbprint(
     dpop.header.jwk,
-    accessToken.payload.cnf.jkt
+    accessToken.payload.cnf.jkt,
   );
 
   verifyDpopProofHttpMethod(httpMethod, dpop.payload.htm);

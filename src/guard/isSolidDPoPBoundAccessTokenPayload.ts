@@ -5,7 +5,7 @@ import type {
 } from "../type";
 
 export function isSolidDPoPBoundAccessTokenPayload(
-  x: SolidAccessTokenPayload
+  x: SolidAccessTokenPayload,
 ): asserts x is SolidDpopBoundAccessTokenPayload {
   asserts.isObjectPropertyOf(x, "cnf");
   asserts.isObjectPropertyOf(x.cnf, "jkt");

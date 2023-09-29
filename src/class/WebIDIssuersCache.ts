@@ -9,7 +9,7 @@ export class WebIDIssuersCache extends LRUCache<string, Array<string>> {
   }
 
   public async getIssuers(
-    webid: string
+    webid: string,
   ): ReturnType<RetrieveOidcIssuersFunction> {
     const cachedValue = this.get(webid.toString());
     if (cachedValue === undefined) {

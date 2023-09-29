@@ -15,7 +15,7 @@ export class SolidTokenVerifier {
   public constructor(
     dpopJtiCache?: DPoPJTICache,
     issuerKeySetCache?: IssuerKeySetCache,
-    webIDIssuersCache?: WebIDIssuersCache
+    webIDIssuersCache?: WebIDIssuersCache,
   ) {
     this.dpopJtiCache = dpopJtiCache ?? new DPoPJTICache();
     this.issuerKeySetCache = issuerKeySetCache ?? new IssuerKeySetCache();
@@ -24,7 +24,7 @@ export class SolidTokenVerifier {
 
   public async verify(
     authorizationHeader: string,
-    dpop?: DPoPOptions
+    dpop?: DPoPOptions,
   ): Promise<SolidAccessTokenPayload> {
     let dpopArgs;
     if (isNotNullOrUndefined(dpop)) {
@@ -43,7 +43,7 @@ export class SolidTokenVerifier {
         issuers: this.webIDIssuersCache.getIssuers.bind(this.webIDIssuersCache),
         keySet: this.issuerKeySetCache.getKeySet.bind(this.issuerKeySetCache),
       },
-      dpopArgs
+      dpopArgs,
     );
   }
 }

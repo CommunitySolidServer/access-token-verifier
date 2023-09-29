@@ -11,7 +11,7 @@ import { IssuerVerificationError } from "../error/IssuerVerificationError";
  */
 export function verifySolidAccessTokenIssuer(
   issuers: string[],
-  iss: string
+  iss: string,
 ): void {
   if (!issuers.includes(iss)) {
     throw new IssuerVerificationError(issuers.toString(), iss);

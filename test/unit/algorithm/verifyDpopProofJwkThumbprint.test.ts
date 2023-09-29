@@ -12,8 +12,8 @@ describe("verifyDpopProofJwkThumbprint", () => {
           y: "9VE4jf_Ok_o64zbTTlcuNJajHmt6v9TDVrU0CdvGRDA",
           crv: "P-256",
         },
-        "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
-      )
+        "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I",
+      ),
     ).resolves.not.toThrow();
   });
 
@@ -26,8 +26,8 @@ describe("verifyDpopProofJwkThumbprint", () => {
           y: "9VE4jf_Ok_o64zbTTlcuNJajHmt6v9TDVrU0CdvGRDA",
           crv: "P-256",
         },
-        "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4Ie"
-      )
+        "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4Ie",
+      ),
     ).rejects.toThrow(JwkThumbprintVerificationError);
   });
 });

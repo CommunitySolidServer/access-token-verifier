@@ -19,12 +19,12 @@ import type { SolidAccessTokenPayload } from "../type";
  * @param payload The JWT payload to verify
  */
 export function verifySolidAccessTokenRequiredClaims(
-  payload: unknown
+  payload: unknown,
 ): asserts payload is SolidAccessTokenPayload {
   if (!isNotNullObject(payload)) {
     throw new RequiredClaimVerificationError(
       JSON.stringify(payload),
-      "Non null object"
+      "Non null object",
     );
   }
   if (!isObjectPropertyOf(payload, "webid")) {

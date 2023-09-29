@@ -11,17 +11,17 @@ describe("WebIDIssuersCache", () => {
 
   it("retrieves WebIDs", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve(["https://example-issuer.com/"])
+      Promise.resolve(["https://example-issuer.com/"]),
     );
     expect((await cache.getIssuers(webid))[0]).toBe(
-      "https://example-issuer.com/"
+      "https://example-issuer.com/",
     );
     expect(retrieveWebidTrustedOidcIssuers).toHaveBeenCalledTimes(1);
   });
 
   it("caches WebIDs", async () => {
     expect((await cache.getIssuers(webid))[0]).toBe(
-      "https://example-issuer.com/"
+      "https://example-issuer.com/",
     );
     expect(retrieveWebidTrustedOidcIssuers).toHaveBeenCalledTimes(1);
   });
@@ -32,10 +32,10 @@ describe("WebIDIssuersCache", () => {
 
   it("throws when failing to retrieve WebID", async () => {
     (retrieveWebidTrustedOidcIssuers as jest.Mock).mockImplementationOnce(() =>
-      Promise.reject(new Error("No resource"))
+      Promise.reject(new Error("No resource")),
     );
     await expect(
-      cache.getIssuers("https://example.com/#another")
+      cache.getIssuers("https://example.com/#another"),
     ).rejects.toThrow();
   });
 });

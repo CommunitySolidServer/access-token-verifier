@@ -9,7 +9,7 @@ describe("verifyJwtSegments", () => {
   it("throws when the incorrect number of JWT segments are present", () => {
     expect(() => verifyJwtSegments("dpop y.z")).toThrow(JwtStructureError);
     expect(() => verifyJwtSegments("dpop v.w.x.y.z")).toThrow(
-      JwtStructureError
+      JwtStructureError,
     );
   });
 });
