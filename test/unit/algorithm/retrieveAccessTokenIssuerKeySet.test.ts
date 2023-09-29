@@ -1,11 +1,13 @@
 import type * as Jose from "jose";
 import { createRemoteJWKSet } from "jose";
-import fetch from "node-fetch";
 import { retrieveAccessTokenIssuerKeySet } from "../../../src/algorithm/retrieveAccessTokenIssuerKeySet";
 import { IssuerConfigurationDereferencingError } from "../../../src/error/IssuerConfigurationDereferencingError";
 import { SolidOidcIssuerJwksUriParsingError } from "../../../src/error/SolidOidcIssuerJwksUriParsingError";
 
-jest.mock("node-fetch", () => jest.fn());
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+global.fetch = jest.fn();
+
 jest.mock("jose", () => {
   return {
     ...jest.requireActual("jose"),
