@@ -1,10 +1,11 @@
-import fetch from "node-fetch";
 import { retrieveWebidTrustedOidcIssuers } from "../../../src/algorithm/retrieveWebidTrustedOidcIssuers";
 import { WebidDereferencingError } from "../../../src/error/WebidDereferencingError";
 import { WebidIriError } from "../../../src/error/WebidIriError";
 import { WebidParsingError } from "../../../src/error/WebidParsingError";
 
-jest.mock("node-fetch", () => jest.fn());
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+global.fetch = jest.fn();
 
 const webid = "https://example.com/webid#";
 

@@ -1,5 +1,4 @@
 import { createRemoteJWKSet } from "jose";
-import fetch from "node-fetch";
 import { isString } from "ts-guards/dist/primitive-type";
 import { isObjectPropertyOf } from "ts-guards/dist/standard-object";
 import { IssuerConfigurationDereferencingError } from "../error/IssuerConfigurationDereferencingError";

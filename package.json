@@ -51,7 +51,6 @@
     "@types/lru-cache": "^5.1.1",
     "@types/n3": "^1.16.1",
     "@types/node": "^20.7.1",
-    "@types/node-fetch": "^2.6.6",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "eslint": "^8.50.0",
@@ -64,13 +63,13 @@
     "license-checker": "^25.0.1",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "undici": "^5.25.2"
   },
   "dependencies": {
     "jose": "^4.14.6",
     "lru-cache": "^6.0.0",
     "n3": "^1.17.1",
-    "node-fetch": "^2.7.0",
     "ts-guards": "^0.5.1"
   }
 }

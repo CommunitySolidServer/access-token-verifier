@@ -1,6 +1,5 @@
 import type { Quad } from "@rdfjs/types";
 import { DataFactory, Parser, Store } from "n3";
-import fetch from "node-fetch";
 import { WebidDereferencingError } from "../error/WebidDereferencingError";
 import { WebidIriError } from "../error/WebidIriError";
 import { WebidParsingError } from "../error/WebidParsingError";

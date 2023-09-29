@@ -11,5 +11,5 @@
     "sourceMap": true,
     "stripInternal": true
   },
-  "include": ["src/index.ts"]
+  "include": ["src/index.ts", "fetch.d.ts"]
 }
