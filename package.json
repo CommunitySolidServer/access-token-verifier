@@ -67,7 +67,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "jose": "^4.14.6",
+    "jose": "^5.1.0",
     "lru-cache": "^6.0.0",
     "n3": "^1.17.1",
     "node-fetch": "^2.7.0",
