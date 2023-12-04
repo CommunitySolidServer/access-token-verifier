@@ -13,12 +13,8 @@ updates:
       - dependency-name: "lru-cache"
       - dependency-name: "node-fetch"
       - dependency-name: "@types/node"
-    labels:
-      - "⚙️ dependencies"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       time: "05:07"
-    labels:
-      - "⚙️ dependencies"
