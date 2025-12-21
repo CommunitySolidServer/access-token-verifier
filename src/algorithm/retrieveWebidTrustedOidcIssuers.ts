@@ -6,14 +6,16 @@ import { WebidIriError } from "../error/WebidIriError";
 import { WebidParsingError } from "../error/WebidParsingError";
 import type { RetrieveOidcIssuersFunction } from "../type";
 
-async function dereferenceWebid(webid: string): Promise<string> {
+async function dereferenceWebid(
+  webid: string,
+): Promise<{ rdf: string; baseIRI: string }> {
   try {
     const response = await fetch(webid, {
       headers: {
         accept: "text/turtle",
       },
     });
-    return await response.text();
+    return { rdf: await response.text(), baseIRI: response.url };
   } catch (e: unknown) {
     throw new WebidDereferencingError(webid);
   }
@@ -43,10 +45,8 @@ export async function retrieveWebidTrustedOidcIssuers(
     return getIssuers(webid);
   }
 
-  const store = parseRdf(
-    await dereferenceWebid(webid),
-    Object.assign(new URL(webid), { hash: "" }).href,
-  );
+  const { rdf, baseIRI } = await dereferenceWebid(webid);
+  const store = parseRdf(rdf, baseIRI);
 
   return store
     .getObjects(

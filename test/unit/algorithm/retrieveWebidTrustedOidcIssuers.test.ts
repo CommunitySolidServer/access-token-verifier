@@ -7,6 +7,7 @@ import { WebidParsingError } from "../../../src/error/WebidParsingError";
 jest.mock("node-fetch", () => jest.fn());
 
 const webid = "https://example.com/webid#";
+const webidDocument = "https://example.com/webid";
 
 describe("retrieveWebidTrustedOidcIssuers", () => {
   it("returns the trusted OIDC issuer of a WebID", async () => {
@@ -16,6 +17,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> .`;
         },
+        url: webidDocument,
       }),
     );
 
@@ -31,12 +33,31 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/>, <https://example.other.issuer.com/> .`;
         },
+        url: webidDocument,
       }),
     );
 
     expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([
       "https://example.issuer.com/",
       "https://example.other.issuer.com/",
+    ]);
+  });
+
+  it("returns the trusted OIDC issuers with relative paths and redirect webId", async () => {
+    const webidDocumentRedirect = "https://webid.example/profile/card";
+
+    (fetch as unknown as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        text: () => {
+          return `<${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <../> .`;
+        },
+        url: webidDocumentRedirect,
+      }),
+    );
+
+    expect(await retrieveWebidTrustedOidcIssuers(webid)).toStrictEqual([
+      "https://webid.example/",
     ]);
   });
 
@@ -47,6 +68,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return `<#g> { <${webid}> <http://www.w3.org/ns/solid/terms#oidcIssuer> <https://example.issuer.com/> . }`;
         },
+        url: webidDocument,
       }),
     );
 
@@ -83,6 +105,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
         text: () => {
           return "very invalid turtle";
         },
+        url: webidDocument,
       }),
     );
 
