@@ -7,7 +7,9 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
     ).toEqual(["https://login.inrupt.com"]);
   });
 
-  it("returns expected issuer set via inrupt.net", async () => {
+  // inrupt.net has been discontinued: https://www.inrupt.com/blog/inrupt-net-service-migration
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip("returns expected issuer set via inrupt.net", async () => {
     expect(
       await retrieveWebidTrustedOidcIssuers(
         "https://matthieubosquet.inrupt.net/profile/card#me",
@@ -20,7 +22,7 @@ describe("retrieveWebidTrustedOidcIssuers", () => {
       await retrieveWebidTrustedOidcIssuers(
         "https://matthieubi.solidcommunity.net/profile/card#me",
       ),
-    ).toEqual(["https://solidcommunity.net"]);
+    ).toEqual(["https://solidcommunity.net/"]);
   });
 
   it("returns expected issuer set via solidweb.org", async () => {
