@@ -3,7 +3,10 @@
   "version": "2.1.1",
   "description": "Verifies Solid OIDC access tokens via their webid claim, and thus asserts ownership of a WebID.",
   "license": "MIT",
-  "repository": "https://github.com/solid/access-token-verifier",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solid/access-token-verifier.git"
+  },
   "bugs": "https://github.com/solid/access-token-verifier/issues",
   "homepage": "https://github.com/solid/access-token-verifier#readme",
   "keywords": [
