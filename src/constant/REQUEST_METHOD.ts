@@ -4,6 +4,7 @@ export const REQUEST_METHOD = new Set([
   "GET",
   "HEAD",
   "OPTIONS",
+  "QUERY",
   "PATCH",
   "POST",
   "PUT",
