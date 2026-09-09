@@ -1,7 +1,7 @@
 export class WebidParsingError extends Error {
   constructor() {
     super(
-      `The WebID could not be parsed.\nActual: Invalid RDF\nExpected: A valid turtle document`,
+      `The identity document could not be parsed.\nActual: Invalid document\nExpected: A valid Turtle WebID or JSON controlled identifier document`,
     );
   }
 }

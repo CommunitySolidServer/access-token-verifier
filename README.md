@@ -15,7 +15,7 @@ See also: [Solid OIDC Primer Request Flow](https://solid.github.io/solid-oidc/pr
 - DPoP Bound Access Tokens
 - Bearer Access Tokens
 - Caching of:
-  - WebID Identity Providers
+  - Identity document OpenID providers
   - Identity Providers JSON Web Key Sets
   - A minimalistic version of DPoP tokens identifiers to mitigate replays otherwise mostly
     mitigated by the 60 seconds maximum DPoP Token age, should be improved to take a configurable

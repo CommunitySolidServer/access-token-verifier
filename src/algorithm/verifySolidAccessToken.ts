@@ -45,13 +45,13 @@ export async function verifySolidAccessToken(
   // Check Issuer claim is a secure URI
   verifySecureUriClaim(accessTokenPayload.iss, "iss");
 
-  // Retrieve the issuers listed in the WebID
+  // Retrieve the issuers listed in the identity document
   const issuers = await retrieveWebidTrustedOidcIssuers(
     accessTokenPayload.webid,
     authorization.issuers,
   );
 
-  // Check the issuer claim matches one of the WebID's trusted issuers
+  // Check the issuer claim matches one of the identity document's trusted issuers
   verifySolidAccessTokenIssuer(issuers, accessTokenPayload.iss);
 
   /**
