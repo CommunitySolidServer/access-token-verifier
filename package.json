@@ -32,6 +32,7 @@
   "scripts": {
     "audit": "npm audit --production --audit-level=moderate",
     "build": "tsc",
+    "prepare": "npm run build",
     "lint": "npm run lint:eslint -- --cache --fix && npm run lint:licenses && npm run lint:prettier -- --write",
     "lint:ci": "npm run lint:eslint && npm run lint:licenses && npm run lint:prettier -- --check",
     "lint:eslint": "eslint --ignore-path .gitignore .",
