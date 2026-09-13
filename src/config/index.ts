@@ -3,7 +3,7 @@
  *
  * - clockToleranceInSeconds: How far in the future a token can be (if client's or server's clocks are off).
  * - maxAccessTokenAgeInSeconds: How old an Access Token can be.
- * - maxAgeInMilliseconds: For DPoP proofs & JTI cache (so that DPoP would fail to be replayed); also for Issuer Key Set cache & WebID issuers cache.
+ * - maxAgeInMilliseconds: For DPoP proofs & JTI cache (so that DPoP would fail to be replayed); also for Issuer Key Set cache & identity document issuers cache.
  * - maxRequestsPerSecond: Used to calculate the default cache size based on max age.
  *
  * Note: DPoP clock tolerance for time based token verification is advised to be a few seconds or minutes. See DPoP Proof Replay https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-09#section-11.1).

@@ -32,6 +32,7 @@
   "scripts": {
     "audit": "npm audit --production --audit-level=moderate",
     "build": "tsc",
+    "prepare": "npm run build",
     "lint": "npm run lint:eslint -- --cache --fix && npm run lint:licenses && npm run lint:prettier -- --write",
     "lint:ci": "npm run lint:eslint && npm run lint:licenses && npm run lint:prettier -- --check",
     "lint:eslint": "eslint --ignore-path .gitignore .",
@@ -51,6 +52,7 @@
     "@solid/eslint-config-base": "^0.6.0",
     "@tsconfig/node18": "^18.2.2",
     "@types/jest": "^29.5.5",
+    "@types/jsonld": "^1.5.15",
     "@types/lru-cache": "^5.1.1",
     "@types/n3": "^1.16.1",
     "@types/node": "^20.7.1",
@@ -71,6 +73,7 @@
   },
   "dependencies": {
     "jose": "^5.1.3",
+    "jsonld": "^9.0.0",
     "lru-cache": "^6.0.0",
     "n3": "^1.17.1",
     "node-fetch": "^2.7.0",

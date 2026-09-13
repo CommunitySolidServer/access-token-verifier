@@ -1,3 +1,3 @@
 export interface RetrieveOidcIssuersFunction {
-  (webid: string): Promise<Array<string>>;
+  (identifier: string): Promise<Array<string>>;
 }
