@@ -35,7 +35,7 @@
     "lint": "npm run lint:eslint -- --cache --fix && npm run lint:licenses && npm run lint:prettier -- --write",
     "lint:ci": "npm run lint:eslint && npm run lint:licenses && npm run lint:prettier -- --check",
     "lint:eslint": "eslint --ignore-path .gitignore .",
-    "lint:licenses": "license-checker --production --onlyAllow 'Apache; BSD; ISC; MIT'",
+    "lint:licenses": "license-checker --production --onlyAllow \"Apache;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;ISC;MIT\"",
     "lint:prettier": "prettier '**/*.{css,html,json,md,mdx,yml}' --ignore-path .gitignore",
     "prepublishOnly": "npm run audit && npm ci --ignore-scripts && npm run build && npm run test",
     "start": "npm run build -- --watch",
